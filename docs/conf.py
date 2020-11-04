@@ -18,11 +18,11 @@ import sys
 # -- Project information -----------------------------------------------------
 
 project = 'py4web'
-copyright = '2020, Massimo DiPierro'
+copyright = '2020, BSD-3-Clause License'
 author = 'Massimo DiPierro'
 
 # The full version, including alpha/beta/rc tags
-release = '0.9 beta'
+release = '1.20201024.1'
 
 
 # -- General configuration ---------------------------------------------------
