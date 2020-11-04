@@ -132,9 +132,9 @@ today_fmt = "%B %d, %Y"
 epub_basename = 'target'
  
 html_context['downloads'] = list()
-html_context['downloads'].append( ('pdf', '/' +REPO_NAME+ '/' +current_language+ '/' +current_version+ '/' +project+ '-docs_' +current_language+ '_' +current_version+ '.pdf') )
+html_context['downloads'].append( ('pdf', '/' +REPO_NAME+ '/' +current_language+ '/' +current_version+ '/' +REPO_NAME+ '_' +current_language+ '_' +current_version+ '.pdf') )
  
-html_context['downloads'].append( ('epub', '/' +REPO_NAME+ '/' +current_language+ '/' +current_version+ '/' +project+ '-docs_' +current_language+ '_' +current_version+ '.epub') )
+html_context['downloads'].append( ('epub', '/' +REPO_NAME+ '/' +current_language+ '/' +current_version+ '/' +REPO_NAME+ '_' +current_language+ '_' +current_version+ '.epub') )
  
 ##########################
 # "EDIT ON GITHUB" LINKS #
@@ -142,6 +142,6 @@ html_context['downloads'].append( ('epub', '/' +REPO_NAME+ '/' +current_language
  
 html_context['display_github'] = True
 html_context['github_user'] = 'nicozanf'
-html_context['github_repo'] = 'py4web-doc'
+html_context['github_repo'] = REPO_NAME
 html_context['github_version'] = 'master/docs/'
  
