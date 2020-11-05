@@ -5,7 +5,7 @@
 # # MarkMin Converter
 #
 # Usage: run it in a working folder and it will convert all the contained *.mm files to standard .md (MarkDown) files. 
-#           Then it uses Pandoc on the mf files in order to obtain .rst (reStructuredText) + html files
+#           Then it uses Pandoc on the md files in order to obtain .rst (reStructuredText) + html files
 #
 # note that :cite, :inxx and internal anchors are simply deleted
 # 

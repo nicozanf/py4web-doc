@@ -6,6 +6,8 @@ driven web applications. It is an evolution of the popular web2py
 framework but much faster and slicker. Its internal design has been much
 simplified compared to web2py.
 
+Added line: Translation test, let's see if PT translations are preserved.
+
 PY4WEB can be seen as a competitor of other frameworks like Django or
 Flask, and it can indeed serve the same purpose. Yet PY4WEB aims to
 provide a larger feature set out of the box and reduce the development
