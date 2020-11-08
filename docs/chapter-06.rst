@@ -48,6 +48,8 @@ We also assume the following controller ``rest.py``:
    policy = Policy()
    policy.set('superhero', 'GET', authorize=True, allowed_patterns=['*'])
    policy.set('*', 'GET', authorize=True, allowed_patterns=['*'])
+
+   # for security reasons we disabled here all methods but GET at the policy level, to enable any of them just set authorize = True
    policy.set('*', 'PUT', authorize=False)
    policy.set('*', 'POST', authorize=False)
    policy.set('*', 'DELETE', authorize=False)
@@ -75,7 +77,13 @@ The above action is exposed as:
 
    /superheroes/rest/api/{tablename}
 
-In our example policy we disabled all methods but GET.
+**About request.POST**: keep in mind that **request.POST** only contains
+the form data that is posted using a **regular HTML-form** or javascript
+**FormData** object. If you post just plain object
+(e.g. ``axios.post( 'path/to/api', {field:'some'} )``) you should pass
+**request.json** instead of request.POST, since latter will contain just
+raw request-body which is string, not json. See bottle.py documentation
+for more details.
 
 RestAPI GET
 -----------
