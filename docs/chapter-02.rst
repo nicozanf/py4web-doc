@@ -193,23 +193,24 @@ http://localhost:8000/myapp/paint?color=red
 ::
 
 
-   Notice that the request object is the a [Bottle request object](https://bottlepy.org/docs/dev/api.html#the-request-object)
+Notice that the request object is the a [Bottle request object](https://bottlepy.org/docs/dev/api.html#the-request-object)
 
-   #### Templates
+#### Templates
 
-   In order to use a yatl template you must declare it. For example create a file ```apps/myapp/templates/paint.html``` that contains:
+In order to use a yatl template you must declare it. For example create a file ```apps/myapp/templates/paint.html``` that contains:
 
-   ```html
-   <body>
-     <head>
-       <style>
-         body {background}
-       </style>
-     </head>
-     <body>
-       <h1>Color</h1>
-    </body>
-   </html>
+.. code-block:: html
+<html>
+    <body>
+        <head>
+          <style>
+            body {background-color: [[= color]];}
+          </style>
+        </head>
+        <body>
+          <h1>Color</h1>
+       </body>    
+</html>
 
 then modify the paint action to use the template and default to green.
 
