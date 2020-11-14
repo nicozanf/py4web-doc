@@ -250,7 +250,7 @@ tag(s):
    @action('find_by_tag/{group_name}')
    @action.uses(db)
    def find(group_name):
-       users = db(groups.find([group_name])).select(orderby=db.auth_user.first_name|db.auth_user.last_name)
+       users = db(groups.find([group_name])).select(orderby=db.auth_user.first_name | db.auth_user.last_name)
        return {'users': users}
 
 We leave it to you as an exercise to create a fixture ``has_membership``
@@ -311,7 +311,9 @@ And you can check for a user permission via an explicit join:
    def zap():
        user = auth.get_user()
        permission = 'zap database'
-       if db(permissions.find(permission))(db.auth_group.name.belongs(groups.get(user['id']))).count():
+       if db(permissions.find(permission))(
+             db.auth_group.name.belongs(groups.get(user['id']))
+             ).count():
            # zap db
            return 'database zapped'
        else:

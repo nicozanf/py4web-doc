@@ -177,40 +177,45 @@ The ``request`` object
 
 From py4web you can import ``request``
 
-\````python from py4web import request
+.. code:: python
 
-@action(‘paint’) def paint(): if ‘color’ in request.query return
-‘Painting in %s’ % request.query.get(‘color’) return ‘You did not
-specify a color’
+    from py4web import request
+
+    @action('paint')
+    def paint():
+        if 'color' in request.query
+           return 'Painting in %s' % request.query.get('color')
+        return 'You did not specify a color'
+
+
+This action can be accessed at:
 
 ::
 
-
-   This action can be accessed at:
-
-http://localhost:8000/myapp/paint?color=red
-
-::
+   http://localhost:8000/myapp/paint?color=red
 
 
-   Notice that the request object is the a [Bottle request object](https://bottlepy.org/docs/dev/api.html#the-request-object)
 
-   #### Templates
+Notice that the request object is a `Bottle request object <https://bottlepy.org/docs/dev/api.html#the-request-object>`_.
 
-   In order to use a yatl template you must declare it. For example create a file ```apps/myapp/templates/paint.html``` that contains:
+Templates
+~~~~~~~~~
 
-   ```html
-   <body>
-     <head>
+In order to use a yatl template you must declare it. For example create a file ``apps/myapp/templates/paint.html`` that contains:
+
+.. code:: html
+
+   <html>
+    <head>
        <style>
-         body {background}
+         body {background:[[=color]]}
        </style>
-     </head>
-     <body>
-       <h1>Color</h1>
+    </head>
+    <body>
+       <h1>Color [[=color]]</h1>
     </body>
    </html>
-
+   
 then modify the paint action to use the template and default to green.
 
 .. code:: python
@@ -398,7 +403,7 @@ Validate javascript syntax when edited:
                esprima.parseModule(code.read())
 
 Filepaths passed to **``@app_watch_handler``** decorator must be
-relative to an app. Python files("*.py") in a list passed to the
+relative to an app. Python files (i.e. "\*.py") in a list passed to the
 decorator are ignored since they are watched by default. Handler
 function’s parameter is a list of filepaths that were changed. All
 exceptions inside handlers are printed in terminal.

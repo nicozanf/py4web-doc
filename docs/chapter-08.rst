@@ -1294,7 +1294,7 @@ The “views/layout.html” that ships with the py4web scaffolding
 application **welcome** (stripped down of some optional parts) is quite
 complex but it has the following structure:
 
-.. code:: python
+.. code:: html
 
    <!DOCTYPE html>
    <head>
@@ -1520,7 +1520,7 @@ friendly:
    if request.user_agent().is_mobile:
        response.view.replace('.html', '.mobile.html')
 
-The task of creating the "*.mobile.html" views is left to the developer
+The task of creating the "\*.mobile.html" views is left to the developer
 but we strongly suggest using the “jQuery Mobile” plugin which makes the
 task very easy.
 
