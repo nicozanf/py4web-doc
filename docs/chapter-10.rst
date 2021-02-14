@@ -679,7 +679,7 @@ will render as:
 
 .. code:: html
 
-   <table><tbody
+   <table><tbody>
    <tr><th>a</th><td><ul><li>hello</li><li><strong>world</strong></li></ul></td></tr>
    <tr><th>b</th><td>(1, 2)</td></tr>
    </tbody></table>
@@ -861,7 +861,7 @@ a given element into regular text (without tags):
    >>> print a.flatten()
    thisisatest
 
-Flatten can be passed an optional argument, ``render``, i.e. a function
+Flatten can be passed an optional argument, ``render``, i.e. a function
 that renders/flattens the content using a different protocol. Here is an
 example to serialize some tags into Markmin wiki syntax:
 
