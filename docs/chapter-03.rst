@@ -134,7 +134,7 @@ Once installed, you should always start it from there with:
 
 .. tabs::
 
-   .. group-tab:: **Linux and MacOS**
+   .. group-tab:: Linux and MacOS
 
       .. code:: bash
 
@@ -146,7 +146,7 @@ Once installed, you should always start it from there with:
       **./** ; it forces the run of the local folder’s py4web and not the
       globally installed one.
 
-   .. group-tab:: **Windows**
+   .. group-tab:: Windows
 
       .. code:: bash
 
