@@ -22,7 +22,7 @@ copyright = '2020, BSD-3-Clause License'
 author = 'Massimo DiPierro'
 
 # The full version, including alpha/beta/rc tags
-release = '1.20201024.1'
+release = '1.20210407.1'
 
 
 # -- General configuration ---------------------------------------------------
