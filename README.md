@@ -7,6 +7,8 @@ to obtain standard MarkDown documents. Then I've shrunk them with Pandoc (https:
 Finally I've followed the excellent work of Michael Altfield on https://tech.michaelaltfield.net/2020/07/18/sphinx-rtd-github-pages-1/ in order to have HTML, PDF and EPUB
 automagically published and updated on GitHub pages at https://nicozanf.github.io/py4web-doc
 
+[![docs_pages_workflow](https://github.com/nicozanf/py4web-doc/actions/workflows/docs_pages_workflow.yml/badge.svg)](https://github.com/nicozanf/py4web-doc/actions/workflows/docs_pages_workflow.yml)
+
 ** Using the project locally
 
 You can download this project, change it and test the results (english and HTML only) on Linux with a 'make clean && make html' command on the docs folder. The HTML output is under the _build folder.
