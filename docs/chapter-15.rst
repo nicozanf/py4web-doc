@@ -20,7 +20,7 @@ Some of the main differences are the following:
 
 - web2py works with both Python 2.6+ and 3.6+, while py4web runs on Python 3.6+ only. So, if your
   old web2py application is still using Python 2, your first step involves migrating it to at
-  least Python 3.6, better if the latest 3.8.
+  least Python 3.6, better if the latest 3.8
 
 - web2py apps consist of collection of files which are executed at every HTTP request (using a
   custom importer, in a predetermined order). In py4web apps are regular python modules that are
