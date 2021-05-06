@@ -14,7 +14,7 @@ automagically published and updated on GitHub pages at https://nicozanf.github.i
 
 
 
-** Using the project locally
+** Using the project locally 
 
 You can download this project, change it and test the results (english and HTML only) on Linux with a 'make clean && make html' command on the docs folder. The HTML output is under the _build folder.
 Sphinx libraries are needed - see Michael's work. 
