@@ -89,6 +89,9 @@ Launch Arguments
    -p, --password_file TEXT      File for the encrypted password  [default:
                                 password.txt]
 
+     -s, --server [default|wsgiref|tornado|gunicorn|gevent|waitress|
+                   geventWebSocketServer|wsgirefThreadingServer|rocketServer]
+                                 server to use  [default: default]
    -w, --number_workers INTEGER  Number of workers  [default: 0]
    -d, --dashboard_mode TEXT     Dashboard mode: demo, readonly, full
                                 (default), none  [default: full]
@@ -117,9 +120,11 @@ Note that since the default (as specified above) for the host and port are 127.0
    py4web run -d demo apps
 
 
+
 Tell me more
 ############
 
+- it is 10-20x faster than web2py
 - this is a work in progress and not stable yet but close to being stable
 - python3.6+ only
 - uses https://github.com/web2py/pydal (same DAL as web2py)
@@ -135,13 +140,11 @@ Tell me more
 - supports multiple apps under apps folder (same as web2py)
 - unlike web2py does not use a custom importer or eval
 - admin has been replaced by a _dashboard
-- appadmin has been replaced by dbadmin (within dashboard)
+- appadmin has been replaced by dbadmin (within _dashboard)
 - auth logic is implemented via a "auth" vue.js custom component
 - SQLFORM has been replaced by py4web/utils/form.py
 - it comes with a Grid object providing simple grid and CRUD capabilities
 - there are not enough tests
-- it is not as stable as web2py yet
-- it is 10-20x faster than web2py
 
 
 Contributors
@@ -153,6 +156,7 @@ Many thanks to everybody, and especially:
 .. inclusion-marker-do-not-remove
 
 - `Massimo Di Pierro <https://github.com/mdipierro>`__
+- `Luca de Alfaro <https://github.com/lucadealfaro>`__
 - `Cassio Botaro <https://github.com/cassiobotaro>`__
 - `Dan Carroll <https://github.com/dan-carroll>`__
 - `Jim Steil <https://github.com/jpsteil>`__
@@ -162,4 +166,4 @@ Many thanks to everybody, and especially:
 - `Pirsch <https://github.com/Pirsch>`__
 - `sugizo <https://github.com/sugizo>`__
 - `valq7711 <https://github.com/valq7711>`__
-
+- `Kkeller83 <https://github.com/Kkeller83>`__
