@@ -1,0 +1,707 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Instalação e colocação em funcionamento &mdash; Documentação py4web 1.20210407.1</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/tabs.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/tabs.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Pesquisar" href="search.html" />
+    <link rel="next" title="O Dashboard" href="chapter-04.html" />
+    <link rel="prev" title="Ajuda, recursos e dicas" href="chapter-02.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> py4web
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                master
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Conteúdo:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="chapter-01.html">O que é py4web?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-02.html">Ajuda, recursos e dicas</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Instalação e colocação em funcionamento</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#supported-platforms-and-prerequisites">Plataformas e pré-requisitos suportados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-procedures">Procedimentos de configuração</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installing-from-binaries">Instalando a partir de binários</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hint-use-a-virtual-environment-virtualenv">Dica: use um ambiente virtual (virtualenv)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-from-pip">Instalando a partir de pip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-from-source-globally">Instalação de fonte (globalmente)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-from-source-locally">Instalando a partir de fonte (localmente)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrading">Melhoramento</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#first-run">Primeira corrida</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-options">Opções de linha de comando</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#call-command-option">Opção `` comando call``</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-app-command-option">Opção `` comando new_app``</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-command-option">Opção `` comando run``</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-password-command-option">Opção `` comando set_password``</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-command-option">Opção `` comando setup``</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#shell-command-option">Opção `` comando shell``</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-command-option">Opção `` comando version``</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#special-deployments">Special deployments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wsgi">WSGI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deployment-on-gcloud-aka-google-app-engine">Implantação em gcloud (aka Google App Engine)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deployment-on-pythonanywhere-com">Implantação em PythonAnywhere.com</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-04.html">O Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-05.html">Criando seu primeiro aplicativo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-06.html">Fixures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-07.html">The Database Abstraction Layer (DAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-08.html">A RESTAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-09.html">Linguagem de template YATL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-10.html">Helpers YATL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-11.html">Internacionalização</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-12.html">Forumlários</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-13.html">Autenticação e controle de acesso</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-14.html">Rede</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-15.html">De web2py para py4web</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">py4web</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Instalação e colocação em funcionamento</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/nicozanf/py4web-doc/blob/master/docs/chapter-03.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="installation-and-startup">
+<h1>Instalação e colocação em funcionamento<a class="headerlink" href="#installation-and-startup" title="Link permanente para este título">¶</a></h1>
+<section id="supported-platforms-and-prerequisites">
+<h2>Plataformas e pré-requisitos suportados<a class="headerlink" href="#supported-platforms-and-prerequisites" title="Link permanente para este título">¶</a></h2>
+<p>PY4WEB funciona muito bem no Windows, MacOS e Linux. Seu único pré-requisito é Python 3.6+, que deve ser instalado com antecedência (exceto se você usar os binários).</p>
+</section>
+<section id="setup-procedures">
+<h2>Procedimentos de configuração<a class="headerlink" href="#setup-procedures" title="Link permanente para este título">¶</a></h2>
+<p>Existem quatro formas alternativas de correr py4web, com diferentes níveis de dificuldade e flexibilidade. Vamos olhar os prós e contras.</p>
+<section id="installing-from-binaries">
+<h3>Instalando a partir de binários<a class="headerlink" href="#installing-from-binaries" title="Link permanente para este título">¶</a></h3>
+<p>Esta não é uma instalação real, porque você acabou de copiar um monte de arquivos em seu sistema sem modificá-lo de qualquer maneira. Daí esta é a solução mais simples, especialmente para iniciantes ou alunos, porque ele não requer Python pré-instalado em seu sistema, nem direitos administrativos. Por outro lado, é experimental, poderia conter uma liberação py4web de idade e é muito difícil para adicionar outras funcionalidades a ele.</p>
+<p>A fim de usá-lo você só precisa fazer o download do arquivo mais recente do Windows ou MacOS zip do <cite>este repositório externo &lt;https://github.com/nicozanf/py4web-pyinstaller&gt;</cite> __. Descompacte-o em uma pasta local e abrir uma linha de comando lá. finalmente executar</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py4web</span><span class="o">-</span><span class="n">start</span> <span class="n">set_password</span>
+<span class="n">py4web</span><span class="o">-</span><span class="n">start</span> <span class="n">run</span> <span class="n">apps</span>
+</pre></div>
+</div>
+<p>Com este tipo de instalação, lembre-se de usar sempre py4web-start ** ** em vez de ‘py4web’ ou ‘py4web.py’ na seguinte documentação.</p>
+</section>
+<section id="hint-use-a-virtual-environment-virtualenv">
+<h3>Dica: use um ambiente virtual (virtualenv)<a class="headerlink" href="#hint-use-a-virtual-environment-virtualenv" title="Link permanente para este título">¶</a></h3>
+<p>A instalação completa de qualquer aplicação python complexo como py4web certamente irá modificar o ambiente python do seu sistema. A fim de evitar qualquer alteração indesejada, é um bom hábito de usar um ambiente virtual python (também chamado ** virtualenv <a href="#id1"><span class="problematic" id="id2">**</span></a>, veja <cite>aqui &lt;https://docs.python.org/3.7/tutorial/venv.html&gt;</cite> __ para uma introdução). Este é um recurso padrão do Python; se você ainda não sabe virtualenv é um bom momento para começar a sua descoberta!</p>
+<p>Ativá-lo antes de usar qualquer um dos seguintes * real * procedimentos de instalação é altamente recomendado.</p>
+</section>
+<section id="installing-from-pip">
+<h3>Instalando a partir de pip<a class="headerlink" href="#installing-from-pip" title="Link permanente para este título">¶</a></h3>
+<p>Using <em>pip</em> is the standard installation procedure for py4web, since it will
+quickly install the latest stable release of py4web.</p>
+<p>From the command line</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">py4web</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">cache</span><span class="o">-</span><span class="nb">dir</span> <span class="o">--</span><span class="n">user</span>
+</pre></div>
+</div>
+<p>mas ** não ** digite o * -user * opção com virtualenv ou uma instalação padrão do Windows que já por usuário é.</p>
+<p>Além disso, se * python3 * não funcionar, tente com o simples * python * comando em vez.</p>
+<p>Isto irá instalar py4web e todas as suas dependências em único caminho do sistema. A pasta de ativos (que contém os aplicativos do sistema do py4web) também será criado. Após a instalação, você será capaz de começar a py4web em qualquer pasta de trabalho com</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py4web</span> <span class="n">setup</span> <span class="n">apps</span>
+<span class="n">py4web</span> <span class="n">set_password</span>
+<span class="n">py4web</span> <span class="n">run</span> <span class="n">apps</span>
+</pre></div>
+</div>
+<p>Se o py4web comando não é aceito, isso significa que ele não está no caminho do sistema. No Windows, um arquivo py4web.exe especial (apontando para py4web.py) será criado por * pip * no caminho do sistema, mas não se você digitar o * -user * opção por engano.</p>
+</section>
+<section id="installing-from-source-globally">
+<h3>Instalação de fonte (globalmente)<a class="headerlink" href="#installing-from-source-globally" title="Link permanente para este título">¶</a></h3>
+<p>This is the traditional way for installing a program, but it works only
+on Linux and MacOS (Windows does not normally support the <cite>make</cite> utility).
+All the requirements will be installed on the
+system’s path along with links to the py4web.py program on the local
+folder</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">web2py</span><span class="o">/</span><span class="n">py4web</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">py4web</span>
+<span class="n">make</span> <span class="n">assets</span>
+<span class="n">make</span> <span class="n">test</span>
+<span class="n">make</span> <span class="n">install</span>
+<span class="n">py4web</span> <span class="n">run</span> <span class="n">apps</span>
+</pre></div>
+</div>
+<p>Also notice that when installing in this way the content of
+<code class="docutils literal notranslate"><span class="pre">py4web/assets</span></code> folder is missing at first but it is manually created
+later with the <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">assets</span></code> command.</p>
+</section>
+<section id="installing-from-source-locally">
+<h3>Instalando a partir de fonte (localmente)<a class="headerlink" href="#installing-from-source-locally" title="Link permanente para este título">¶</a></h3>
+<p>In this way all the requirements will be installed or upgraded on the
+system’s path, but py4web itself will only be copied
+on a local folder. This is especially useful if you already have a
+working py4web installation but you want to test a different
+one. Also, installing from sources (locally or globally) will
+install all the latest changes present on the master branch of py4web - hence
+you will gain the latest (but potentially untested) code.</p>
+<p>From the command line, go to a given working folder and then run</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">web2py</span><span class="o">/</span><span class="n">py4web</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">py4web</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span>  <span class="o">--</span><span class="n">upgrade</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>Once installed, you should always start it from there with:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-TGludXggYW5kIE1hY09T" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tab" tabindex="0">Linux and MacOS</button><button aria-controls="panel-0-V2luZG93cw==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-V2luZG93cw==" name="V2luZG93cw==" role="tab" tabindex="-1">Windows</button></div><div aria-labelledby="tab-0-TGludXggYW5kIE1hY09T" class="sphinx-tabs-panel group-tab" id="panel-0-TGludXggYW5kIE1hY09T" name="TGludXggYW5kIE1hY09T" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">setup</span> <span class="n">apps</span>
+<span class="o">./</span><span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">set_password</span>
+<span class="o">./</span><span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">run</span> <span class="n">apps</span>
+</pre></div>
+</div>
+<p>Se você tiver instalado py4web tanto global como localmente, observe a ** / <a href="#id1"><span class="problematic" id="id2">**</span></a>.; ele força o prazo de py4web da pasta local e não o instalado globalmente.</p>
+</div><div aria-labelledby="tab-0-V2luZG93cw==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-V2luZG93cw==" name="V2luZG93cw==" role="tabpanel" tabindex="0"><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">setup</span> <span class="n">apps</span>
+<span class="n">python3</span> <span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">set_password</span>
+<span class="n">python3</span> <span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">run</span> <span class="n">apps</span>
+</pre></div>
+</div>
+<p>On Windows, the programs on the local folder are always executed before
+the ones in the path (hence you don’t need the <strong>./</strong> as on Linux).
+But running .py files directly it’s not usual and you’ll need an explicit
+python3/python command.</p>
+</div></div>
+</section>
+</section>
+<section id="upgrading">
+<h2>Melhoramento<a class="headerlink" href="#upgrading" title="Link permanente para este título">¶</a></h2>
+<p>Se você instalou py4web de pip você pode simples atualizá-lo com</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">py4web</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>Isto não irá atualizar automaticamente os aplicativos padrão, como o Dashboard ** ** e padrão ** <a href="#id1"><span class="problematic" id="id2">**</span></a>. Você tem que remover manualmente esses aplicativos e execute</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py4web</span> <span class="n">setup</span> <span class="n">apps</span>
+</pre></div>
+</div>
+<p>a fim de re-instalá-los. Esta é uma precaução de segurança, no caso de você fez alterações para esses aplicativos.</p>
+</div>
+<p>Se você instalou py4web de qualquer outra maneira, você deve atualizá-lo manualmente. Primeiro você tem que fazer um backup de qualquer trabalho py4web pessoal que você fez, em seguida, elimine a pasta de instalação de idade e re-instalar o quadro novamente.</p>
+</section>
+<section id="first-run">
+<h2>Primeira corrida<a class="headerlink" href="#first-run" title="Link permanente para este título">¶</a></h2>
+<p>Correndo py4web utilizando qualquer um procedimento anterior deve produzir uma saída como esta:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># py4web run apps</span>
+</pre></div>
+</div>
+<img alt="_images/first_run.png" class="with-shadow" src="_images/first_run.png" />
+<p>Geralmente `` apps`` é o nome da pasta onde você guarda todos os seus aplicativos, e pode ser definido explicitamente sagacidade o comando `` run``. Se essa pasta não existir, ele será criado. PY4WEB espera encontrar pelo menos dois aplicativos nesta pasta: ** Painel ** (_dashboard) e ** Padrão ** (_default). Se não encontrá-los, ele instala-los.</p>
+<p>** Painel ** é um baseado na web IDE. Ele será descrito no próximo capítulo.</p>
+<p>** Padrão ** é um aplicativo que não faz nada diferente de boas-vindas ao usuário.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Alguns aplicativos - como o Dashboard ** ** e padrão ** ** - têm um papel especial na py4web e, portanto, seus começos nome real com `` <a href="#id1"><span class="problematic" id="id2">_`</span></a>` para evitar conflitos com aplicativos criados por você.</p>
+</div>
+<p>Uma vez py4web está sendo executado você pode acessar um aplicativo específico nas seguintes URLs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8000</span>
+<span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8000</span><span class="o">/</span><span class="n">_dashboard</span>
+<span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8000</span><span class="o">/</span><span class="p">{</span><span class="n">yourappname</span><span class="p">}</span><span class="o">/</span><span class="n">index</span>
+</pre></div>
+</div>
+<p>A fim de py4web stop, você precisa acertar: kbd: <cite>Control-C</cite> na janela onde você executá-lo.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Somente o padrão ** ** aplicativo é especial porque se não exige que o “{AppName} /” prefixo no caminho, como todos os outros aplicativos fazer. Em geral, você pode querer ligar simbolicamente `` apps / _default`` ao seu aplicativo padrão.</p>
+</div>
+<p>Para todas as aplicações de arrastamento `` / index`` é opcional.</p>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>For Windows: it could be that <code class="docutils literal notranslate"><span class="pre">Ctrl-C</span></code> does not work in order to stop py4web.
+In this case, try with <code class="docutils literal notranslate"><span class="pre">Ctrl-Break</span></code> or <code class="docutils literal notranslate"><span class="pre">Ctrl-Fn-Pause</span></code>.</p>
+</div>
+</section>
+<section id="command-line-options">
+<h2>Opções de linha de comando<a class="headerlink" href="#command-line-options" title="Link permanente para este título">¶</a></h2>
+<p>py4web fornece várias opções de linha de comando que podem ser listados por executá-lo sem qualquer argumento</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># py4web</span>
+</pre></div>
+</div>
+<img alt="_images/command.png" class="with-shadow" src="_images/command.png" />
+<p>Você pode ter ajuda adicional para uma opção de linha de comando específico, executando-o com o ** - ajuda ** ou ** - h ** argumento.</p>
+<section id="call-command-option">
+<span id="id1"></span><h3>Opção `` comando call``<a class="headerlink" href="#call-command-option" title="Link permanente para este título">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># py4web call -h</span>
+<span class="n">Usage</span><span class="p">:</span> <span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">call</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="n">APPS_FOLDER</span> <span class="n">FUNC</span>
+
+  <span class="n">Call</span> <span class="n">a</span> <span class="n">function</span> <span class="n">inside</span> <span class="n">apps_folder</span>
+
+<span class="n">Options</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">Y</span><span class="p">,</span> <span class="o">--</span><span class="n">yes</span>          <span class="n">No</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">assume</span> <span class="n">yes</span> <span class="n">to</span> <span class="n">questions</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="kc">False</span><span class="p">]</span>
+  <span class="o">--</span><span class="n">args</span> <span class="n">TEXT</span>        <span class="n">Arguments</span> <span class="n">passed</span> <span class="n">to</span> <span class="n">the</span> <span class="n">program</span><span class="o">/</span><span class="n">function</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="p">{}]</span>
+  <span class="o">-</span><span class="n">help</span><span class="p">,</span> <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>  <span class="n">Show</span> <span class="n">this</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+</pre></div>
+</div>
+</section>
+<section id="new-app-command-option">
+<span id="id2"></span><h3>Opção `` comando new_app``<a class="headerlink" href="#new-app-command-option" title="Link permanente para este título">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># py4web new_app -h</span>
+<span class="n">Usage</span><span class="p">:</span> <span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">new_app</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="n">APPS_FOLDER</span> <span class="n">APP_NAME</span>
+
+  <span class="n">Create</span> <span class="n">a</span> <span class="n">new</span> <span class="n">app</span> <span class="n">copying</span> <span class="n">the</span> <span class="n">scaffolding</span> <span class="n">one</span>
+
+<span class="n">Options</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">Y</span><span class="p">,</span> <span class="o">--</span><span class="n">yes</span>                <span class="n">No</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">assume</span> <span class="n">yes</span> <span class="n">to</span> <span class="n">questions</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span>
+                           <span class="kc">False</span><span class="p">]</span>
+
+  <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="o">--</span><span class="n">scaffold_zip</span> <span class="n">TEXT</span>  <span class="n">Path</span> <span class="n">to</span> <span class="n">the</span> <span class="nb">zip</span> <span class="k">with</span> <span class="n">the</span> <span class="n">scaffolding</span> <span class="n">app</span>
+  <span class="o">-</span><span class="n">help</span><span class="p">,</span> <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>        <span class="n">Show</span> <span class="n">this</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Presentemente, dá um erro em instalações binários e de instalação de origem (no local), porque eles perdem o arquivo zip de ativos.</p>
+</section>
+<section id="run-command-option">
+<span id="id3"></span><h3>Opção `` comando run``<a class="headerlink" href="#run-command-option" title="Link permanente para este título">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># py4web run -h</span>
+<span class="n">Usage</span><span class="p">:</span> <span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">run</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="n">APPS_FOLDER</span>
+
+  <span class="n">Run</span> <span class="nb">all</span> <span class="n">the</span> <span class="n">applications</span> <span class="n">on</span> <span class="n">apps_folder</span>
+
+<span class="n">Options</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">Y</span><span class="p">,</span> <span class="o">--</span><span class="n">yes</span>                     <span class="n">No</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">assume</span> <span class="n">yes</span> <span class="n">to</span> <span class="n">questions</span>
+                                <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="kc">False</span><span class="p">]</span>
+
+  <span class="o">-</span><span class="n">H</span><span class="p">,</span> <span class="o">--</span><span class="n">host</span> <span class="n">TEXT</span>               <span class="n">Host</span> <span class="n">name</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="mf">127.0.0.1</span><span class="p">]</span>
+  <span class="o">-</span><span class="n">P</span><span class="p">,</span> <span class="o">--</span><span class="n">port</span> <span class="n">INTEGER</span>            <span class="n">Port</span> <span class="n">number</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="mi">8000</span><span class="p">]</span>
+  <span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="o">--</span><span class="n">password_file</span> <span class="n">TEXT</span>      <span class="n">File</span> <span class="k">for</span> <span class="n">the</span> <span class="n">encrypted</span> <span class="n">password</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span>
+                                <span class="n">password</span><span class="o">.</span><span class="n">txt</span><span class="p">]</span>
+
+  <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="o">--</span><span class="n">server</span> <span class="p">[</span><span class="n">default</span><span class="o">|</span><span class="n">wsgiref</span><span class="o">|</span><span class="n">tornado</span><span class="o">|</span><span class="n">gunicorn</span><span class="o">|</span><span class="n">gevent</span><span class="o">|</span><span class="n">waitress</span><span class="o">|</span>
+                <span class="n">geventWebSocketServer</span><span class="o">|</span><span class="n">wsgirefThreadingServer</span><span class="o">|</span><span class="n">rocketServer</span><span class="p">]</span>
+                                <span class="n">server</span> <span class="n">to</span> <span class="n">use</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">default</span><span class="p">]</span>
+  <span class="o">-</span><span class="n">w</span><span class="p">,</span> <span class="o">--</span><span class="n">number_workers</span> <span class="n">INTEGER</span>  <span class="n">Number</span> <span class="n">of</span> <span class="n">workers</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="mi">0</span><span class="p">]</span>
+  <span class="o">-</span><span class="n">d</span><span class="p">,</span> <span class="o">--</span><span class="n">dashboard_mode</span> <span class="n">TEXT</span>     <span class="n">Dashboard</span> <span class="n">mode</span><span class="p">:</span> <span class="n">demo</span><span class="p">,</span> <span class="n">readonly</span><span class="p">,</span> <span class="n">full</span><span class="p">,</span> <span class="n">none</span>
+                                <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">full</span><span class="p">]</span>
+
+  <span class="o">--</span><span class="n">watch</span> <span class="p">[</span><span class="n">off</span><span class="o">|</span><span class="n">sync</span><span class="o">|</span><span class="n">lazy</span><span class="p">]</span>       <span class="n">Watch</span> <span class="n">python</span> <span class="n">changes</span> <span class="ow">and</span> <span class="n">reload</span> <span class="n">apps</span>
+                                <span class="n">automatically</span><span class="p">,</span> <span class="n">modes</span><span class="p">:</span> <span class="n">off</span><span class="p">,</span> <span class="n">sync</span><span class="p">,</span> <span class="n">lazy</span>
+                                <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">off</span><span class="p">]</span>
+
+  <span class="o">--</span><span class="n">ssl_cert</span> <span class="n">PATH</span>               <span class="n">SSL</span> <span class="n">certificate</span> <span class="n">file</span> <span class="k">for</span> <span class="n">HTTPS</span>
+  <span class="o">--</span><span class="n">ssl_key</span> <span class="n">PATH</span>                <span class="n">SSL</span> <span class="n">key</span> <span class="n">file</span> <span class="k">for</span> <span class="n">HTTPS</span>
+  <span class="o">-</span><span class="n">help</span><span class="p">,</span> <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>             <span class="n">Show</span> <span class="n">this</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Se você quiser py4web para recarregar automaticamente uma aplicação sobre quaisquer alterações nos arquivos desse aplicativo, você pode:</p>
+<ul class="simple">
+<li><p>para recarregamento imediato (sync-modo): `` py4web prazo –watch = sync``</p></li>
+<li><p>para recarregar em qualquer primeira solicitação de entrada para a aplicação foi alterada (de modo lento): `` py4web prazo –watch = lazy``</p></li>
+</ul>
+<p>The default web server used is currently Tornado, but you can change this behaviour with the <code class="docutils literal notranslate"><span class="pre">server</span></code> option.</p>
+<p>Also, for advanced users, you can specify the optional <code class="docutils literal notranslate"><span class="pre">--usegevent</span></code> directive like in this example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py4web</span> <span class="o">--</span><span class="n">usegevent</span> <span class="n">run</span> <span class="o">-</span><span class="n">s</span> <span class="n">geventWebSocketServer</span> <span class="n">apps</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Aviso</p>
+<p>The optional <code class="docutils literal notranslate"><span class="pre">--usegevent</span></code> directive must be used with <code class="docutils literal notranslate"><span class="pre">gevent</span></code> or <code class="docutils literal notranslate"><span class="pre">geventWebSocketServer</span></code> webservers (in order to apply monkey patching)
+and shouldn’t be used with <code class="docutils literal notranslate"><span class="pre">tornado</span></code> and <code class="docutils literal notranslate"><span class="pre">waitress</span></code>.</p>
+</div>
+</section>
+<section id="set-password-command-option">
+<span id="id4"></span><h3>Opção `` comando set_password``<a class="headerlink" href="#set-password-command-option" title="Link permanente para este título">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># py4web set_password -h</span>
+<span class="n">Usage</span><span class="p">:</span> <span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">set_password</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span>
+
+  <span class="n">Set</span> <span class="n">administrator</span><span class="s1">&#39;s password for the Dashboard</span>
+
+<span class="n">Options</span><span class="p">:</span>
+  <span class="o">--</span><span class="n">password</span> <span class="n">TEXT</span>           <span class="n">Password</span> <span class="n">value</span> <span class="p">(</span><span class="n">asked</span> <span class="k">if</span> <span class="n">missing</span><span class="p">)</span>
+  <span class="o">-</span><span class="n">p</span><span class="p">,</span> <span class="o">--</span><span class="n">password_file</span> <span class="n">TEXT</span>  <span class="n">File</span> <span class="k">for</span> <span class="n">the</span> <span class="n">encrypted</span> <span class="n">password</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span>
+                            <span class="n">password</span><span class="o">.</span><span class="n">txt</span><span class="p">]</span>
+
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">-</span><span class="n">help</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>         <span class="n">Show</span> <span class="n">this</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Se o `` –dashboard_mode`` não é `` demo`` ou `` None``, cada vez py4web é iniciado, ele pede uma senha de uso único para você acessar o painel. Isso é chato. Você pode evitá-lo, armazenando uma senha pdkdf2 hash em um arquivo (por padrão chamado password.txt) com o comando</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py4web</span> <span class="n">set_password</span>
+</pre></div>
+</div>
+<p>Não vou pedir de novo a menos que o arquivo é excluído. Você também pode usar um nome de arquivo personalizado com</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py4web</span> <span class="n">set_password</span> <span class="n">my_password_file</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>e depois pedir py4web para reutilização essa senha em tempo de execução com</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py4webt</span> <span class="n">run</span> <span class="o">-</span><span class="n">p</span> <span class="n">my_password_file</span><span class="o">.</span><span class="n">txt</span> <span class="n">apps</span>
+</pre></div>
+</div>
+<p>Finalmente, você pode criar manualmente o mesmo arquivo com:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;from pydal.validators import CRYPT; open(&#39;password.txt&#39;,&#39;w&#39;).write(str(CRYPT()(input(&#39;password:&#39;))[0]))&quot;</span>
+<span class="n">password</span><span class="p">:</span> <span class="o">*****</span>
+</pre></div>
+</div>
+</section>
+<section id="setup-command-option">
+<span id="id5"></span><h3>Opção `` comando setup``<a class="headerlink" href="#setup-command-option" title="Link permanente para este título">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># py4web setup -h</span>
+<span class="n">Usage</span><span class="p">:</span> <span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">setup</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="n">APPS_FOLDER</span>
+
+  <span class="n">Setup</span> <span class="n">new</span> <span class="n">apps</span> <span class="n">folder</span> <span class="ow">or</span> <span class="n">reinstall</span> <span class="n">it</span>
+
+<span class="n">Options</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">Y</span><span class="p">,</span> <span class="o">--</span><span class="n">yes</span>          <span class="n">No</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">assume</span> <span class="n">yes</span> <span class="n">to</span> <span class="n">questions</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="kc">False</span><span class="p">]</span>
+  <span class="o">-</span><span class="n">help</span><span class="p">,</span> <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>  <span class="n">Show</span> <span class="n">this</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Esta opção criar uma nova pasta Aplicativos (ou reinstalá-lo). Se necessário, ele irá pedir a confirmação da criação da nova pasta e, em seguida, para copiar todos os aplicativos py4web padrão da pasta de ativos. Atualmente, não faz nada em instalações binários e de instalação de origem (localmente) - para eles você pode copiar manualmente a pasta de aplicações existentes para o novo.</p>
+</section>
+<section id="shell-command-option">
+<span id="id6"></span><h3>Opção `` comando shell``<a class="headerlink" href="#shell-command-option" title="Link permanente para este título">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># py4web shell -h</span>
+<span class="n">Usage</span><span class="p">:</span> <span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">shell</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span> <span class="n">APPS_FOLDER</span>
+
+  <span class="n">Open</span> <span class="n">a</span> <span class="n">python</span> <span class="n">shell</span> <span class="k">with</span> <span class="n">apps_folder</span><span class="s1">&#39;s parent added to the path</span>
+
+<span class="n">Options</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">Y</span><span class="p">,</span> <span class="o">--</span><span class="n">yes</span>          <span class="n">No</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">assume</span> <span class="n">yes</span> <span class="n">to</span> <span class="n">questions</span>  <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="kc">False</span><span class="p">]</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">-</span><span class="n">help</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>  <span class="n">Show</span> <span class="n">this</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>O shell de Py4web é apenas o shell python regular com aplicativos adicionados ao caminho de pesquisa. Note que o shell é para todos os aplicativos, não um único. Você pode então importar os módulos necessários a partir dos aplicativos que você precisa para acessar.</p>
+<p>Por exemplo, dentro de uma concha que puder</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">apps.myapp</span> <span class="kn">import</span> <span class="n">db</span>
+<span class="kn">from</span> <span class="nn">py4web</span> <span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">Cache</span><span class="p">,</span> <span class="n">Translator</span><span class="p">,</span> <span class="n">DAL</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span> <span class="nn">py4web.utils.auth</span> <span class="kn">import</span> <span class="n">Auth</span>
+</pre></div>
+</div>
+</section>
+<section id="version-command-option">
+<span id="id7"></span><h3>Opção `` comando version``<a class="headerlink" href="#version-command-option" title="Link permanente para este título">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># py4web version -h</span>
+<span class="n">Usage</span><span class="p">:</span> <span class="n">py4web</span><span class="o">.</span><span class="n">py</span> <span class="n">version</span> <span class="p">[</span><span class="n">OPTIONS</span><span class="p">]</span>
+
+  <span class="n">Show</span> <span class="n">versions</span> <span class="ow">and</span> <span class="n">exit</span>
+
+<span class="n">Options</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="o">--</span><span class="nb">all</span>          <span class="n">List</span> <span class="n">version</span> <span class="n">of</span> <span class="nb">all</span> <span class="n">modules</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">-</span><span class="n">help</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>  <span class="n">Show</span> <span class="n">this</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>With the <code class="docutils literal notranslate"><span class="pre">-all</span></code> option you’ll get the version of all the available python
+modules, too.</p>
+</section>
+</section>
+<section id="special-deployments">
+<h2>Special deployments<a class="headerlink" href="#special-deployments" title="Link permanente para este título">¶</a></h2>
+<section id="wsgi">
+<h3>WSGI<a class="headerlink" href="#wsgi" title="Link permanente para este título">¶</a></h3>
+<p>py4web is a standard WSGI application. So, if a full program installation it’s not
+feasible you can simply run py4web as a WSGI app. For example, using gunicorn-cli,
+create a pyton file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># py4web_wsgi.py</span>
+<span class="kn">from</span> <span class="nn">py4web.core</span> <span class="kn">import</span> <span class="n">wsgi</span>
+<span class="n">application</span> <span class="o">=</span> <span class="n">wsgi</span><span class="p">(</span><span class="n">apps_folder</span><span class="o">=</span><span class="s2">&quot;apps&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and then start the application using cli:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gunicorn</span> <span class="o">-</span><span class="n">w</span> <span class="mi">4</span> <span class="n">py4web_wsgi</span><span class="p">:</span><span class="n">application</span>
+</pre></div>
+</div>
+<p>The wsgi function takes arguments with the same name as the command line arguments.</p>
+</section>
+<section id="deployment-on-gcloud-aka-google-app-engine">
+<h3>Implantação em gcloud (aka Google App Engine)<a class="headerlink" href="#deployment-on-gcloud-aka-google-app-engine" title="Link permanente para este título">¶</a></h3>
+<p>Login into the <a class="reference external" href="https://console.cloud.google.com/">Gcloud console</a> and
+create a new project. You will obtain a project id that looks like
+“{project_name}-{number}”.</p>
+<p>Em seu sistema de arquivos local fazer uma nova pasta de trabalho e cd para ele:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">gae</span>
+<span class="n">cd</span> <span class="n">gae</span>
+</pre></div>
+</div>
+<p>Copie os arquivos de exemplo de py4web (supondo que você tem a fonte de github)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">py4web</span><span class="o">/</span><span class="n">development_tools</span><span class="o">/</span><span class="n">gcloud</span><span class="o">/*</span> <span class="o">./</span>
+</pre></div>
+</div>
+<p>Copiar ou ligar simbolicamente o seu `` apps`` pasta para a pasta gae, ou talvez fazer novos aplicativos pasta que contém um `` __init vazio __. Py`` e ligar simbolicamente os aplicativos individuais que você deseja implantar. Você deve ver os seguintes arquivos / pastas:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Makefile</span>
+<span class="n">apps</span>
+  <span class="fm">__init__</span><span class="o">.</span><span class="n">py</span>
+  <span class="o">...</span> <span class="n">your</span> <span class="n">apps</span> <span class="o">...</span>
+<span class="n">lib</span>
+<span class="n">app</span><span class="o">.</span><span class="n">yaml</span>
+<span class="n">main</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Instale o Google SDK, py4web e configure a pasta de trabalho:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">install</span><span class="o">-</span><span class="n">gcloud</span><span class="o">-</span><span class="n">linux</span>
+<span class="n">make</span> <span class="n">setup</span>
+<span class="n">gcloud</span> <span class="n">config</span> <span class="nb">set</span> <span class="p">{</span><span class="n">your</span> <span class="n">email</span><span class="p">}</span>
+<span class="n">gcloud</span> <span class="n">config</span> <span class="nb">set</span> <span class="p">{</span><span class="n">project</span> <span class="nb">id</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>(Substitua {seu email} sua conta do Google e-mail e {id projeto} com o ID de projeto obtida de Google).</p>
+<p>Agora cada vez que você deseja implantar seus aplicativos, basta fazer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">deploy</span>
+</pre></div>
+</div>
+<p>Você pode querer personalizar o Makefile e app.yaml para atender às suas necessidades. Você não deve precisar editar `` main.py``.</p>
+</section>
+<section id="deployment-on-pythonanywhere-com">
+<h3>Implantação em PythonAnywhere.com<a class="headerlink" href="#deployment-on-pythonanywhere-com" title="Link permanente para este título">¶</a></h3>
+<p>Watch the <a class="reference external" href="https://youtu.be/Wxjl_vkLAEY">YouTube video</a> and follow the <a class="reference external" href="https://github.com/tomcam/py4webcasts/blob/master/docs/how-install-source-pythonanywhere.md">detailed
+tutorial</a>
+. The bottle_app.py script is in
+<code class="docutils literal notranslate"><span class="pre">py4web/deployment_tools/pythonanywhere.com/bottle_app.py</span></code></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="chapter-04.html" class="btn btn-neutral float-right" title="O Dashboard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="chapter-02.html" class="btn btn-neutral float-left" title="Ajuda, recursos e dicas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, BSD-3-Clause License.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Read the Docs</span>
+      
+      
+     <span class="fa fa-element">
+     <input class="container_toggle" type="checkbox" id="switch" name="mode">
+     <label for="switch"></label>
+     </span>
+      
+      v: master
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <dl>
+        <dt>Idiomas</dt>
+        
+          
+          <dd><a href="/py4web-doc/en/master/">en</a></dd>
+          
+        
+           <strong> 
+          <dd><a href="/py4web-doc/pt/master/">pt</a></dd>
+           </strong> 
+        
+      </dl>
+      
+      
+      <dl>
+        <dt>Versões</dt>
+        
+          
+          <dd><a href="/py4web-doc/pt/dev/">dev</a></dd>
+          
+        
+           <strong> 
+          <dd><a href="/py4web-doc/pt/master/">master</a></dd>
+           </strong> 
+        
+      </dl>
+      
+      
+      <dl>
+        <dt>Transferências</dt>
+        
+          <dd><a href="/py4web-doc/pt/master/py4web-doc_pt_master.pdf">pdf</a></dd>
+        
+          <dd><a href="/py4web-doc/pt/master/py4web-doc_pt_master.epub">epub</a></dd>
+        
+      </dl>
+      
+      
+      <hr/>
+      Free document hosting provided by <a href="https://pages.github.com/">GitHub Pages</a>.
+ 
+    </div>
+  </div>
+
+ 
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>
