@@ -72,7 +72,7 @@ Important: internally py4web uses the bottle
 `static_file <https://bottlepy.org/docs/dev/tutorial.html#static-files>`__
 method for serving static files, which means it supports streaming,
 partial content, range requests, and if-modified-since. This is all
-handled automatically based on the http request headers.
+handled automatically based on the HTTP request headers.
 
 Dynamic Web Pages
 -----------------
@@ -217,7 +217,7 @@ This action can be accessed at:
 
 
 
-Notice that the request object is a `Bottle request object <https://bottlepy.org/docs/dev/api.html#the-request-object>`_.
+Notice that the request object is a `Bottle request object <https://bottlepy.org/docs/dev/api.html#the-request-object>`__.
 
 Templates
 ~~~~~~~~~
@@ -374,6 +374,30 @@ In your html, you can use any JS library that you want because py4web is
 agnostic to your choice of JS and CSS, but with some exceptions. The
 ``auth.html`` which handles registration/login/etc. uses a vue.js
 component. Hence if you want to use that, you should not remove it.
+
+
+.. _copying-the-scaffold-app:
+
+Copying the \_scaffold app
+--------------------------
+
+The scaffold app is really useful, and you will surely use it a lot as
+a starting point for testing and even developing full features new apps.
+
+It's better not to work directly on it: always create new apps copying it.
+You can do it in two ways:
+
+-  using the command line: copy the whole apps/_dashboard folder to another one
+   (/apps/my_app for example). Then reload py4web and it will be automatically loaded.
+-  using the Dashboard: select the button ``Create/Upload App`` under the "Installed
+   Applications" upper section. Just give the new app a name and check that "Scaffold"
+   is selected as the source. 
+   Finally press the ``Create`` button and the dashboard will be automatically reloaded,
+   along with the new app.
+
+   .. image:: images/dashboard_new_app.png
+
+
 
 Watch for files change
 ----------------------
