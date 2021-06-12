@@ -1,7 +1,7 @@
 # py4web-doc
 [![docs_pages_workflow](https://github.com/nicozanf/py4web-doc/actions/workflows/docs_pages_workflow.yml/badge.svg)](https://github.com/nicozanf/py4web-doc/actions/workflows/docs_pages_workflow.yml)
 
-## py4web documentation with rtd style
+## py4web documentation with rtd style 
 
 See it  [here](https://nicozanf.github.io/py4web-doc)! 
 
