@@ -166,6 +166,17 @@ it with ``pip``. Then import the pydal module when needed:
 
    >>> from pydal import DAL, Field
 
+
+.. note::
+
+   Even if you can import modules directly from pydal, this is not
+   advisable from within py4web applications. Remember that ``py4web.DAL``
+   is a fixture, ``pydal.DAL`` is not. In this context, the last command
+   should better be:
+
+   >>> from py4web import DAL, Field
+
+
 Experiment with the py4web shell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -187,7 +198,7 @@ This is a simple example, using the provided ``examples`` app:
 
 .. code:: python
 
-   >>> from pydal import DAL, Field
+   >>> from py4web import DAL, Field
    >>> from apps.examples import db
    >>> db.tables()
    ['auth_user', 'auth_user_tag_groups', 'person', 'superhero', 'superpower', 'tag', 'product', 'thing']
@@ -1222,7 +1233,7 @@ not specify an image.
 Notice that this way multiple records may end to reference the same
 default image file and this could be a problem on a Field having
 ``autodelete`` enabled. When you do not want to allow duplicates for the
-image field (i.e. multiple records referencing the same file) but still
+image field (i.e. multiple records referencing the same file) but still
 want to set a default value for the “upload” then you need a way to copy
 the default file for each new record that does not specify an image.
 This can be obtained using a file-like object referencing the default
@@ -1665,7 +1676,7 @@ database.
 
 .. code:: python
 
-   from pydal import DAL, Field
+   from py4web import DAL, Field
    from py4web.utils.tags import Tags
 
    db = DAL("sqlite:memory")
@@ -2199,7 +2210,7 @@ In this last expression ``person.thing`` is a shortcut for
 
    db(db.thing.owner_id == person.id)
 
-i.e. the Set of ``thing``\ s referenced by the current ``person``. This
+i.e. the Set of ``thing``\ s referenced by the current ``person``. This
 syntax breaks down if the referencing table has multiple references to
 the referenced table. In this case one needs to be more explicit and use
 a full Query.
@@ -2853,7 +2864,7 @@ One can define a ``total_price`` virtual field as
 
    db.item.total_price = Field.Virtual(lambda row: row.item.unit_price * row.item.quantity)
 
-i.e. by simply defining a new field ``total_price`` to be a
+i.e. by simply defining a new field ``total_price`` to be a
 ``Field.Virtual``. The only argument of the constructor is a function
 that takes a row and returns the computed values.
 
@@ -4537,7 +4548,7 @@ The DAL can be used from any Python program simply by doing this:
    from pydal import DAL, Field
    db = DAL('sqlite://storage.sqlite', folder='path/to/app/databases')
 
-i.e. import the DAL, connect and specify the folder which contains the
+i.e. import the DAL, connect and specify the folder which contains the
 .table files (the app/databases folder).
 
 To access the data and its attributes we still have to define all the
@@ -4549,7 +4560,7 @@ py4web to read the necessary info from the metadata in the .table files:
 
 .. code:: python
 
-   from pydal import DAL, Field
+   from py4web import DAL, Field
    db = DAL('sqlite://storage.sqlite', folder='path/to/app/databases', auto_import=True)
 
 This allows us to access any db.table without need to re-define it.
@@ -4582,103 +4593,6 @@ separately. This means there is a possibility that one of the commits
 succeeds and one fails. The distributed transaction prevents this from
 happening.
 
-PostGIS, SpatiaLite, and MS Geo (experimental)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The DAL supports geographical APIs using PostGIS (for PostgreSQL),
-SpatiaLite (for SQLite), and MSSQL and Spatial Extensions. This is a
-feature that was sponsored by the Sahana project and implemented by
-Denes Lengyel.
-
-DAL provides geometry and geography fields types and the following
-functions:
-
-::
-
-   st_asgeojson (PostGIS only)
-   st_astext
-   st_contains
-   st_distance
-   st_equals
-   st_intersects
-   st_overlaps
-   st_simplify (PostGIS only)
-   st_touches
-   st_within
-   st_x
-   st_y
-
-Here are some examples:
-
-.. code:: python
-
-   >>> from gluon.dal import DAL, Field, geoPoint, geoLine, geoPolygon
-   >>> db = DAL("mssql://user:pass@host/db")
-   >>> sp = db.define_table('spatial', Field('loc', 'geometry()'))
-
-Below we insert a point, a line, and a polygon:
-
-.. code:: python
-
-   >>> sp.insert(loc=geoPoint(1, 1))
-   1
-   >>> sp.insert(loc=geoLine((100, 100), (20, 180), (180, 180)))
-   2
-   >>> sp.insert(loc=geoPolygon((0, 0), (150, 0), (150, 150), (0, 150), (0, 0)))
-   3
-
-Notice that
-
-.. code:: python
-
-   rows = db(sp).select()
-
-Always returns the geometry data serialized as text. You can also do the
-same more explicitly using ``st_astext()``:
-
-.. code:: python
-
-   >>> print(db(sp).select(sp.id, sp.loc.st_astext()))
-   spatial.id,spatial.loc.STAsText()
-   1,"POINT (1 2)"
-   2,"LINESTRING (100 100, 20 180, 180 180)"
-   3,"POLYGON ((0 0, 150 0, 150 150, 0 150, 0 0))"
-
-You can ask for the native representation by using ``st_asgeojson()``
-(in PostGIS only):
-
-.. code:: python
-
-   >>> print(db(sp).select(sp.id, sp.loc.st_asgeojson().with_alias('loc')))
-   spatial.id,loc
-   1,[1, 2]
-   2,[[100, 100], [20 180], [180, 180]]
-   3,[[[0, 0], [150, 0], [150, 150], [0, 150], [0, 0]]]
-
-(notice an array is a point, an array of arrays is a line, and an array
-of array of arrays is a polygon).
-
-Here are example of how to use geographical functions:
-
-.. code:: python
-
-   >>> query = sp.loc.st_intersects(geoLine((20, 120), (60, 160)))
-   >>> query = sp.loc.st_overlaps(geoPolygon((1, 1), (11, 1), (11, 11), (11, 1), (1, 1)))
-   >>> query = sp.loc.st_contains(geoPoint(1, 1))
-   >>> print(db(query).select(sp.id, sp.loc))
-   spatial.id,spatial.loc
-   3,"POLYGON ((0 0, 150 0, 150 150, 0 150, 0 0))"
-
-Computed distances can also be retrieved as floating point numbers:
-
-.. code:: python
-
-   >>> dist = sp.loc.st_distance(geoPoint(-1,2)).with_alias('dist')
-   >>> print(db(sp).select(sp.id, dist))
-   spatial.id,dist
-   1,2.0
-   2,140.714249456
-   3,1.0
 
 Copy data from one db into another
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -4700,29 +4614,6 @@ string:
 Before you switch, you want to move the data and rebuild all the
 metadata for the new database. We assume the new database to exist but
 we also assume it is empty.
-
-web2py provides a script that does this work for you:
-
-.. code:: sh
-
-   cd web2py
-   python scripts/cpdb.py \\
-      -f applications/app/databases \\
-      -y 'sqlite://storage.sqlite' \\
-      -Y 'postgres://username:password@localhost/mydb' \\
-      -d ../gluon
-
-After running the script you can simply switch the connection string in
-the model and everything should work out of the box. The new data should
-be there.
-
-This script provides various command line options that allows you to
-move data from one application to another, move all tables or only some
-tables, clear the data in the tables. For more info try:
-
-.. code:: sh
-
-   python scripts/cpdb.py -h
 
 
 Gotchas
@@ -4927,7 +4818,7 @@ For any adapter you can replace the driver with a different one:
    from gluon.dal import MySQLAdapter
    MySQLAdapter.driver = mysqldb
 
-i.e. ``mysqldb`` has to be *that module* with a .connect() method. You
+i.e. ``mysqldb`` has to be *that module* with a .connect() method. You
 can specify optional driver arguments and adapter arguments:
 
 .. code:: python
