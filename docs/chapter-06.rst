@@ -78,7 +78,7 @@ fixture for it.
    @action.uses(Template('index.html', delimiters='[[ ]]'))
    def index(): 
        return dict(message="Hello world")
-
+  
 Note: this example assumes that you created the application from the
 scaffolding app, so that the template index.html is already created for
 you.
@@ -95,7 +95,8 @@ syntactic sugar, and the two following lines are equivalent:
 .. code:: python
 
    @action.uses('index.html')
-   @action.uses(Template('index.html', delimiters='[[ ]]')
+   @action.uses(Template('index.html', delimiters='[[ ]]'))
+
 
 Notice that py4web template files are cached in RAM. The py4web caching
 object is described later on :ref:`Caching and Memoize`.
@@ -172,7 +173,7 @@ Now create the following translation file ``translations/en.json``:
    }
 
 When visiting this site with the browser language preference set to
-english and reloading multiple times you will get the following
+English and reloading multiple times you will get the following
 messages:
 
 ::
@@ -289,7 +290,7 @@ to implement a counter.
        return "counter = %i" % counter
 
 The counter will start from 0; its value will be remembered and
-increased everytime you reload the page.
+increased every time you reload the page.
 
 .. image:: images/simple_counter.png
 
@@ -297,7 +298,7 @@ Opening the page in a new browser tab will give you the updated
 counter value. Closing and reopening the browser, or opening a
 new *private window*, will instead restart the counter from 0.
 
-Usually the informations saved in the session object are related
+Usually the information is saved in the session object are related
 to the user - like its username, preferences, last pages visited,
 shopping cart and so on. The session object has the same interface
 as a Python dictionary but in py4web sessions are always stored using
@@ -327,7 +328,7 @@ set. Other parameters can be specified as well:
 
 Here:
 
--  ``secret`` is the passphrase used to sign the informations
+-  ``secret`` is the passphrase used to sign the information
 -  ``expiration`` is the maximum lifetime of the session, in seconds
    (default = None, i.e. no timeout)  
 -  ``algorithm`` is the algorithm to be used for the JWT token
@@ -450,7 +451,7 @@ sessions on your local filesystem:
 
 We leave to you as an exercise to implement expiration, limit the number
 of files per folder by using subfolders, and implement file locking. Yet
-we do not recomment storing sessions on the filesystem: it is
+we do not recommend storing sessions on the filesystem: it is
 inefficient and does not scale well.
 
 The URLsigner fixture
@@ -489,7 +490,7 @@ accessing the database, not just sessions.
 PY4WEB, by default, uses the **PyDAL** (Python Database Abstraction Layer)
 which is documented in the next chapter. Here is an example, please
 remember to create the ``databases`` folder under your project in case
-it doesn’t exist:
+it doesn't exist:
 
 .. code:: python
 
@@ -606,7 +607,7 @@ fields:
        form = Form(db.thing)
        return dict(form=form)
 
-Note thas this code will only be able to display a form, to process it
+Note that this code will only be able to display a form, to process it
 after submit, additional code needs to be added, as we will see later
 on. This example is assuming that you created the application from the
 scaffolding app, so that a generic.html is already created for you.
