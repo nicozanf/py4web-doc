@@ -431,4 +431,3 @@ data builder URL to provide your own controller function to retrieve the data.
 
 
 .. [CIT1601] from the https://htmx.org website
-
