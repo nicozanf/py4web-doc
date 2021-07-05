@@ -22,19 +22,19 @@ Screenshots
 
 Running py4web
 
-.. image:: docs/images/first_run.png
+.. image:: images/first_run.png
 
 The main Dashboard
 
-.. image:: docs/images/dashboard_main.png
+.. image:: images/dashboard_main.png
 
 Editing a file in the Dashboard
 
-.. image:: docs/images/dashboard_edit.png
+.. image:: images/dashboard_edit.png
 
 Editing a database in the Dashboard
 
-.. image:: docs/images/dashboard_restapi.png
+.. image:: images/dashboard_restapi.png
 
 Installation
 ############
@@ -155,7 +155,7 @@ Contributors
 Special thanks to Sam de Alfaro, that designed the official logo of py4web. We friendly call the logo "Axel the axolotl": it magically represents the sense of kindness
 and inclusion we believe it's the cornerstone of our growing community.
 
-.. image:: docs/images/logo.png
+.. image:: images/logo.png
 
 Many thanks to everyone who has contributed to the project, and especially:
 
