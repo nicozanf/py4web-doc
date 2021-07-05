@@ -165,7 +165,7 @@ Simple conversion examples
 .. code:: python
 
    @action("index")
-      def index():
+   def index():
       a = request.query.get('a')
       return locals()
 
