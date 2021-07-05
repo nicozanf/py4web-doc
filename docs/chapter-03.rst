@@ -1,434 +1,601 @@
-============================
-Advanced topics and examples
-============================
+========================
+Installation and Startup
+========================
+
+Understanding the design
+------------------------
+
+Before everything else it is important to understand that unlike other web frameworks,
+is not only a python module that can be imported by apps. It is also a program that
+is in charge of starting a apps. For this reason you need two things:
+
+-  the py4web module (which you download from our web site, from pypi, from github)
+-  one or more folders containing collections of apps you want to run.
+
+py4web has command line options to create a folder with some example apps,
+to initialize an existing folder, and to add scaffolding apps to that folder.
+Once installed you can have multiple apps under the same folder running concurrently
+and served by the same py4web process at the same address and port.
+An apps folder is a python module, and each app is also a python module.
+
+Supported platforms and prerequisites
+-------------------------------------
+
+PY4WEB runs fine on Windows, MacOS and Linux. Its only prerequisite is
+Python 3.7+, which must be installed in advance (except if you use binaries).
 
 
+Setup procedures
+----------------
 
-py4web and asyncio
-------------------
+There are four alternative ways of running py4web, with different level
+of difficulty and flexibility. Let’s look at the pros and cons.
 
-py4web (as bottle) is thread-based, with high speed and efficient memory usage.
-Asyncio is not strictly needed, at least for most of the normal use
-cases where it will add problems more than value because of its concurrency model.
-On the other hand, we think py4web needs a built-in websocket async based solution.
+Installing from binaries
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you plan to play with asyncio be careful that you should also deal with all
-the framework's components: in particular pydal is not asyncio compliant because
-not all the adapters work with async.
+This is not a real installation, because you just copy a bunch of files
+on your system without modifying it anyhow. Hence this is the simplest
+solution, especially for newbies or students, because it does not
+require Python pre-installed on your system nor administrative rights.
+On the other hand, it’s experimental, it could contain an old py4web
+release and it is quite difficult to add other functionalities to it.
 
-htmx
-----
-htmx allows you to access AJAX, CSS Transitions, WebSockets and Server Sent Events directly in HTML,
-using attributes, so you can build modern user interfaces with the simplicity and power of hypertext.
-[CIT1601]_
+In order to use it you just need to download the latest Windows or MacOS
+ZIP file from
+`this external repository <https://github.com/nicozanf/py4web-pyinstaller>`__.
+Unzip it on a local folder and open a command line there. Finally run
 
-htmx is a powerful tool that allows you to build interactivity into your web page with little to no javascript.
+::
 
-Read all about htmx and its capabilities on the htmx site at https://htmx.org
+   py4web-start set_password
+   py4web-start run apps
 
-py4web enables htmx integration in a couple of ways.
+With this type of installation, remember to always use **py4web-start**
+instead of ‘py4web’ or ‘py4web.py’ in the following documentation.
 
-#. Allow you to add htmx attributes to your forms and buttons
-#. Includes an htmx attributes plugin for the py4web grid
+Notice the binaries many not correspond to the latest master
+or the latest stable branch of py4web although we do our best to
+keep them up to date.
 
-htmx usage in Form
-~~~~~~~~~~~~~~~~~~
 
-The py4web Form class allows you to pass \**kwargs to it that will be passed along as attributes to the html
-form. For example, to add the hx-post and hx-target to the <form> element you would use:
+Installing from pip
+~~~~~~~~~~~~~~~~~~~
+
+Using *pip* is the standard installation procedure for py4web, since it will
+quickly install the latest stable release of py4web.
+
+From the command line
+
+::
+
+   python3 -m pip install --upgrade py4web --no-cache-dir --user
+
+Also, if ``python3`` does not work, try specify a full version as in ``python3.8``.
+
+This will install py4web and all its dependencies on the system’s path
+only. The assets folder (that contains the py4web’s system apps) will
+also be created. After the installation you’ll be able to start py4web
+on any given working folder with
+
+::
+
+   py4web setup apps
+   py4web set_password
+   py4web run apps
+
+If the command py4web is not accepted, it means it’s not in the system’s
+path. On Windows, a special py4web.exe file (pointing to py4web.py) will
+be created by *pip* on the system’s path, but not if you type the
+*–user* option by mistake.
+
+Installing using a virtual environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A full installation of any complex python application like py4web will
+surely modify the python environment of your system. In order to prevent
+any unwanted change, it’s a good habit to use a python virtual
+environment (also called **virtualenv**, see
+`here <https://docs.python.org/3.7/tutorial/venv.html>`__ for an
+introduction). This is a standard python feature; if you still don’t
+know virtualenv it’s a good time to start its discovery!
+
+Here are the instructions for creating the virtual environment, activating it,
+and installing py4web in it:
+
+::
+
+   python3 -m venv venv
+   . venv/bin/activate
+   python -m pip install --upgrade py4web --no-cache-dir
+
+The instructions for starting and running py4web are the same with or without a virtual environment.
+
+
+Installing from source (globally)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is the traditional way for installing a program, but it works only
+on Linux and MacOS (Windows does not normally support the `make` utility).
+All the requirements will be installed on the
+system’s path along with links to the py4web.py program on the local
+folder
+
+::
+
+   git clone https://github.com/web2py/py4web.git
+   cd py4web
+   make assets
+   make test
+   make install
+   py4web run apps
+
+Also notice that when installing in this way the content of
+``py4web/assets`` folder is missing at first but it is manually created
+later with the ``make assets`` command.
+
+Notice that you also (and should) install py4web from source inside a virtual environment.
+
+Installing from source (locally)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In this way all the requirements will be installed or upgraded on the
+system’s path, but py4web itself will only be copied
+on a local folder. This is especially useful if you already have a
+working py4web installation but you want to test a different
+one. Also, installing from sources (locally or globally) will
+install all the latest changes present on the master branch of py4web - hence
+you will gain the latest (but potentially untested) code.
+
+
+From the command line, go to a given working folder and then run
+
+::
+
+   git clone https://github.com/web2py/py4web.git
+   cd py4web
+   python3 -m pip install  --upgrade -r requirements.txt
+
+Once installed, you should always start it from there with:
+
+.. tabs::
+
+   .. group-tab:: Linux and MacOS
+
+      ::
+
+         ./py4web.py setup apps
+         ./py4web.py set_password
+         ./py4web.py run apps
+
+      If you have installed py4web both globally and locally, notice the
+      **./** ; it forces the run of the local folder’s py4web and not the
+      globally installed one.
+
+   .. group-tab:: Windows
+
+      ::
+
+         python3 py4web.py setup apps
+         python3 py4web.py set_password
+         python3 py4web.py run apps
+
+      On Windows, the programs on the local folder are always executed before
+      the ones in the path (hence you don’t need the **./** as on Linux).
+      But running .py files directly it’s not usual and you’ll need an explicit
+      python3/python command.
+
+      
+
+Upgrading
+---------
+
+If you installed py4web from pip you can simple upgrade it with
+
+::
+
+   python3 -m pip install --upgrade py4web
+
+.. warning::
+
+   This will not automatically upgrade the standard apps like **Dashboard**
+   and **Default**. 
+   You have to manually remove these apps and then run
+
+   ::
+
+      py4web setup apps
+
+   in order to re-install them. This is a safety precaution, in case you
+   made changes to those apps.
+
+If you installed py4web in any other way, you must upgrade it manually.
+First you have to make a backup of any personal py4web work you've done,
+then delete the old installation folder and re-install the framework
+again.
+
+First run
+---------
+
+Running py4web using any of the previous procedure should produce an
+output like this:
+
+::
+
+   py4web run apps
+
+.. image:: images/first_run.png
+   :class: with-shadow
+
+Generally ``apps`` is the name of the folder where you keep all your
+apps, and can be explicitly set wit the ``run`` command.
+(Yet nothing prevents you from grouping apps in multiple folders with
+different names.) If that
+folder does not exist, it is created. PY4WEB expects to find at least
+two apps in this folder: **Dashboard** (``_dashboard``) and **Default**
+(``_default``). If it does not find them, it installs them.
+
+**Dashboard** is a web based IDE. It will be described in the next chapter.
+
+**Default** is an app that does nothing other than welcome the user.
+
+.. note::
+
+   Some apps - like **Dashboard** and **Default** - have a special role in py4web and therefore their actual name starts with ``_``
+   to avoid conflicts with apps created by you.
+
+Once py4web is running you can access a specific app at the following
+urls:
+
+::
+
+   http://localhost:8000
+   http://localhost:8000/_dashboard
+   http://localhost:8000/{yourappname}/index
+
+In order to stop py4web, you need to hit :kbd:`Control-C` on the window where you run it.
+
+.. note::
+
+   ONLY the **Default** app is special because if does not require the “{appname}/” prefix in the path, like all the other apps do.
+   In general you may want to symlink ``apps/_default`` to your default app.
+
+For all apps the trailing ``/index`` is also optional.
+
+.. warning::
+
+   For Windows: it could be that ``Ctrl-C`` does not work in order to stop py4web.
+   In this case, try with ``Ctrl-Break`` or ``Ctrl-Fn-Pause``.
+   
+   
+Command line options
+--------------------
+
+py4web provides multiple command line options which can be listed by
+running it without any argument
+
+::
+
+   # py4web
+
+.. FIXME: next image must be updated
+
+.. image:: images/command.png
+   :class: with-shadow
+ 
+You can have additional help for a specific command line option by running it
+with the **–help** or **-h** argument.
+
+.. _call command option:
+   
+``call`` command option
+~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+   # py4web call -h
+   Usage: py4web.py call [OPTIONS] APPS_FOLDER FUNC
+
+     Call a function inside apps_folder
+
+   Options:
+     -Y, --yes          No prompt, assume yes to questions  [default: False]
+     --args TEXT        Arguments passed to the program/function  [default: {}]
+     -help, -h, --help  Show this message and exit.
+
+
+For example:
+
+::
+
+   # py4web call apps examples.test.myfunction --args '{"x": 100}'
+
+where myfunction is the function you want to call in apps/examples/test.py. Note
+that you have to use the single and double quotes just as shown for parameters to
+work.
+
+.. _new_app command option:
+
+``new_app`` command option
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+   # py4web new_app -h
+   Usage: py4web.py new_app [OPTIONS] APPS_FOLDER APP_NAME
+
+     Create a new app copying the scaffolding one
+
+   Options:
+     -Y, --yes                No prompt, assume yes to questions  [default:
+                              False]
+
+     -s, --scaffold_zip TEXT  Path to the zip with the scaffolding app
+     -help, -h, --help        Show this message and exit.
+
+This currently gives an error on binaries installations and from source installation
+(locally), because they miss the asset zip file.
+
+.. _run command option:
+
+``run`` command option
+~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+   # py4web run -h
+   Usage: py4web.py run [OPTIONS] APPS_FOLDER
+
+     Run all the applications on apps_folder
+
+   Options:
+     -Y, --yes                     No prompt, assume yes to questions
+                                   [default: False]
+
+     -H, --host TEXT               Host name  [default: 127.0.0.1]
+     -P, --port INTEGER            Port number  [default: 8000]
+     -p, --password_file TEXT      File for the encrypted password  [default:
+                                   password.txt]
+
+     -s, --server [default|wsgiref|tornado|gunicorn|gevent|waitress|
+                   geventWebSocketServer|wsgirefThreadingServer|rocketServer]
+                                   server to use  [default: default]
+     -w, --number_workers INTEGER  Number of workers  [default: 0]
+     -d, --dashboard_mode TEXT     Dashboard mode: demo, readonly, full, none
+                                   [default: full]
+
+     --watch [off|sync|lazy]       Watch python changes and reload apps
+                                   automatically, modes: off, sync, lazy
+                                   [default: off]
+
+     --ssl_cert PATH               SSL certificate file for HTTPS
+     --ssl_key PATH                SSL key file for HTTPS
+     -help, -h, --help             Show this message and exit.
+
+If you want py4web to automatically reload an application upon any
+changes to files of that application, you can:
+
+-  for immediate reloading (sync-mode): ``py4web run --watch=sync``
+
+-  for reloading on any first incoming request to the application has
+   been changed (lazy-mode): ``py4web run --watch=lazy``
+
+.. note::
+    The optional ``--watch`` directive looks for any changes occurring to the python files under the
+    ``/apps`` folder only. Any modifications to the standard py4web programs will always require a full
+    restart of the framework. 
+
+The default web server used is currently Tornado, but you can change this behaviour with the ``server`` option.
+
+
+.. _set_password command option:
+
+``set_password`` command option
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+   # py4web set_password -h
+   Usage: py4web.py set_password [OPTIONS]
+
+     Set administrator's password for the Dashboard
+
+   Options:
+     --password TEXT           Password value (asked if missing)
+     -p, --password_file TEXT  File for the encrypted password  [default:
+                               password.txt]
+
+     -h, -help, --help         Show this message and exit.
+
+If the ``--dashboard_mode`` is not ``demo`` or ``none``, every time
+py4web starts, it asks for a one-time password for you to access the
+dashboard. This is annoying. You can avoid it by storing a pdkdf2 hashed
+password in a file (by default called password.txt) with the command
+
+::
+
+   py4web set_password
+
+It will not ask again unless the file is deleted. You can also use a
+custom file name with
+
+::
+
+   py4web set_password my_password_file.txt
+
+and then ask py4web to re-use that password at runtime with
+
+::
+
+   py4webt run -p my_password_file.txt apps
+
+Finally you can manually create the file yourself with:
+
+::
+
+   python3 -c "from pydal.validators import CRYPT; open('password.txt','w').write(str(CRYPT()(input('password:'))[0]))"
+   password: *****
+
+.. _setup command option:
+
+``setup`` command option
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+   # py4web setup -h
+   Usage: py4web.py setup [OPTIONS] APPS_FOLDER
+
+     Setup new apps folder or reinstall it
+
+   Options:
+     -Y, --yes          No prompt, assume yes to questions  [default: False]
+     -help, -h, --help  Show this message and exit.
+
+This option create a new apps folder (or reinstall it). If needed, it
+will ask for the confirmation of the new folder’s creation and then for
+copying every standard py4web apps from the assets folder. It currently
+does nothing on binaries installations and from source installation
+(locally) - for them you can manually copy the existing apps folder to
+the new one.
+
+.. _shell command option:
+
+``shell`` command option
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+   # py4web shell -h
+   Usage: py4web.py shell [OPTIONS] APPS_FOLDER
+
+     Open a python shell with apps_folder's parent added to the path
+
+   Options:
+     -Y, --yes          No prompt, assume yes to questions  [default: False]
+     -h, -help, --help  Show this message and exit.
+
+Py4web’s shell is just the regular python shell with apps added to the
+search path. Notice that the shell is for all the apps, not a single
+one. You can then import the needed modules from the apps you need to
+access.
+
+For example, inside a shell you can
 
 .. code:: python
 
-    attrs = {
-        "_hx-post": URL("url_to_post_to/%s" % record_id),
-        "_hx-target": "#detail-target",
-    }
-    form = Form(
-        db.tablename,
-        record=record_id,
-        **attrs,
-    )
+   from apps.myapp import db
+   from py4web import Session, Cache, Translator, DAL, Field
+   from py4web.utils.auth import Auth
 
-Now when your form is submitted it will call the URL in the hx-post attribute and whatever is returned
-to the browser will replace the html inside of the element with id="detail-target".
+.. _version command option:
 
-Let's continue with a full example (started from scaffold).
+``version`` command option
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**controllers.py**
+::
 
-.. code:: python
+   # py4web version -h
+   Usage: py4web.py version [OPTIONS]
 
-    import datetime
+     Show versions and exit
 
-    @action("htmx_form_demo", method=["GET", "POST"])
-    @action.uses("htmx_form_demo.html")
-    def htmx_form_demo():
-        return dict(timestamp=datetime.datetime.now())
+   Options:
+     -a, --all          List version of all modules
+     -h, -help, --help  Show this message and exit.
 
+With the ``-all`` option you’ll get the version of all the available python
+modules, too.
 
-    @action("htmx_list", method=["GET", "POST"])
-    @action.uses(db, "htmx_list.html")
-    def htmx_list():
-        superheros = db(db.superhero.id > 0).select()
-        return dict(superheros=superheros)
+Special deployments
+-------------------
 
 
-    @action("htmx_form/<record_id>", method=["GET", "POST"])
-    @action.uses(db, "htmx_form.html")
-    def htmx_form(record_id=None):
-        attrs = {
-            "_hx-post": URL("htmx_form/%s" % record_id),
-            "_hx-target": "#htmx-form-demo",
-        }
-        form = Form(db.superhero, record=db.superhero(record_id), **attrs)
-        if form.accepted:
-            redirect(URL("htmx_list"))
+WSGI
+~~~~
 
-        cancel_attrs = {
-            "_hx-get": URL("htmx_list"),
-            "_hx-target": "#htmx-form-demo",
-        }
-        form.param.sidecar.append(A("Cancel", **cancel_attrs))
-
-        return dict(form=form)
-
-**templates/htmx_form_demo.html**
-
-.. code:: html
-
-    [[extend 'layout.html']]
-
-    [[=timestamp]]
-    <div id="htmx-form-demo">
-        <div hx-get="[[=URL('htmx_list')]]" hx-trigger="load" hx-target="#htmx-form-demo"></div>
-    </div>
-
-    <script src="https://unpkg.com/htmx.org@1.3.2"></script>
-
-**templates/htmx_list.html**
-
-.. code:: html
-
-    <ul>
-    [[for sh in superheros:]]
-        <li><a hx-get="[[=URL('htmx_form/%s' % sh.id)]]" hx-target="#htmx-form-demo">[[=sh.name]]</a></li>
-    [[pass]]
-    </ul>
-
-**templates/htmx_form.html**
-
-.. code:: html
-
-    [[=form]]
-
-
-We now have a functional maintenance app to update our superheros.  In your browser navigate to the htmx_form_demo page
-in your new application.  The hx-trigger="load" attribute on the inner div of the htmx_form_demo.html page
-loads the htmx_list.html page inside the htmx-form-demo DIV once the htmx_form_demo page is loaded.
-
-Notice the timestamp added outside of the htmx-form-demo DIV does not change when transitions occur.  This is
-because the outer page is never reloaded, only the content inside the htmx-form-demo DIV.
-
-The htmx attributes hx-get and hx-target are then used on the anchor tags to call the htmx_form page to
-load the form inside the htmx-form-demo DIV.
-
-So far we've just seen standard htmx processing. Nothing fancy here, and nothing specific to py4web. However,
-in the htmx_form method we see how you can pass any attribute to a py4web form that will be rendered on the
-<form> element as we add the hx-post and hx-target. This tells the form to allow htmx to override the default
-form behavior and to render the resulting output in the target specified.
-
-The default py4web form does not include a Cancel button in case you want to cancel out of the edit form. But
-you can add 'sidecar' elements to your forms. You can see in htmx_form that we add a cancel option and add the
-required htmx attributes to make sure the htmx_list page is rendered inside the htmx-form-demo DIV.
-
-
-htmx usage in Grid
-~~~~~~~~~~~~~~~~~~
-
-The py4web grid provides an attributes plugin system that allows you to build plugins to provide custom attributes
-for form elements, anchor elements or confirmation messages. py4web also provide an attributes plugin specifically for
-htmx.
-
-Here is an example building off the previous htmx forms example.
-
-**controller.py**
+py4web is a standard WSGI application. So, if a full program installation it's not
+feasible you can simply run py4web as a WSGI app. For example, using gunicorn-cli,
+create a python file:
 
 .. code:: python
 
-    @action("htmx_form/<record_id>", method=["GET", "POST"])
-    @action.uses(db, "htmx_form.html")
-    def htmx_form(record_id=None):
-        attrs = {
-            "_hx-post": URL("htmx_form/%s" % record_id),
-            "_hx-target": "#htmx-form-demo",
-        }
-        form = Form(db.superhero, record=db.superhero(record_id), **attrs)
-        if form.accepted:
-            redirect(URL("htmx_list"))
+   # py4web_wsgi.py 
+   from py4web.core import wsgi
+   application = wsgi(apps_folder="apps")
+   
 
-        cancel_attrs = {
-            "_hx-get": URL("htmx_list"),
-            "_hx-target": "#htmx-form-demo",
-        }
-        form.param.sidecar.append(A("Cancel", **cancel_attrs))
+and then start the application using cli:
 
-        return dict(form=form)
+::
 
-    @action("htmx_grid", method=["GET", "POST"])
-    @action("htmx_grid/<path:path>", method=["GET", "POST"])
-    @action.uses(session, db, "htmx_grid.html")
-    def htmx_grid(path=None):
-        grid = Grid(path, db.superhero, auto_process=False)
-
-        grid.attributes_plugin = AttributesPluginHtmx("#htmx-grid-demo")
-        attrs = {
-            "_hx-get": URL(
-                "htmx_grid",
-            ),
-            "_hx-target": "#htmx-grid-demo",
-        }
-        grid.param.new_sidecar = A("Cancel", **attrs)
-        grid.param.edit_sidecar = A("Cancel", **attrs)
-
-        grid.process()
-
-        return dict(grid=grid)
-
-**templates/htmx_form_demo.html**
-
-.. code:: html
-
-    [[extend 'layout.html']]
-
-    [[=timestamp]]
-    <div id="htmx-form-demo">
-        <div hx-get="[[=URL('htmx_list')]]" hx-trigger="load" hx-target="#htmx-form-demo"></div>
-    </div>
-
-    <div id="htmx-grid-demo">
-        <div hx-get="[[=URL('htmx_grid')]]" hx-trigger="load" hx-target="#htmx-grid-demo"></div>
-    </div>
-
-    <script src="https://unpkg.com/htmx.org@1.3.2"></script>
-
-Notice that we added the #htmx-grid-demo DIV which calls the htmx_grid route.
-
-**templates/htmx_grid.html**
-
-.. code:: html
-
-    [[=grid.render()]]
-
-In htmx_grid we take advantage of deferred processing on the grid. We setup a standard CRUD grid, defer
-processing and then tell the grid we're going to use an alternate attributes plugin to build our navigation.
-Now the forms, links and delete confirmations are all handled by htmx.
-
-Autocomplete Widget using htmx
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-htmx can be used for much more than just form/grid processing. In this example we'll take advantage of htmx and the
-py4web form widgets to build an autocomplete widget that can be used in your forms. *NOTE: this is just an example, none
-of this code comes with py4web*
-
-Again we'll use the superheros database as defined in the examples app.
-
-Add the following to your controllers.py.  This code will build your autocomplete dropdowns as well as
-handle the database calls to get your data.
-
-.. code:: python
-
-    import json
-    from functools import reduce
-
-    from yatl import DIV, INPUT, SCRIPT
-
-    from py4web import action, request, URL
-    from ..common import session, db, auth
+   gunicorn -w 4 py4web_wsgi:application
 
 
-    @action(
-        "htmx/autocomplete",
-        method=["GET", "POST"],
-    )
-    @action.uses(
-        session,
-        db,
-        auth.user,
-        "htmx/autocomplete.html",
-    )
-    def autocomplete():
-        tablename = request.params.tablename
-        fieldname = request.params.fieldname
-        autocomplete_query = request.params.query
-
-        field = db[tablename][fieldname]
-        data = []
-
-        fk_table = None
-
-        if field and field.requires:
-            fk_table = field.requires.ktable
-            fk_field = field.requires.kfield
-
-            queries = []
-            if "_autocomplete_search_fields" in dir(field):
-                for sf in field._autocomplete_search_fields:
-                    queries.append(
-                        db[fk_table][sf].contains(
-                            request.params[f"{tablename}_{fieldname}_search"]
-                        )
-                    )
-                query = reduce(lambda a, b: (a | b), queries)
-            else:
-                for f in db[fk_table]:
-                    if f.type in ["string", "text"]:
-                        queries.append(
-                            db[fk_table][f.name].contains(
-                                request.params[f"{tablename}_{fieldname}_search"]
-                            )
-                        )
-
-                query = reduce(lambda a, b: (a | b), queries)
-
-            if len(queries) == 0:
-                queries = [db[fk_table].id > 0]
-                query = reduce(lambda a, b: (a & b), queries)
-
-            if autocomplete_query:
-                query = reduce(lambda a, b: (a & b), [autocomplete_query, query])
-            data = db(query).select(orderby=field.requires.orderby)
-
-        return dict(
-            data=data,
-            tablename=tablename,
-            fieldname=fieldname,
-            fk_table=fk_table,
-            data_label=field.requires.label,
-        )
-
-    class HtmxAutocompleteWidget:
-        def __init__(self, simple_query=None, url=None, **attrs):
-            self.query = simple_query
-            self.url = url if url else URL("htmx/autocomplete")
-            self.attrs = attrs
-
-            self.attrs.pop("simple_query", None)
-            self.attrs.pop("url", None)
-
-        def make(self, field, value, error, title, placeholder="", readonly=False):
-            #  TODO: handle readonly parameter
-            control = DIV()
-            if "_table" in dir(field):
-                tablename = field._table
-            else:
-                tablename = "no_table"
-
-            #  build the div-hidden input field to hold the value
-            hidden_input = INPUT(
-                _type="text",
-                _id="%s_%s" % (tablename, field.name),
-                _name=field.name,
-                _value=value,
-            )
-            hidden_div = DIV(hidden_input, _style="display: none;")
-            control.append(hidden_div)
-
-            #  build the input field to accept the text
-
-            #  set the htmx attributes
-
-            values = {
-                "tablename": str(tablename),
-                "fieldname": field.name,
-                "query": str(self.query) if self.query else "",
-                **self.attrs,
-            }
-            attrs = {
-                "_hx-post": self.url,
-                "_hx-trigger": "keyup changed delay:500ms",
-                "_hx-target": "#%s_%s_autocomplete_results" % (tablename, field.name),
-                "_hx-indicator": ".htmx-indicator",
-                "_hx-vals": json.dumps(values),
-            }
-            search_value = None
-            if value and field.requires:
-                row = (
-                    db(db[field.requires.ktable][field.requires.kfield] == value)
-                    .select()
-                    .first()
-                )
-                if row:
-                    search_value = field.requires.label % row
-
-            control.append(
-                INPUT(
-                    _type="text",
-                    _id="%s_%s_search" % (tablename, field.name),
-                    _name="%s_%s_search" % (tablename, field.name),
-                    _value=search_value,
-                    _class="input",
-                    _placeholder=placeholder if placeholder and placeholder != "" else "..",
-                    _title=title,
-                    _autocomplete="off",
-                    **attrs,
-                )
-            )
-
-            control.append(DIV(_id="%s_%s_autocomplete_results" % (tablename, field.name)))
-
-            control.append(
-                SCRIPT(
-                    """
-            htmx.onLoad(function(elt) {
-                document.querySelector('#%(table)s_%(field)s_search').onkeydown = check_%(table)s_%(field)s_down_key;
-                \n
-                function check_%(table)s_%(field)s_down_key(e) {
-                    if (e.keyCode == '40') {
-                        document.querySelector('#%(table)s_%(field)s_autocomplete').focus();
-                        document.querySelector('#%(table)s_%(field)s_autocomplete').selectedIndex = 0;
-                    }
-                }
-            })
-                """
-                    % {
-                        "table": tablename,
-                        "field": field.name,
-                    }
-                )
-            )
-
-            return control
-
-Usage - in your controller code, this example uses bulma as the base css formatter.
-
-.. code:: python
-
-    formstyle = FormStyleFactory()
-    formstyle.classes = FormStyleBulma.classes
-    formstyle.class_inner_exceptions = FormStyleBulma.class_inner_exceptions
-    formstyle.widgets["vendor"] = HtmxAutocompleteWidget(
-        simple_query=(db.vendor.vendor_type == "S")
-    )
-
-    form = Form(
-        db.product,
-        record=product_record,  # defined earlier in controller
-        formstyle=formstyle,
-    )
-
-First, get an instance of FormStyleFactory.  Then get the base css classes from whichever css framework you wish. Add
-the class inner exceptions from your css framework. Once this is set up you can override the default widget for a
-field based on its name.  In this case we're overriding the widget for the 'vendor' field. Instead of including all
-vendors in the select dropdown, we're limiting only to those with a vendor type equal to 'S'.
-
-When this is rendered in your page, the default widget for the vendor field is replaced with the widget generated by
-the HtmxAutocompleteWidget. When you pass a simple query to the HtmxAutocompleteWidget the widget will use the default
-route to fill the dropdown with data.
-
-If using the simple query and default build url, you are limited to a simple DAL query. You cannot use DAL subqueries
-within this simple query.  If the data for the dropdown requires a more complex DAL query you can override the default
-data builder URL to provide your own controller function to retrieve the data.
+The wsgi function takes arguments with the same name as the command line arguments.
 
 
-.. [CIT1601] from the https://htmx.org website
+Deployment on GCloud (aka Google App Engine)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Login into the `Gcloud console <https://console.cloud.google.com/>`__ and
+create a new project. You will obtain a project id that looks like
+“{project_name}-{number}”.
+
+In your local file system make a new working folder and cd into it:
+
+::
+
+   mkdir gae
+   cd gae
+
+Copy the example files from py4web (assuming you have the source from
+github)
+
+::
+
+   cp /path/to/py4web/development_tools/gcloud/* ./
+
+Copy or symlink your ``apps`` folder into the gae folder, or maybe make
+a new apps folder containing an empty ``__init__.py`` and symlink the
+individual apps you want to deploy. You should see the following
+files/folders:
+
+::
+
+   Makefile
+   apps
+     __init__.py
+     ... your apps ...
+   lib
+   app.yaml
+   main.py
+
+Install the Google SDK, py4web and setup the working folder:
+
+::
+
+   make install-gcloud-linux
+   make setup
+   gcloud config set {your email}
+   gcloud config set {project id}
+
+(replace {your email} with your google email account and {project id}
+with the project id obtained from Google).
+
+Now every time you want to deploy your apps, simply do:
+
+::
+
+   make deploy
+
+You may want to customize the Makefile and app.yaml to suit your needs.
+You should not need to edit ``main.py``.
+
+Deployment on PythonAnywhere.com
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Watch the `YouTube video <https://youtu.be/Wxjl_vkLAEY>`__ and follow the `detailed
+tutorial <https://github.com/tomcam/py4webcasts/blob/master/docs/how-install-source-pythonanywhere.md>`__
+. The bottle_app.py script is in
+``py4web/deployment_tools/pythonanywhere.com/bottle_app.py``
