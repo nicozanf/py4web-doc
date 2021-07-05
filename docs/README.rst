@@ -1,9 +1,11 @@
 What is py4web?
 ===============
 
+.. image:: https://travis-ci.com/web2py/py4web.svg?branch=master
+    :target: https://travis-ci.com/web2py/py4web
 
-.. image:: https://travis-ci.org/web2py/py4web.svg?branch=master
-    :target: https://travis-ci.org/web2py/py4web
+.. image:: https://img.shields.io/pypi/v/py4web.svg
+   :target: https://pypi.org/project/py4web/
 
 PY4WEB is a web framework for rapid development of efficient database driven web applications. It is an evolution of the popular web2py framework but much faster and slicker.
 
@@ -18,21 +20,21 @@ PY4WEB is a web framework for rapid development of efficient database driven web
 Screenshots
 ###########
 
-Running py4web:
+Running py4web
 
-.. image:: images/first_run.png
+.. image:: docs/images/first_run.png
 
 The main Dashboard
 
-.. image:: images/dashboard_main.png
+.. image:: docs/images/dashboard_main.png
 
 Editing a file in the Dashboard
 
-.. image:: images/dashboard_edit.png
+.. image:: docs/images/dashboard_edit.png
 
 Editing a database in the Dashboard
 
-.. image:: images/dashboard_restapi.png
+.. image:: docs/images/dashboard_restapi.png
 
 Installation
 ############
@@ -150,8 +152,12 @@ Tell me more
 Contributors
 ############
 
-py4web is supported by a growing community of developers and even simple users.
-Many thanks to everybody, and especially:
+Special thanks to Sam de Alfaro, that designed the official logo of py4web. We friendly call the logo "Axel the axolotl": it magically represents the sense of kindness
+and inclusion we believe it's the cornerstone of our growing community.
+
+.. image:: docs/images/logo.png
+
+Many thanks to everyone who has contributed to the project, and especially:
 
 .. inclusion-marker-do-not-remove
 
@@ -166,5 +172,5 @@ Many thanks to everybody, and especially:
 - `Pirsch <https://github.com/Pirsch>`__
 - `sugizo <https://github.com/sugizo>`__
 - `valq7711 <https://github.com/valq7711>`__
-- `Kkeller83 <https://github.com/Kkeller83>`__
+- `Kevin Keller <https://github.com/Kkeller83>`__
 - `Sam de Alfaro <sam@dealfaro.com>`__ (logo design)
