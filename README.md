@@ -3,7 +3,7 @@
 
 ## py4web documentation with rtd style
 
-See it  [here](https://nicozanf.github.io/py4web-doc)! 
+See it  [here](https://nicozanf.github.io/py4web-doc)!
 
 
 Created with sources from the py4web official documentation (https://github.com/web2py/py4web/tree/master/apps/_documentation) in MarkMin format plus regex magic
