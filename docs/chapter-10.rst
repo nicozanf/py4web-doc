@@ -819,7 +819,7 @@ you could use this in your templates:
 
 But be careful because it is assuming that your apps folder name and app name never change.
 
-A much better approach (and strongly suggested!) involves using ``Inject``. In controllers.py:
+A much better approach (and strongly encouraged!) involves using ``Inject``. In **controllers.py**:
 
 .. code:: python
 
@@ -842,5 +842,6 @@ OR
    def index(): ....
 
 
-In this way you can place your /libs/helpers.py library inside your own app, and this will
-work even if you rename your app.
+In this way you can place your /libs/helpers.py library inside your own app (avoiding external dependency),
+and this will work even if you rename your app. Even more important, it keeps most of your code outside the
+templates.
