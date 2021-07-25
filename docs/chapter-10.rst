@@ -842,6 +842,6 @@ OR
    def index(): ....
 
 
-In this way you can place your /libs/helpers.py library inside your own app (avoiding external dependency),
+In this way you can place your /libs/helpers.py library inside your own app (without external dependency),
 and this will work even if you rename your app. Even more important, it keeps most of your code outside the
-templates.
+templates avoiding this ugly anti-pattern design.
