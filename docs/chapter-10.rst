@@ -809,7 +809,7 @@ necessary data is passed to the template in order to be displayed.
 But sometimes it's useful to use a python function as a helper called from a template.
 
 In this case in templates you can import code from your apps folder. For example,
-if your helper function is called *sidebar_menu* and it's inside <yourappname>/libs/helpers.py
+if your helper function is called *sidebar_menu* and it's inside <your app name>/libs/helpers.py
 you could use this in your templates:
 
 .. code:: html
@@ -842,6 +842,5 @@ OR
    def index(): ....
 
 
-In this way you can place your /libs/helpers.py library inside your own app (without external dependency),
-and this will work even if you rename your app. Even more important, it keeps most of your code outside the
+This approach will work even if you rename your app. Even more important, it keeps most of your code outside the
 templates avoiding this ugly anti-pattern design.
