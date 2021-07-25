@@ -809,11 +809,12 @@ necessary data is passed to the template in order to be displayed.
 
 But sometimes it's useful to use a python function as a helper called from a template.
 In this case in templates you can import code from your apps folder. For example,
-if your helper functions are inside <yourappname>/helpers.py you could use this in 
-your templates:
+if your helper function is called *sidebar_menu* and it's inside <yourappname>/libs/helpers.py
+you could use this in your templates:
 
-.. code:: python
+.. code:: html
 
-   from apps.<yourappname> import helpers
+   [[from apps.<Your app name>.libs.helpers import sidebar_menu]]
 
 
+But be careful because it is assuming that your apps folder name and app name never change.
