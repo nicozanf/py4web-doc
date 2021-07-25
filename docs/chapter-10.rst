@@ -818,3 +818,29 @@ you could use this in your templates:
 
 
 But be careful because it is assuming that your apps folder name and app name never change.
+
+A much better approach (and strongly suggested!) involves using ``Inject``. In controllers.py:
+
+.. code:: python
+
+   from py4web.utils.factories import Inject
+   from .libs.helpers import sidebar_menu
+
+   @action(...)
+   @action.uses(Inject(sidebar_menu=sidebar_menu), "index.html")
+   def index(): ....
+
+OR
+
+.. code:: python
+
+   from py4web.utils.factories import Inject
+   from .libs import helpers
+
+   @action(...)
+   @action.uses(Inject(**vars(helpers)), "index.html")
+   def index(): ....
+
+
+In this way you can place your /libs/helpers.py library inside your own app, and this will
+work even if you rename your app.
