@@ -31,7 +31,7 @@ Server Sent Events directly in HTML, using attributes, so you can build modern u
 with the simplicity and power of hypertext. [CIT1601]_
 
 Read all about htmx and its capabilities on the official site at https://htmx.org . If you prefer,
-there is also a video tutorial at `Simple, Fast Frontends With htmx <https://www.youtube.com/watch?v=cBfz4W_KvEI>`__ .
+there is also a video tutorial: `Simple, Fast Frontends With htmx <https://www.youtube.com/watch?v=cBfz4W_KvEI>`__ .
 
 py4web enables htmx integration in a couple of ways.
 
