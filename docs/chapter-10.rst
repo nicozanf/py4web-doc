@@ -808,18 +808,8 @@ Normally all the code should be called from the controller program, and only the
 necessary data is passed to the template in order to be displayed.
 But sometimes it's useful to use a python function as a helper called from a template.
 
-In this case in templates you can import code from your apps folder. For example,
-if your helper function is called *sidebar_menu* and it's inside <your app name>/libs/helpers.py
-you could use this in your templates:
-
-.. code:: html
-
-   [[from apps.<Your app name>.libs.helpers import sidebar_menu]]
-
-
-But be careful because it is assuming that your apps folder name and app name never change.
-
-A much better approach (and strongly encouraged!) involves using ``Inject``. In **controllers.py**:
+In this case you can use ``Inject``. For example if your helper function is called *sidebar_menu*
+and it's inside the libs/helpers.py module of your app, you could use this in **controllers.py**:
 
 .. code:: python
 
@@ -842,5 +832,10 @@ OR
    def index(): ....
 
 
-This approach will work even if you rename your app. Even more important, it keeps most of your code outside the
-templates avoiding this ugly anti-pattern design.
+Then you can import the needed code in the index.html template in a clean way:
+
+.. code:: html
+
+   [[=sidebar_menu]]
+
+
