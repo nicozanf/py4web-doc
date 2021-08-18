@@ -152,8 +152,8 @@ Create a new minimal app called ``form_basic`` :
 
 
 Note the import of two simple validators on top, in order to be used later
-with the ``requires`` parameter. We'll explain them better
-in the next paragraphs.
+with the ``requires`` parameter. We'll fully explain them
+on the :ref:`Form validation` paragraph.
 
 You will also need a template file ``templates/form_basic.html`` that
 contains, for example, the following code:
@@ -192,8 +192,254 @@ The basic form usage is quite useful for rapid prototyping of programs, since yo
 to specify the layout of the form. On the other hand, you cannot change its default behaviour.
 
 
+
+File upload field
+~~~~~~~~~~~~~~~~~
+
+The file upload field is quite particular. The standard way to use it (as in the _scaffold app) 
+is to have the UPLOAD_FOLDER defined in the common.py file. But if you don't specify it, then the
+default value of  ``your_app/upload`` folder will be used (and the folder will also be created if needed).
+Let's look at a simple example:
+
+.. code-block:: python
+
+    # in form_upload/__init__.py
+    import os
+    from py4web.core import required_folder
+    from py4web import action, Field, DAL
+    from py4web.utils.form import Form, FormStyleDefault
+    from pydal.validators import IS_NOT_EMPTY
+
+    # database definition
+    DB_FOLDER = os.path.join(os.path.dirname(__file__), 'databases')
+    if not os.path.isdir(DB_FOLDER):
+        os.mkdir(DB_FOLDER)
+    db = DAL('sqlite://storage.sqlite', folder=DB_FOLDER)
+    db.define_table(
+        'person',
+        Field('superhero', requires=IS_NOT_EMPTY()),
+        Field('image', "upload", label='Superhero Image', requires=IS_NOT_EMPTY()),
+    )
+
+    @action("index", method=["GET", "POST"])
+    @action.uses(db, "form_upload.html")
+    def upload(id=None):
+        form = Form(db.person, id, deletable=False, formstyle=FormStyleDefault)
+        rows = db(db.person).select()
+        return dict(form=form, rows=rows)
+
+
+And in templates/form_upload.html :
+
+.. code:: html
+
+    <h2 class="title">Form upload example: Superhero Identity</h2>
+
+    [[=form]]
+    
+    <h2 class="title">Rows</h2>
+    
+    <ul>
+    [[for row in rows:]]
+    <li>[[=row.id]]: [[=row.superhero]] = [[=row.image]]</li>
+    [[pass]]
+    </ul>
+
+
+This gives a result like the following:
+
+.. image:: images/form6.png
+
+
+Note that the uploaded files will be saved on the UPLOAD_FOLDER folder with their name hashed.
+Other details on the upload fields can be found on :ref:`Field constructor` paragraph, including
+a way to save the files inside the database itself.
+
+
+Widgets
+-------
+
+Standard widgets
+~~~~~~~~~~~~~~~~
+
+Py4web provides many widgets in the py4web.utility.form library. They are simple plugins
+that easily allow you to specify the type of the input elements in a form, along with
+some of their properties.
+
+Here is the full list:
+
+-  CheckboxWidget
+-  DateTimeWidget
+-  FileUploadWidget
+-  ListWidget
+-  PasswordWidget
+-  RadioWidget
+-  SelectWidget
+-  TextareaWidget
+
+
+This is an improved 'Basic Form Example' with a radio button widget:
+
+
+.. code:: python
+
+    # in form_widgets/__init__.py
+    import os
+    from py4web import action, Field, DAL
+    from py4web.utils.form import Form, FormStyleDefault, RadioWidget
+    from pydal.validators import IS_NOT_EMPTY, IS_IN_SET
+
+    # database definition
+    DB_FOLDER = os.path.join(os.path.dirname(__file__), 'databases')
+    if not os.path.isdir(DB_FOLDER):
+        os.mkdir(DB_FOLDER)
+    db = DAL('sqlite://storage.sqlite', folder=DB_FOLDER)
+    db.define_table(
+        'person',
+        Field('superhero', requires=IS_NOT_EMPTY()),
+        Field('realname'),
+        Field('universe', requires=IS_IN_SET(['DC Comics','Marvel Comics'])),
+    )
+
+    # controllers definition
+    @action("index", method=["GET", "POST"])
+    @action.uses(db, "form_widgets.html")
+    def index(id=None):
+        FormStyleDefault.widgets['universe']=RadioWidget()
+        form = Form(db.person, id, deletable=False, formstyle=FormStyleDefault)
+        rows = db(db.person).select()
+        return dict(form=form, rows=rows)
+
+Notice the differences from the 'Basic Form example' we've seen at the
+beginning of the chapter:
+
+- you need to import the widget from the py4web.utils.form library
+- before the form definition, you define the ``universe`` field form style with the line:
+
+    .. code:: python
+
+        FormStyleDefault.widgets['universe']=RadioWidget()
+
+You will also need a template file ``templates/form_widgets.html`` that
+contains the following code (as the form_basic.html) :
+
+.. code:: html
+
+    <h2 class="title">Form Widget example: Superhero Identity</h2>
+
+    [[=form]]
+
+    <h2 class="title">Rows</h2>
+
+    <ul>
+    [[for row in rows:]]
+    <li>[[=row.id]]: [[=row.superhero]] ([[=row.realname]]) from [[=row.universe]]</li>
+    [[pass]]
+    </ul>
+
+The result is the same as before, but now we have a radio button widget instead of the
+dropdown menu!
+
+.. image:: images/form4.png
+
+
+Using widgets in forms is quite easy, and they'll let you have more control on its pieces.
+
+
+Custom widgets
+~~~~~~~~~~~~~~
+
+You can also customize the widgets properties by subclassing the FormStyleDefault class. Let's have a quick look,
+improving again our Superhero example:
+
+.. code:: python
+
+    #
+    # in form_custom_widgets/__init__.py
+    #
+    import os
+    from py4web import action, Field, DAL
+    from py4web.utils.form import Form, FormStyleDefault, RadioWidget
+    from pydal.validators import IS_NOT_EMPTY, IS_IN_SET
+    from yatl.helpers import INPUT, DIV
+    
+    # database definition
+    DB_FOLDER = os.path.join(os.path.dirname(__file__), 'databases')
+    if not os.path.isdir(DB_FOLDER):
+        os.mkdir(DB_FOLDER)
+    db = DAL('sqlite://storage.sqlite', folder=DB_FOLDER)
+    db.define_table(
+        'person',
+        Field('superhero', requires=IS_NOT_EMPTY()),
+        Field('realname'),
+        Field('universe', requires=IS_IN_SET(['DC Comics','Marvel Comics'])),
+    )
+    
+    # custom widget class definition
+    class MyCustomWidget:
+        def make(self, field, value, error, title, placeholder, readonly=False):
+            tablename = field._table if "_table" in dir(field) else "no_table"
+            control = INPUT(
+                _type="text",
+                _id="%s_%s" % (tablename, field.name),
+                _name=field.name,
+                _value=value,
+                _class="input",
+                _placeholder=placeholder if placeholder and placeholder != "" else "..",
+                _title=title,
+                _style="font-size: x-large;color: red; background-color: black;",
+            )
+            return control
+    
+    # controllers definition
+    @action("index", method=["GET", "POST"])
+    @action.uses(db, "form_custom_widgets.html")
+    def index(id=None):
+        MyStyle = FormStyleDefault
+        MyStyle.classes = FormStyleDefault.classes
+        MyStyle.widgets['superhero']=MyCustomWidget()
+        MyStyle.widgets['realname']=MyCustomWidget()
+        MyStyle.widgets['universe']=RadioWidget()
+        
+        form = Form(db.person, id, deletable=False, formstyle=MyStyle)
+        rows = db(db.person).select()
+        return dict(form=form, rows=rows)
+    
+
+
+
+You will also need a template file ``templates/form_custom_widgets.html`` that
+contains the following code (as the form_basic.html) :
+        
+.. code:: html
+
+    <h2 class="title">Form Custom Widgets example: Superhero Identity</h2>
+
+    [[=form]]
+    
+    <h2 class="title">Rows</h2>
+    
+    <ul>
+    [[for row in rows:]]
+    <li>[[=row.id]]: [[=row.superhero]]  ([[=row.realname]]) from [[=row.universe]] </li>
+    [[pass]]
+    </ul>
+
+
+    
+The result is similar to the previous ones, but now we have a custom input field, 
+with foreground color red and background color black:
+
+.. image:: images/form5.png
+
+Even the radio button widget has changed, from red to blue.
+
+
+Advanced form design
+--------------------
+
 Form structure manipulation
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In py4web a form is rendered by YATL helpers. This means the tree structure of a form
 can be manipulated before the form is serialized in HTML. 
@@ -205,10 +451,81 @@ Here is an example of how to manipulate the generate HTML structure:
     form = Form(db.paint)
     form.structure.find('[name=color]')[0]['_class'] = 'my-class'
 
-Notice that a form does not make an HTML tree until form structure is accessed. Once accessed you can use `.find(...)`
-to find matching elements. The argument of `find` is a string following the filter syntax of jQuery. In the above case
-there is a single match `[0]` and we modify the `_class` attribute of that element. Attribute names of HTML elements
+Notice that a form does not make an HTML tree until form structure is accessed. Once accessed you can use ``.find(...)``
+to find matching elements. The argument of ``find`` is a string following the filter syntax of jQuery. In the above case
+there is a single match ``[0]`` and we modify the ``_class`` attribute of that element. Attribute names of HTML elements
 must be preceded by an underscore.
+
+Custom forms
+~~~~~~~~~~~~
+
+Custom forms allow you to granulary control how the form is processed. In the template file, you can execute specific
+instructions before the form is displayed or after its data submission by inserting code among the following statements:
+
+.. code
+
+    [[=form.custom.begin ]]
+    [[=form.custom.submit ]]
+    [[=form.custom.end ]]
+
+
+For example you could use it to avoid displaying the ``id`` field while editing a record in your form:
+
+.. code:: html
+
+    [[=form.custom.begin ]]
+        [[for field in DETAIL_FIELDS: ]]
+            [[ if field not in ['id']: ]]
+                <div class="select">
+                    [[=form.custom.widgets[field] ]]
+                </div>
+            [[pass]]
+        [[pass]]
+    [[=form.custom.submit ]]
+    [[=form.custom.end ]]
+
+
+Custom forms are also frequently used for avoiding code redundancy; you can use a single template file for
+multiple form types, and programmatically change the fields contained and how to render them.
+
+Note: 'custom' is just a convention, it could be any name that does not clash with already defined objects.
+
+.. warning::
+
+    When working with custom forms, if you have a writable field that isn't included on your
+    form, it will be set to null when you save a record.  Any time a field is not included
+    on a custom form, it should be set field.writable=False to ensure that field is not updated.
+
+    Also, custom forms only create the element for a given field, but no surrounding elements
+    that might be needed based on your css framework.  For example, if you're using Bulma as
+    your css framework, you'll have to add an outer DIV in order to get select controls to
+    appear correctly.
+
+
+The sidecar parameter
+~~~~~~~~~~~~~~~~~~~~~
+
+The sidecar is the stuff injected in the form along with the submit button.
+
+For example, you can inject a simple ``click me`` button in your form with the following
+code:
+
+.. code:: python
+
+    form.param.sidecar = DIV(BUTTON("click me", _onclick="alert('doh!')"))
+
+
+In particular, this is frequently used for adding a ``Cancel`` button, which is not provided by py4web:
+
+
+.. code:: python
+
+    attrs = {
+    "_onclick": "window.history.back(); return false;",
+    "_class": "button is-default",
+    }
+    form.param.sidecar.append(BUTTON("Cancel", **attrs))
+
 
 Form validation
 ---------------
@@ -1519,197 +1836,3 @@ Here is an example:
            # Do something with form.vars['product_name'] and form.vars['product_quantity']
            redirect(URL('index'))
        return dict(form=form)
-
-
-Widgets
--------
-
-Py4web provides many widgets in the py4web.utility.form library. They are simple plugins
-that easily allow you to specify the type of the input elements in a form, along with
-some of their properties.
-
-Here is the full list:
-
--  CheckboxWidget
--  DateTimeWidget
--  FileUploadWidget
--  ListWidget
--  PasswordWidget
--  RadioWidget
--  SelectWidget
--  TextareaWidget
-
-
-This is an improved 'Basic Form Example' with a radio button widget:
-
-
-.. code:: python
-
-    # in form_widgets/__init__.py
-    import os
-    from py4web import action, Field, DAL
-    from py4web.utils.form import Form, FormStyleDefault, RadioWidget
-    from pydal.validators import IS_NOT_EMPTY, IS_IN_SET
-
-    # database definition
-    DB_FOLDER = os.path.join(os.path.dirname(__file__), 'databases')
-    if not os.path.isdir(DB_FOLDER):
-        os.mkdir(DB_FOLDER)
-    db = DAL('sqlite://storage.sqlite', folder=DB_FOLDER)
-    db.define_table(
-        'person',
-        Field('superhero', requires=IS_NOT_EMPTY()),
-        Field('realname'),
-        Field('universe', requires=IS_IN_SET(['DC Comics','Marvel Comics'])),
-    )
-
-    # controllers definition
-    @action("index", method=["GET", "POST"])
-    @action.uses(db, "form_widgets.html")
-    def index(id=None):
-        FormStyleDefault.widgets['universe']=RadioWidget()
-        form = Form(db.person, id, deletable=False, formstyle=FormStyleDefault)
-        rows = db(db.person).select()
-        return dict(form=form, rows=rows)
-
-Notice the differences from the 'Basic Form example' we've seen at the
-beginning of the chapter:
-
-- you need to import the widget from the py4web.utils.form library
-- before the form definition, you define the ``universe`` field form style with the line:
-
-    .. code:: python
-
-        FormStyleDefault.widgets['universe']=RadioWidget()
-
-You will also need a template file ``templates/form_widgets.html`` that
-contains the following code (as the form_basic.html) :
-
-.. code:: html
-
-    <h2 class="title">Form Widget example: Superhero Identity</h2>
-
-    [[=form]]
-
-    <h2 class="title">Rows</h2>
-
-    <ul>
-    [[for row in rows:]]
-    <li>[[=row.id]]: [[=row.superhero]] ([[=row.realname]]) from [[=row.universe]]</li>
-    [[pass]]
-    </ul>
-
-The result is the same as before, but now we have a radio button widget instead of the
-dropdown menu!
-
-.. image:: images/form4.png
-
-
-Using widgets in forms is quite easy, and they'll let you have more control on its pieces.
-
-
-Custom forms
-------------
-
-Custom forms allow you to have a precise control of any aspect of a form, including its
-visual aspect. They are really powerful, but at the cost of a bit of complexity.
-
-Let's quickly look at them, improving again our Superhero example:
-
-.. code:: python
-
-    # in custom/__init__.py
-    import os
-    from py4web import action, Field, DAL
-    from py4web.utils.form import Form, FormStyleDefault, RadioWidget
-    from pydal.validators import IS_NOT_EMPTY, IS_IN_SET
-    from yatl.helpers import INPUT, DIV
-
-    # database definition
-    DB_FOLDER = os.path.join(os.path.dirname(__file__), 'databases')
-    if not os.path.isdir(DB_FOLDER):
-        os.mkdir(DB_FOLDER)
-    db = DAL('sqlite://storage.sqlite', folder=DB_FOLDER)
-    db.define_table(
-        'person',
-        Field('superhero', requires=IS_NOT_EMPTY()),
-        Field('realname'),
-        Field('universe', requires=IS_IN_SET(['DC Comics','Marvel Comics'])),
-    )
-
-    # custom form class definition
-    class MyCustomWidget:
-        def make(self, field, value, error, title, placeholder, readonly=False):
-            control = DIV()
-            if "_table" in dir(field):
-                tablename = field._table
-            else:
-                tablename = "no_table"
-
-            control = INPUT(
-                _type="text",
-                _id="%s_%s" % (tablename, field.name),
-                _name="%s_%s" % (tablename, field.name),
-                _value=value,
-                _class="input",
-                _placeholder=placeholder if placeholder and placeholder != "" else "..",
-                _title=title,
-                _style="font-size: x-large;color: red; background-color: black;",
-            )
-            return control
-
-
-    # controllers definition
-    @action("index", method=["GET", "POST"])
-    @action.uses(db, "form_custom.html")
-    def index(id=None):
-        MyStyle = FormStyleDefault
-        MyStyle.classes = FormStyleDefault.classes
-        MyStyle.widgets['superhero']=MyCustomWidget()
-        MyStyle.widgets['realname']=MyCustomWidget()
-        MyStyle.widgets['universe']=RadioWidget()
-        
-        rows = db(db.person).select()
-        form = Form(db.person, id, deletable=False, formstyle=MyStyle)
-        return dict(form=form, rows=rows)
-
-
-
-
-You will also need a template file ``templates/form_widgets.html`` that
-contains the following code (as the form_basic.html) :
-        
-.. code:: html
-
-    <h2 class="title">Form Custom example: Superhero Identity</h2>
-
-    [[=form]]
-    
-    <h2 class="title">Rows</h2>
-    
-    <ul>
-    [[for row in rows:]]
-    <li>[[=row.id]]: [[=row.superhero]] ([[=row.realname]]) from [[=row.universe]]</li>
-    [[pass]]
-    </ul>
-
-
-    
-The result is similar to the previous ones, but now we have a custom input field, 
-with foreground color red and background color black
-
-.. image:: images/form5.png
-
-
-
-Custom forms warnings
-~~~~~~~~~~~~~~~~~~~~~
-
-When working with custom forms, if you have a writable field that isn't included on your
-form, it will be set to null when you save a record.  Any time a field is not included
-on a custom form, it should be set field.writable=False to ensure that field is not updated.
-
-Also, custom forms only create the element for a given field, but no surrounding elements
-that might be needed based on your css framework.  For example, if you're using Bulma as
-your css framework, you'll have to add an outer div in order to get select controls to
-appear correctly.
