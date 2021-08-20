@@ -88,7 +88,6 @@ we also suggest to:
 Debugging py4web with VScode
 ----------------------------
 
-
 It's quite simple to run and debug py4web within VScode if you have installed from source. You just need to open the main py4web folder (not the apps folder!) with VScode and add:
 
 ::
@@ -97,13 +96,13 @@ It's quite simple to run and debug py4web within VScode if you have installed fr
   "program": "your_full_path_to_py4web.py",
 
 to the vscode ``launch.json`` configuration file. Note that if you're using Windows the "your_full_path_to_py4web.py" parameter must be written using forward slash only, like
-"C:/Users/your_name/py4web/py4web.py". In addition, if you should get gevent errors you have to also add ``"gevent": true`` on the same configuration file.
+"C:/Users/your_name/py4web/py4web.py".
 
 If you have installed py4web from pip, you have instead to:
 
 - open the ``apps`` folder with VScode 
 - copy the standard `py4web.py launcher <https://github.com/web2py/py4web/blob/master/py4web.py>`__ inside it, but rename it to ``py4web-start.py`` in order to avoid import
-errors later:
+  errors later:
 
 .. code:: python
 
@@ -118,6 +117,7 @@ errors later:
   "args": ["run", "."],
   "program": "your_full_path_to_py4web-start.py",
 
+In both cases, if you should get gevent errors you have to also add ``"gevent": true`` on the ``launch.json`` configuration file.
 
 
 Debugging py4web with PyCharm
