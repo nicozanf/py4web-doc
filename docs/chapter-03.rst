@@ -385,7 +385,10 @@ to avoid unneded checks (but you will need to restart py4web for activating any 
     ``/apps`` folder only. Any modifications to the standard py4web programs will always require a full
     restart of the framework. 
 
-The default web server used is currently Tornado, but you can change this behaviour with the ``server`` option.
+The default web server used is currently rocketServer, but you can change this behaviour with the ``server`` option.
+`Rocket3 <https://github.com/web2py/rocket3>`__  is the multi-threaded web server used by web2py stripped of all the
+Python2 logic and dependencies.
+
 
 
 .. _set_password command option:
@@ -599,3 +602,4 @@ Watch the `YouTube video <https://youtu.be/Wxjl_vkLAEY>`__ and follow the `detai
 tutorial <https://github.com/tomcam/py4webcasts/blob/master/docs/how-install-source-pythonanywhere.md>`__
 . The bottle_app.py script is in
 ``py4web/deployment_tools/pythonanywhere.com/bottle_app.py``
+
