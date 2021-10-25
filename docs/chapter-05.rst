@@ -25,7 +25,7 @@ simple commands in order to create a new empty **myapp** app:
    echo '' > apps/myapp/__init__.py
 
 .. tip::
-   for Windows, you must use backslashes (i.e. ``\``) instead of
+   for Windows, you must use backslashes (i.e. ``\``) instead of
    slashes.
    
 
@@ -33,14 +33,15 @@ simple commands in order to create a new empty **myapp** app:
 If you now restart py4web or
 press the “Reload Apps” in the Dashboard, py4web will find this module,
 import it, and recognize it as an app, simply because of its location.
-You can also run py4web in *watch* mode (see the :ref:`run command option`) for
-automatic reloading of the apps whenever it changes, which is very useful in a development environment.
-In this case, run py4web with a command like this:
+By default py4web runs in *lazy watch* mode (see the :ref:`run command option`)
+for automatic reloading of the apps whenever it changes, which is very useful
+in a development environment.
+In production or debugging environment, it's better to run py4web with a command like this:
 
 
 .. code:: bash
 
-    py4web run apps --watch sync
+    py4web run apps --watch off
 
  
 A py4web app is not required to do anything. It could just be a container for
@@ -107,7 +108,7 @@ Unlike other frameworks, we do not import or start the webserver within
 the ``myapp`` code. This is because py4web is already running, and it
 may be serving multiple apps. py4web imports our code and exposes
 functions decorated with ``@action()``. Also notice that py4web prepends
-``/myapp`` (i.e. the name of the app) to the url path declared in the
+``/myapp`` (i.e. the name of the app) to the url path declared in the
 action. This is because there are multiple apps, and they may define
 conflicting routes. Prepending the name of the app removes the
 ambiguity. But there is one exception: if you call your app
@@ -204,7 +205,7 @@ From py4web you can import ``request``
 
     @action('paint')
     def paint():
-        if 'color' in request.query
+        if 'color' in request.query:
            return 'Painting in %s' % request.query.get('color')
         return 'You did not specify a color'
 
@@ -318,30 +319,30 @@ Here is the tree structure of the ``_scaffold`` app:
    ├── common.py            # defines useful objects
    ├── controllers.py       # your actions
    ├── databases            # your sqlite databases and metadata
-       │   └── README.md
+       │   └── README.md
    ├── models.py            # your pyDAL table model
    ├── settings.py          # any settings used by the app
    ├── settings_private.py  # (optional) settings that you want to keep private
    ├── static               # static files
-   │   ├── README.md
-   │   ├── components       # py4web's vue auth component
-   │   │   ├── auth.html
-   │   │   └── auth.js
-   │   ├── css              # CSS files, we ship bulma because it is JS agnostic
-   │   │   └── no.css       # we used bulma.css in the past
-   │   ├── favicon.ico
-   │   └── js               # JS files, we ship with these but you can replace them
-   │       ├── axios.min.js
-   │       ├── sugar.min.js
-   │       ├── utils.js
-   │       └── vue.min.js
+   │   ├── README.md
+   │   ├── components       # py4web's vue auth component
+   │   │   ├── auth.html
+   │   │   └── auth.js
+   │   ├── css              # CSS files, we ship bulma because it is JS agnostic
+   │   │   └── no.css       # we used bulma.css in the past
+   │   ├── favicon.ico
+   │   └── js               # JS files, we ship with these but you can replace them
+   │       ├── axios.min.js
+   │       ├── sugar.min.js
+   │       ├── utils.js
+   │       └── vue.min.js
    ├── tasks.py
    ├── templates            # your templates go here
-   │   ├── README.md       
-   │   ├── auth.html        # the auth page for register/logic/etc (uses vue)
-   │   ├── generic.html     # a general purpose template
-   │   ├── index.html
-   │   └── layout.html      # a bulma layout example
+   │   ├── README.md       
+   │   ├── auth.html        # the auth page for register/logic/etc (uses vue)
+   │   ├── generic.html     # a general purpose template
+   │   ├── index.html
+   │   └── layout.html      # a bulma layout example
    └── translations         # internationalization/pluralization files go here
        └── it.json          # py4web internationalization/pluralization files are in JSON, this is an italian example
 
@@ -363,7 +364,9 @@ The scaffold app contains an example of a more complex action:
 
 Notice the following:
 
--  ``request``, ``response``, ``abort`` are defined by Bottle
+-  ``request``, ``response``, ``abort`` are defined by Bottle, using
+   `ombott (One More BOTTle) <https://github.com/valq7711/ombott>`__,
+   which is a fast bottlepy spin-off.
 -  ``redirect`` and ``URL`` are similar to their web2py counterparts
 -  helpers (``A``, ``DIV``, ``SPAN``, ``IMG``, etc) must be imported
    from ``yatl.helpers`` . They work pretty much as in web2py
@@ -395,8 +398,8 @@ a starting point for testing and even developing full features new apps.
 It's better not to work directly on it: always create new apps copying it.
 You can do it in two ways:
 
--  using the command line: copy the whole apps/_dashboard folder to another one
-   (/apps/my_app for example). Then reload py4web and it will be automatically loaded.
+-  using the command line: copy the whole apps/_scaffold folder to another one
+   (apps/my_app for example). Then reload py4web and it will be automatically loaded.
 -  using the Dashboard: select the button ``Create/Upload App`` under the "Installed
    Applications" upper section. Just give the new app a name and check that "Scaffold"
    is selected as the source. 
@@ -412,7 +415,7 @@ Watch for files change
 
 As described in the :ref:`run command option`, Py4web facilitates a
 development server’s setup by automatically reloads an app when its
-Python source files change (if run with the ``--watch`` option).
+Python source files change (by default).
 But in fact any other files inside an app can be watched by setting a
 handler function using the ``@app_watch_handler`` decorator.
 
