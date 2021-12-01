@@ -2,16 +2,18 @@
 Grid
 ====
 
-py4web comes with a Grid object providing grid and CRUD capabilities.
+py4web comes with a Grid object providing grid and CRUD (create, update and delete) capabilities.
+This allows you to quickly and safely provide an interface to your data. Since it's also
+highly customizable, it's the corner stone of most py4web's applications.
 
 Key Features
 ------------
 
+-  Full CRUD with Delete Confirmation
 -  Click column heads for sorting - click again for DESC
 -  Pagination control
 -  Built in Search (can use search_queries OR search_form)
 -  Action Buttons - with or without text
--  Full CRUD with Delete Confirmation
 -  Pre and Post Action (add your own buttons to each row)
 -  Grid dates in local format
 -  Default formatting by type plus user overrides
@@ -19,37 +21,93 @@ Key Features
 Basic Example
 -------------
 
-In this simple example we will make a grid over the company table.
+In this simple example we will make a grid over the superhero table.
 
-controllers.py
+Create a new minimal app called ``grid``. Change it with the following content.
 
 .. code:: python
 
-   from functools import reduce
+   # in grid/__init__.py
+   import os
    from py4web.utils.grid import Grid
-   from py4web import action
-   from .common import db, session, auth
+   from py4web import action, Field, DAL
 
-   @action('companies', method=['POST', 'GET'])
-   @action('companies/<path:path>', method=['POST', 'GET'])
-   @action.uses(session, db, auth, 'grid.html')
-   def companies(path=None):
-       grid = Grid(path,
-                   query=(db.company.id > 0),
-                   orderby=[db.company.name],
-                   search_queries=[['Search by Name', lambda val: db.company.name.contains(val)]])
 
-       return dict(grid=grid)
+   # database definition
+   DB_FOLDER = os.path.join(os.path.dirname(__file__), 'databases')
+   if not os.path.isdir(DB_FOLDER):
+      os.mkdir(DB_FOLDER)
+   db = DAL('sqlite://storage.sqlite', folder=DB_FOLDER)
+   db.define_table(
+      'person',
+      Field('name'),
+      Field('job'))
+   db.define_table(
+      'superhero',
+      Field('name'),
+      Field('real_identity', 'reference person'))
+   db.define_table(
+      'superpower',
+      Field('description'))
+   db.define_table(
+      'tag',
+      Field('superhero', 'reference superhero'),
+      Field('superpower', 'reference superpower'),
+      Field('strength', 'integer'))
 
-grid.html
+   # add example entries in db
+   if not db(db.person).count():
+      db.person.insert(name='Clark Kent', job='Journalist')
+      db.person.insert(name='Peter Park', job='Photographer')
+      db.person.insert(name='Bruce Wayne', job='CEO')
+      db.superhero.insert(name='Superman', real_identity=1)
+      db.superhero.insert(name='Spiderman', real_identity=2)
+      db.superhero.insert(name='Batman', real_identity=3)
+      db.superpower.insert(description='Flight')
+      db.superpower.insert(description='Strength')
+      db.superpower.insert(description='Speed')
+      db.superpower.insert(description='Durability')
+      db.tag.insert(superhero=1, superpower=1, strength=100)
+      db.tag.insert(superhero=1, superpower=2, strength=100)
+      db.tag.insert(superhero=1, superpower=3, strength=100)
+      db.tag.insert(superhero=1, superpower=4, strength=100)
+      db.tag.insert(superhero=2, superpower=2, strength=50)
+      db.tag.insert(superhero=2, superpower=3, strength=75)
+      db.tag.insert(superhero=2, superpower=4, strength=10)
+      db.tag.insert(superhero=3, superpower=2, strength=80)
+      db.tag.insert(superhero=3, superpower=3, strength=20)
+      db.tag.insert(superhero=3, superpower=4, strength=70)
+      db.commit()
+
+   @action('index', method=['POST', 'GET'])
+   @action('index/<path:path>', method=['POST', 'GET'])
+   @action.uses(db, 'grid.html')
+   def index(path=None):
+      grid = Grid(path,
+                  query=(db.person.id > 0),
+                  orderby=[db.person.name],
+                  search_queries=[['Search by Name', lambda val: db.person.name.contains(val)]])
+
+      return dict(grid=grid)
+
+Copy _scaffold/templates/layout.html to the company/templates folder. Add a new file templates/grid.html
+with this content:
 
 ::
 
    [[extend 'layout.html']]
    [[=grid.render()]]
 
-Signature
----------
+Then restart py4web. If you browse to  you'll get this:
+
+.. image:: images/grid.png
+
+
+Its layout is quite minimal, but it's perfectly usable.
+
+
+The Grid object
+---------------
 
 .. code:: python
 
@@ -124,8 +182,8 @@ Signature
    styling your rendered grid. Allows you to specify classes or styles
    to apply at certain points in the grid.
 
-Searching / Filtering
----------------------
+Searching and Filtering
+-----------------------
 
 There are two ways to build a search form.
 
@@ -143,12 +201,11 @@ However, if this doesn’t give you enough flexibility you can provide
 your own search form and handle all the filtering (building the queries)
 by yourself.
 
-CRUD
-----
+CRUD settings
+-------------
 
 The grid provides CRUD (create, read, update and delete) capabilities
 utilizing py4web Form.
-
 You can turn off CRUD features by setting
 create/details/editable/deletable during grid instantiation.
 
@@ -160,7 +217,7 @@ Custom Columns
 --------------
 
 If the grid does not involve a join but displays results from a single table
-you can specify a list of columns and columns are highly customizable.
+you can specify a list of columns. Columns are highly customizable.
 
 .. code:: python
 
@@ -476,7 +533,7 @@ The downfall of using this method is that sorting and filtering are
 based on the company field in the employee table and not the name of the
 company
 
-left join and specify fields from joined table - specified on the left
+``left join`` and specify fields from joined table - specified on the left
 parameter of Grid instantiation
 
 .. code:: python
@@ -485,11 +542,10 @@ parameter of Grid instantiation
 
 You can specify a standard PyDAL left join, including a list of joins to
 consider.
-
 Now the company name field can be included in your fields list can be
 clicked on and sorted.
 
-Now you can also specify a query such as:
+Also you can specify a query such as:
 
 .. code:: python
 
