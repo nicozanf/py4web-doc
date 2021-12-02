@@ -83,27 +83,94 @@ Create a new minimal app called ``grid``. Change it with the following content.
    @action('index/<path:path>', method=['POST', 'GET'])
    @action.uses(db, 'grid.html')
    def index(path=None):
-      grid = Grid(path,
+         grid = Grid(path,
+                  formstyle=FormStyleDefault, # FormStyleDefault or FormStyleBulma
+                  grid_class_style=GridClassStyle, #GridClassStyle or GridClassStyleBulma      
                   query=(db.person.id > 0),
                   orderby=[db.person.name],
                   search_queries=[['Search by Name', lambda val: db.person.name.contains(val)]])
 
       return dict(grid=grid)
 
-Copy _scaffold/templates/layout.html to the company/templates folder. Add a new file templates/grid.html
-with this content:
+Add a new file templates/grid.html with this basic content:
 
 ::
 
-   [[extend 'layout.html']]
    [[=grid.render()]]
 
-Then restart py4web. If you browse to  you'll get this:
+Then restart py4web. If you browse to http://127.0.0.1:8000/grid/index you'll get this
+result:
 
 .. image:: images/grid.png
 
 
 Its layout is quite minimal, but it's perfectly usable.
+
+The main problem is that by default the no.css stylesheet is used, see
+`here <https://github.com/mdipierro/no.css/>`__. But we've not loaded it!
+Change the file templates/grid.html with this content:
+
+::
+
+   <!DOCTYPE html>
+   <html>
+      <head>
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"  />
+      </head>
+      <body>
+         [[=grid.render()]]
+      <body>
+   </html>
+
+
+
+Then refresh the page.
+
+
+.. image:: images/grid_nocss.png
+
+
+This is better now, with proper icons for Details, Edit and Delete actions.
+
+We can also think about using the bulma.css, 
+see `here <https://bulma.io/>`__. In this case you need to change
+the grid object on __init__.py to:
+
+.. code:: python
+
+
+   formstyle=FormStyleBulma, # FormStyleDefault or FormStyleBulma
+   grid_class_style=GridClassStyleBulma, #GridClassStyle or GridClassStyleBulma
+
+You also need to change the file templates/grid.html with this content:
+
+::
+
+   <!DOCTYPE html>
+   <html>
+      <head>
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+      </head>
+      <body>
+            [[=grid.render()]]
+      <body>
+   </html>
+
+Then refresh the page.
+
+.. image:: images/grid_bulmacss.png
+
+
+This is much better, isn't it?
+
+
+.. Note::
+   These are just minimal examples for showing how ``grid`` works internally.
+   Normally you should start from a copy of the standard ``_scaffold`` app, with all
+   the Session and Authentication stuff already defined. Also, you should
+   follow the standard rules for code, like placing the db definition inside
+   models.py and so on.
+   Using standards will make your code simpler, safer and more maintainable.
 
 
 The Grid object
@@ -287,188 +354,10 @@ You can provide your own formstyle or grid classes and style to grid.
    used for certain portions of the grid.
 
 The default GridClassStyle - based on no.css, primarily uses styles to
-modify the layout of the grid
+modify the layout of the grid. We've already seen that it's possible
+to use other class_style, in particular GridClassStyleBulma.
 
-.. code:: python
-
-   class GridClassStyle:
-
-       """
-       Default grid style
-       Internal element names match default class name, other classes can be added
-       Style use should be minimized since it cannot be overridden by CSS
-       """
-
-       classes = {
-           "grid-wrapper": "grid-wrapper",
-           "grid-header": "grid-header",
-           "grid-new-button": "grid-new-button info",
-           "grid-search": "grid-search",
-           "grid-table-wrapper": "grid-table-wrapper",
-           "grid-table": "grid-table",
-           "grid-sorter-icon-up": "grid-sort-icon-up fas fa-sort-up",
-           "grid-sorter-icon-down": "grid-sort-icon-down fas fa-sort-down",
-           "grid-th-action-button": "grid-col-action-button",
-           "grid-td-action-button": "grid-col-action-button",
-           "grid-tr": "",
-           "grid-th": "",
-           "grid-td": "",
-           "grid-details-button": "grid-details-button info",
-           "grid-edit-button": "grid-edit-button info",
-           "grid-delete-button": "grid-delete-button info",
-           "grid-footer": "grid-footer",
-           "grid-info": "grid-info",
-           "grid-pagination": "grid-pagination",
-           "grid-pagination-button": "grid-pagination-button info",
-           "grid-pagination-button-current": "grid-pagination-button-current default",
-           "grid-cell-type-string": "grid-cell-type-string",
-           "grid-cell-type-text": "grid-cell-type-text",
-           "grid-cell-type-boolean": "grid-cell-type-boolean",
-           "grid-cell-type-float": "grid-cell-type-float",
-           "grid-cell-type-int": "grid-cell-type-int",
-           "grid-cell-type-date": "grid-cell-type-date",
-           "grid-cell-type-time": "grid-cell-type-time",
-           "grid-cell-type-datetime": "grid-cell-type-datetime",
-           "grid-cell-type-upload": "grid-cell-type-upload",
-           "grid-cell-type-list": "grid-cell-type-list",
-           # specific for custom form
-           "search_form": "search-form",
-           "search_form_table": "search-form-table",
-           "search_form_tr": "search-form-tr",
-           "search_form_td": "search-form-td",
-       }
-
-       styles = {
-           "grid-wrapper": "",
-           "grid-header": "display: table; width: 100%",
-           "grid-new-button": "display: table-cell;",
-           "grid-search": "display: table-cell; float:right",
-           "grid-table-wrapper": "overflow-x: auto; width:100%",
-           "grid-table": "",
-           "grid-sorter-icon-up": "",
-           "grid-sorter-icon-down": "",
-           "grid-th-action-button": "",
-           "grid-td-action-button": "",
-           "grid-tr": "",
-           "grid-th": "white-space: nowrap; vertical-align: middle",
-           "grid-td": "white-space: nowrap; vertical-align: middle",
-           "grid-details-button": "margin-bottom: 0",
-           "grid-edit-button": "margin-bottom: 0",
-           "grid-delete-button": "margin-bottom: 0",
-           "grid-footer": "display: table; width:100%",
-           "grid-info": "display: table-cell;",
-           "grid-pagination": "display: table-cell; text-align:right",
-           "grid-pagination-button": "min-width: 20px",
-           "grid-pagination-button-current": "min-width: 20px; pointer-events:none; opacity: 0.7",
-           "grid-cell-type-string": "white-space: nowrap; vertical-align: middle; text-align: left; text-overflow: ellipsis; max-width: 200px",
-           "grid-cell-type-text": "vertical-align: middle; text-align: left; text-overflow: ellipsis; max-width: 200px",
-           "grid-cell-type-boolean": "white-space: nowrap; vertical-align: middle; text-align: center",
-           "grid-cell-type-float": "white-space: nowrap; vertical-align: middle; text-align: right",
-           "grid-cell-type-int": "white-space: nowrap; vertical-align: middle; text-align: right",
-           "grid-cell-type-date": "white-space: nowrap; vertical-align: middle; text-align: right",
-           "grid-cell-type-time": "white-space: nowrap; vertical-align: middle; text-align: right",
-           "grid-cell-type-datetime": "white-space: nowrap; vertical-align: middle; text-align: right",
-           "grid-cell-type-upload": "white-space: nowrap; vertical-align: middle; text-align: center",
-           "grid-cell-type-list": "white-space: nowrap; vertical-align: middle; text-align: left",
-           # specific for custom form
-           "search_form": "",
-           "search_form_table": "",
-           "search_form_tr": "",
-           "search_form_td": "",
-       }
-
-       @classmethod
-       def get(cls, element):
-           """returns a dict with _class and _style for the element name"""
-           return {
-               "_class": cls.classes.get(element),
-               "_style": cls.styles.get(element),
-           }
-
-GridClassStyleBulma - bulma implementation
-
-.. code:: python
-
-   class GridClassStyleBulma(GridClassStyle):
-       classes = {
-           "grid-wrapper": "grid-wrapper field",
-           "grid-header": "grid-header pb-2",
-           "grid-new-button": "grid-new-button button",
-           "grid-search": "grid-search is-pulled-right pb-2",
-           "grid-table-wrapper": "grid-table-wrapper table_wrapper",
-           "grid-table": "grid-table table is-bordered is-striped is-hoverable is-fullwidth",
-           "grid-sorter-icon-up": "grid-sort-icon-up fas fa-sort-up is-pulled-right",
-           "grid-sorter-icon-down": "grid-sort-icon-down fas fa-sort-down is-pulled-right",
-           "grid-th-action-button": "grid-col-action-button is-narrow",
-           "grid-td-action-button": "grid-col-action-button is-narrow",
-           "grid-tr": "",
-           "grid-th": "",
-           "grid-td": "",
-           "grid-details-button": "grid-details-button button is-small",
-           "grid-edit-button": "grid-edit-button button is-small",
-           "grid-delete-button": "grid-delete-button button is-small",
-           "grid-footer": "grid-footer",
-           "grid-info": "grid-info is-pulled-left",
-           "grid-pagination": "grid-pagination is-pulled-right",
-           "grid-pagination-button": "grid-pagination-button button is-small",
-           "grid-pagination-button-current": "grid-pagination-button-current button is-primary is-small",
-           "grid-cell-type-string": "grid-cell-type-string",
-           "grid-cell-type-text": "grid-cell-type-text",
-           "grid-cell-type-boolean": "grid-cell-type-boolean has-text-centered",
-           "grid-cell-type-float": "grid-cell-type-float",
-           "grid-cell-type-int": "grid-cell-type-int",
-           "grid-cell-type-date": "grid-cell-type-date",
-           "grid-cell-type-time": "grid-cell-type-time",
-           "grid-cell-type-datetime": "grid-cell-type-datetime",
-           "grid-cell-type-upload": "grid-cell-type-upload",
-           "grid-cell-type-list": "grid-cell-type-list",
-           # specific for custom form
-           "search_form": "search-form is-pulled-right pb-2",
-           "search_form_table": "search-form-table",
-           "search_form_tr": "search-form-tr",
-           "search_form_td": "search-form-td pr-1",
-       }
-
-       styles = {
-           "grid-wrapper": "",
-           "grid-header": "",
-           "grid-new-button": "",
-           "grid-search": "",
-           "grid-table-wrapper": "",
-           "grid-table": "",
-           "grid-sorter-icon-up": "",
-           "grid-sorter-icon-down": "",
-           "grid-th-action-button": "",
-           "grid-td-action-button": "",
-           "grid-tr": "",
-           "grid-th": "text-align: center; text-transform: uppercase;",
-           "grid-td": "",
-           "grid-details-button": "",
-           "grid-edit-button": "",
-           "grid-delete-button": "",
-           "grid-footer": "padding-top: .5em;",
-           "grid-info": "",
-           "grid-pagination": "",
-           "grid-pagination-button": "margin-left: .25em;",
-           "grid-pagination-button-current": "margin-left: .25em;",
-           "grid-cell-type-string": "",
-           "grid-cell-type-text": "",
-           "grid-cell-type-boolean": "",
-           "grid-cell-type-float": "",
-           "grid-cell-type-int": "",
-           "grid-cell-type-date": "",
-           "grid-cell-type-time": "",
-           "grid-cell-type-datetime": "",
-           "grid-cell-type-upload": "",
-           "grid-cell-type-list": "",
-           # specific for custom form
-           "search_form": "",
-           "search_form_table": "",
-           "search_form_tr": "",
-           "search_form_td": "",
-       }
-
-You can build your own class_style to be used with the css framework of
+You can even build your own class_style to be used with the css framework of
 your choice.
 
 Custom Action Buttons
