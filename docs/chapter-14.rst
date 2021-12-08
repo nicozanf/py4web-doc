@@ -77,7 +77,7 @@ result:
 
 Its layout is quite minimal, but it's perfectly usable.
 
-The main problem is that by default the no.css stylesheet is used, see
+The main problem is that by default the **no.css** stylesheet is used, see
 `here <https://github.com/mdipierro/no.css/>`__. But we've not loaded it!
 Change the file templates/grid.html with this content:
 
@@ -103,7 +103,7 @@ Then refresh the page.
 
 This is better now, with proper icons for Details, Edit and Delete actions.
 
-We can also think about using the bulma.css, 
+We can also think about using the **bulma.css**, 
 see `here <https://bulma.io/>`__. In this case you need to change
 the grid object on __init__.py to:
 
@@ -143,6 +143,8 @@ This is much better, isn't it?
    models.py and so on.
    Using standards will make your code simpler, safer and more maintainable.
 
+In the  in the  :ref:`Advanced topics and examples` chapter you can find
+more examples, including a master/detail grid example written with **htmx**.
 
 The Grid object
 ---------------
@@ -150,39 +152,42 @@ The Grid object
 .. code:: python
 
    class Grid:
-       def __init__(
-           self,
-           path,
-           query,
-           search_form=None,
-           search_queries=None,
-           columns=None,
-           show_id=False,
-           orderby=None,
-           left=None,
-           headings=None,
-           create=True,
-           details=True,
-           editable=True,
-           deletable=True,
-           pre_action_buttons=None,
-           post_action_buttons=None,
-           auto_process=True,
-           rows_per_page=15,
-           include_action_button_text=True,
-           search_button_text="Filter",
-           formstyle=FormStyleDefault,
-           grid_class_style=GridClassStyle,
-       ):
+      def __init__(
+         self,
+         path,
+         query,
+         search_form=None,
+         search_queries=None,
+         columns=None,
+         field_id=None,
+         show_id=False,
+         orderby=None,
+         left=None,
+         headings=None,
+         create=True,
+         details=True,
+         editable=True,
+         deletable=True,
+         validation=None,
+         pre_action_buttons=None,
+         post_action_buttons=None,
+         auto_process=True,
+         rows_per_page=15,
+         include_action_button_text=True,
+         search_button_text="Filter",
+         formstyle=FormStyleDefault,
+         grid_class_style=GridClassStyle,
+         T=lambda text: text,
+      ):
 
 -  path: the route of this request
 -  query: pydal query to be processed
 -  search_form: py4web FORM to be included as the search form. If
    search_form is passed in then the developer is responsible for
    applying the filter to the query passed in. This differs from
-   search_queries.
+   search_queries
 -  search_queries: list of query lists to use to build the search form.
-   Ignored if search_form is used. Format is
+   Ignored if search_form is used
 -  columns: list of fields or columns to display on the list page, 
    if blank, the table will use all readable fields of the searched table
 -  show_id: show the record id field on list page - default = False
@@ -190,10 +195,10 @@ The Grid object
 -  left: if joining other tables, specify the pydal left expression here
 -  headings: list of headings to be used for list page - if not provided
    use the field label
--  details: URL to redirect to for displaying records - set to True to
+-  create: URL to redirect to for creating records - set to True to
    automatically generate the URL - set to False to not display the
    button
--  create: URL to redirect to for creating records - set to True to
+-  details: URL to redirect to for displaying records - set to True to
    automatically generate the URL - set to False to not display the
    button
 -  editable: URL to redirect to for editing records - set to True to
@@ -202,6 +207,7 @@ The Grid object
 -  deletable: URL to redirect to for deleting records - set to True to
    automatically generate the URL - set to False to not display the
    button
+-  validation: optional validation function to pass to create and edit forms
 -  pre_action_buttons: list of action_button instances to include before
    the standard action buttons
 -  post_action_buttons: list of action_button instances to include after
@@ -218,12 +224,14 @@ The Grid object
    automatically building CRUD forms
 -  grid_class_style: GridClassStyle object used to override defaults for
    styling your rendered grid. Allows you to specify classes or styles
-   to apply at certain points in the grid.
+   to apply at certain points in the grid
+-  T: optional pluralize object
+
 
 Searching and Filtering
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
-There are two ways to build a search form.
+There are two ways to build a search form:
 
 -  Provide a search_queries list
 -  Build your own custom search form
@@ -240,7 +248,7 @@ your own search form and handle all the filtering (building the queries)
 by yourself.
 
 CRUD settings
--------------
+~~~~~~~~~~~~~
 
 The grid provides CRUD (create, read, update and delete) capabilities
 utilizing py4web Form.
