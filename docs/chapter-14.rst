@@ -6,7 +6,7 @@ py4web comes with a Grid object providing grid and CRUD (create, update and dele
 This allows you to quickly and safely provide an interface to your data. Since it's also
 highly customizable, it's the corner stone of most py4web's applications.
 
-Key Features
+Key features
 ------------
 
 -  Full CRUD with Delete Confirmation
@@ -18,8 +18,8 @@ Key Features
 -  Grid dates in local format
 -  Default formatting by type plus user overrides
 
-Basic Example
--------------
+Basic grid example
+------------------
 
 In this simple example we will make a grid over the superhero table.
 
@@ -41,14 +41,15 @@ Create a new minimal app called ``grid``. Change it with the following content.
    db = DAL('sqlite://storage.sqlite', folder=DB_FOLDER)
    db.define_table(
       'person',
+      Field('superhero'),
       Field('name'),
       Field('job'))
 
    # add example entries in db
    if not db(db.person).count():
-      db.person.insert(name='Clark Kent', job='Journalist')
-      db.person.insert(name='Peter Park', job='Photographer')
-      db.person.insert(name='Bruce Wayne', job='CEO')
+      db.person.insert(superhero='Superman', name='Clark Kent', job='Journalist')
+      db.person.insert(superhero='Spiderman', name='Peter Park', job='Photographer')
+      db.person.insert(superhero='Batman', name='Bruce Wayne', job='CEO')
       db.commit()
 
    @action('index', method=['POST', 'GET'])
@@ -195,8 +196,9 @@ The Grid object
    search_queries
 -  search_queries: list of query lists to use to build the search form.
    Ignored if search_form is used
--  columns: list of fields or columns to display on the list page, 
-   if blank, the table will use all readable fields of the searched table
+-  columns: list of fields or columns to display on the list page,
+   see the :ref:`Custom columns` paragraph later.
+   If blank, the table will use all readable fields of the searched table
 -  show_id: show the record id field on list page - default = False
 -  orderby: pydal orderby field or list of fields
 -  left: if joining other tables, specify the pydal left expression here
@@ -235,7 +237,7 @@ The Grid object
 -  T: optional pluralize object
 
 
-Searching and Filtering
+Searching and filtering
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 There are two ways to build a search form:
@@ -266,7 +268,7 @@ Additionally, you can provide a separate URL to the
 create/details/editable/deletable parameters to bypass the
 auto-generated CRUD pages and handle the detail pages yourself.
 
-Custom Columns
+Custom columns
 --------------
 
 If the grid does not involve a join but displays results from a single table
@@ -278,17 +280,19 @@ you can specify a list of columns. Columns are highly customizable.
    from yatl helpers import A
 
    columns = [
-      db.company.id,
-      db.company.name,
-      Column("Web Site", lambda row: f"https://{row.name}.com"),
-      Column("Go To", lambda row: A("link", _href=f"https://{row.name}.com"))
+      db.person.id,
+      db.person.superhero,
+      db.person.name,
+      db.person.job,
+      Column("Web Site", lambda row: f"https://{row.superhero}.com"),
+      Column("Go To", lambda row: A("link", _href=f"https://{row.superhero}.com"))
    ]
 
    grid = Grid(... columns=columns ...) 
 
-Notice in this example the first two columns are regular fields,
-The third column has a header "Web Site" and consists of URL strings generated from the rows.
-The fourth column has a header "Go To" and generates actual clickable links using the ``A`` helper.
+Notice in this example the first columns are regular fields,
+The fifth column has a header "Web Site" and consists of URL strings generated from the rows.
+The last column has a header "Go To" and generates actual clickable links using the ``A`` helper.
 
 
 Using templates
@@ -302,8 +306,8 @@ Display the grid or a CRUD Form
 
    [[=grid.render()]]
 
-To allow for customizing CRUD form layout (like with web2py) you can use
-the following
+You can customize the CRUD form layout like a normal form (see :ref:`Custom forms`). So you can use
+the following structure:
 
 ::
 
@@ -313,8 +317,9 @@ the following
    [[form.custom["submit"]
    [[form.custom["end"]
 
-When handling custom form layouts you need to know if you are displaying
-the grid or a form. Use the following to decide
+
+But notice that when handling custom form layouts you need to know if you are displaying
+the grid or a form. Use the following to decide:
 
 ::
 
@@ -329,7 +334,8 @@ the grid or a form. Use the following to decide
        [[grid.render() ]]
    [[pass]]
 
-Customizing Style
+
+Customizing style
 -----------------
 
 You can provide your own formstyle or grid classes and style to grid.
@@ -339,50 +345,89 @@ You can provide your own formstyle or grid classes and style to grid.
 -  grid_class_style is a class that provides the classes and/or styles
    used for certain portions of the grid.
 
-The default GridClassStyle - based on no.css, primarily uses styles to
+The default ``GridClassStyle`` - based on **no.css**, primarily uses styles to
 modify the layout of the grid. We've already seen that it's possible
-to use other class_style, in particular GridClassStyleBulma.
+to use other class_style, in particular ``GridClassStyleBulma``.
 
 You can even build your own class_style to be used with the css framework of
-your choice.
+your choice. Unfortunately, one based on **bootstrap** is still missing.
+
 
 Custom Action Buttons
 ---------------------
 
 As with web2py, you can add additional buttons to each row in your grid.
-You do this by providing pre_action_buttons or post_action_buttons to
+You do this by providing ``pre_action_buttons`` or ``post_action_buttons`` to
 the Grid **init** method.
 
--  pre_action_buttons - list of action_button instances to include
+-  ``pre_action_buttons`` - list of action_button instances to include
    before the standard action buttons
--  post_action_buttons - list of action_button instances to include
+-  ``post_action_buttons`` - list of action_button instances to include
    after the standard action buttons
 
 You can build your own Action Button class to pass to pre/post action
-buttons based on the template below (this is not provided with py4web)
+buttons based on the template below (this is not provided with py4web).
 
 Sample Action Button Class
---------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-   def __init__(self,
-                url,
-                text,
-                icon="fa-calendar",
-                additional_classes=None,
-                message=None,
-                append_id=False):
+   class GridActionButton:
+      def __init__(
+         self,
+         url,
+         text=None,
+         icon=None,
+         onclick=None,
+         additional_classes="",
+         message="",
+         append_id=False,
+         ignore_attribute_plugin=False,
+      ):
+         self.url = url
+         self.text = text
+         self.icon = icon
+         self.onclick = onclick
+         self.additional_classes = additional_classes
+         self.message = message
+         self.append_id = append_id
+         self.ignore_attribute_plugin = ignore_attribute_plugin
 
 -  url: the page to navigate to when the button is clicked
 -  text: text to display on the button
--  icon: the font-awesome icon to display before the text
+-  icon: the font-awesome icon to display before the text, for example
+   "fa-calendar"
 -  additional_classes: a space-separated list of classes to include on
    the button element
 -  message: confirmation message to display if ‘confirmation’ class is
    added to additional classes
 -  append_id: if True, add id_field_name=id_value to the url querystring
    for the button
+
+After defining the custom GridActionButton class, you need to define
+your Action buttons:
+
+.. code:: python
+
+   myshowperson_button=GridActionButton(
+      url='https://example.com/show_person',
+      icon='https://example.com/images/icon.jpg',
+      text='Show his face',
+      append_id=True)
+
+   myshowhero_button=GridActionButton(
+      url='https://example.com/show_superhero',
+      icon='https://example.com/images/icon_hero.jpg',
+      text='Show his superhero face',
+      append_id=True)
+
+Finally, you need to reference them in the Grid definition:
+
+.. code:: python
+
+   grid = Grid(... post_action_buttons=[myshowperson_button, myshowhero_button] ...) 
+
 
 Reference Fields
 ----------------
