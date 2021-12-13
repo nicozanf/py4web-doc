@@ -150,7 +150,12 @@ This is much better, isn't it?
    models.py and so on.
    Using standards will make your code simpler, safer and more maintainable.
 
-In the  in the  :ref:`Advanced topics and examples` chapter you can find
+   Also, do not use grid objects directly on the root action of an app, because
+   it does not add the 'index' route. So, in this example if you browse to 
+   http://127.0.0.1:8000/grid the main page is displayed fine but any contained
+   action will lead to a non existent page.
+
+In the :ref:`Advanced topics and examples` chapter you can find
 more examples, including a master/detail grid example written with **htmx**.
 
 
