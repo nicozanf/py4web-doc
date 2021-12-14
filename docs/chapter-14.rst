@@ -434,6 +434,61 @@ Finally, you need to reference them in the Grid definition:
    grid = Grid(... post_action_buttons=[myshowperson_button, myshowhero_button] ...) 
 
 
+Using callable parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A recent improvement to py4web allows you to pass a **callable** instead of a GridActionButton. This allow you to more easily change the behaviour
+of standard and custom Actions.
+
+
+Callable can be used with:
+
+- details
+- editable
+- deletable
+- additional_classes
+- additional_styles
+- override_classes
+- override_styles
+
+
+Example usage:
+
+.. code:: python
+
+   @action("example/<path:path>")
+   def example(path=None):
+
+       pre_action_buttons = [
+           lambda row: ActionButton(
+               URL("test", row.id),
+               text="Click me",
+               icon="fa-plus",
+               additional_classes=row.id,
+               additional_styles=["height: 10px" if row.bar else None],
+           )
+       ]
+
+       post_action_buttons = [
+           lambda row: ActionButton(
+               URL("test", row.id),
+               text="Click me!!!",
+               icon="fa-plus",
+               additional_classes=row.id,
+               additional_styles=["height: 10px" if row.bar else None],
+           )
+       ]
+
+       grid = Grid(
+           path=path,
+           query=db.foo,
+           pre_action_buttons=pre_action_buttons,
+           post_action_buttons=post_action_buttons,
+       )
+
+       return dict(grid=grid.render())
+
+
 Reference Fields
 ----------------
 
