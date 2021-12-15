@@ -32,6 +32,7 @@ Create a new minimal app called ``grid``. Change it with the following content.
    from py4web import action, Field, DAL
    from py4web.utils.grid import Grid, GridClassStyleBulma
    from py4web.utils.form import Form, FormStyleBulma
+   from yatl.helpers import A
 
 
    # database definition
@@ -282,7 +283,7 @@ you can specify a list of columns. Columns are highly customizable.
 .. code:: python
 
    from py4web.utils.grid import Column
-   from yatl helpers import A
+   from yatl.helpers import A
 
    columns = [
       db.person.id,
@@ -460,7 +461,7 @@ Example usage:
    def example(path=None):
 
        pre_action_buttons = [
-           lambda row: ActionButton(
+           lambda row: GridActionButton(
                URL("test", row.id),
                text="Click me",
                icon="fa-plus",
@@ -470,7 +471,7 @@ Example usage:
        ]
 
        post_action_buttons = [
-           lambda row: ActionButton(
+           lambda row: GridActionButton(
                URL("test", row.id),
                text="Click me!!!",
                icon="fa-plus",
