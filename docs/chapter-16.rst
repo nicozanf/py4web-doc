@@ -7,7 +7,6 @@ Advanced topics and examples
 py4web and asyncio
 ------------------
 
-py4web (as bottle) is thread-based, with high speed and efficient memory usage.
 Asyncio is not strictly needed, at least for most of the normal use
 cases where it will add problems more than value because of its concurrency model.
 On the other hand, we think py4web needs a built-in websocket async based solution.
@@ -33,6 +32,7 @@ in HTML, using attributes, so you can build modern user interfaces with the simp
 
 Read all about htmx and its capabilities on the official site at https://htmx.org . If you prefer,
 there is also a video tutorial: `Simple, Fast Frontends With htmx <https://www.youtube.com/watch?v=cBfz4W_KvEI>`__ .
+
 
 py4web enables htmx integration in a couple of ways.
 
