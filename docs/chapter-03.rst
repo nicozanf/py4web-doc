@@ -278,7 +278,6 @@ running it without any argument
 
    # py4web
 
-.. FIXME: next image must be updated
 
 .. image:: images/command.png
    :class: with-shadow
@@ -370,6 +369,9 @@ This currently gives an error on binaries installations and from source installa
 
      --ssl_cert PATH               SSL certificate file for HTTPS
      --ssl_key PATH                SSL key file for HTTPS
+     --errorlog TEXT               Where to send error logs
+                                   (:stdout|:stderr|tickets_only|{filename})
+                                   [default: :stderr]
      -help, -h, --help             Show this message and exit.
 
 
@@ -602,4 +604,3 @@ Watch the `YouTube video <https://youtu.be/Wxjl_vkLAEY>`__ and follow the `detai
 tutorial <https://github.com/tomcam/py4webcasts/blob/master/docs/how-install-source-pythonanywhere.md>`__
 . The bottle_app.py script is in
 ``py4web/deployment_tools/pythonanywhere.com/bottle_app.py``
-
