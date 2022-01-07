@@ -215,13 +215,13 @@ The Grid object
    button
 -  details: URL to redirect to for displaying records - set to True to
    automatically generate the URL - set to False to not display the
-   button
+   button (*)
 -  editable: URL to redirect to for editing records - set to True to
    automatically generate the URL - set to False to not display the
-   button
+   button (*)
 -  deletable: URL to redirect to for deleting records - set to True to
    automatically generate the URL - set to False to not display the
-   button
+   button (*)
 -  validation: optional validation function to pass to create and edit forms
 -  pre_action_buttons: list of action_button instances to include before
    the standard action buttons
@@ -241,6 +241,19 @@ The Grid object
    styling your rendered grid. Allows you to specify classes or styles
    to apply at certain points in the grid
 -  T: optional pluralize object
+
+(*) The parameters ``details``, ``editable`` and ``deletable`` can also take a **callable** that will 
+be passed the current row of the grid. This is useful because you can then turn a button on or off
+depending on the values in the row. In other words,
+instead of providing a simple Boolean value you can use an expression like:
+
+
+.. code:: python
+
+      deletable=lambda row: False if row.job=="CEO" else True,
+
+
+See also :ref:`Using callable parameters` later on.
 
 
 Searching and filtering
@@ -416,23 +429,18 @@ your Action buttons:
 
 .. code:: python
 
-   myshowperson_button=GridActionButton(
-      url='https://example.com/show_person',
-      icon='https://example.com/images/icon.jpg',
-      text='Show his face',
-      append_id=True)
-
-   myshowhero_button=GridActionButton(
-      url='https://example.com/show_superhero',
-      icon='https://example.com/images/icon_hero.jpg',
-      text='Show his superhero face',
-      append_id=True)
+    pre_action_buttons = [
+        lambda row: GridActionButton(
+            lambda row: f"https://www.google.com/search?q={row.superhero}", 
+            text= f"Google for {row.superhero}",
+        )
+    ]
 
 Finally, you need to reference them in the Grid definition:
 
 .. code:: python
 
-   grid = Grid(... post_action_buttons=[myshowperson_button, myshowhero_button] ...) 
+   grid = Grid(... pre_action_buttons = pre_action_buttons  ...) 
 
 
 Using callable parameters
