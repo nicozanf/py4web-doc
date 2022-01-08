@@ -57,12 +57,12 @@ Create a new minimal app called ``grid``. Change it with the following content.
    @action('index/<path:path>', method=['POST', 'GET'])
    @action.uses(db, 'grid.html')
    def index(path=None):
-         grid = Grid(path,
-                  formstyle=FormStyleDefault, # FormStyleDefault or FormStyleBulma
-                  grid_class_style=GridClassStyle, # GridClassStyle or GridClassStyleBulma      
-                  query=(db.person.id > 0),
-                  orderby=[db.person.name],
-                  search_queries=[['Search by Name', lambda val: db.person.name.contains(val)]])
+      grid = Grid(path,
+               formstyle=FormStyleDefault, # FormStyleDefault or FormStyleBulma
+               grid_class_style=GridClassStyle, # GridClassStyle or GridClassStyleBulma      
+               query=(db.person.id > 0),
+               orderby=[db.person.name],
+               search_queries=[['Search by Name', lambda val: db.person.name.contains(val)]])
 
       return dict(grid=grid)
 
@@ -121,7 +121,7 @@ Notice that in this case you need to import the corresponding python modules in 
 you don't need to manually import its style modules (and you even don't need the formstyle
 and grid_class_style parameters).
 
-You also need to change the file templates/grid.html with this content:
+You also have to change the file templates/grid.html with this content:
 
 ::
 
@@ -312,6 +312,13 @@ you can specify a list of columns. Columns are highly customizable.
 Notice in this example the first columns are regular fields,
 The fifth column has a header "Web Site" and consists of URL strings generated from the rows.
 The last column has a header "Go To" and generates actual clickable links using the ``A`` helper.
+This is the result:
+
+.. image:: images/grid_colums.png
+
+Notice that we've also used the ``deletable`` parameter in order to disable and hide it for
+Batman only, as explained before.
+
 
 
 Using templates
