@@ -314,7 +314,7 @@ The fifth column has a header "Web Site" and consists of URL strings generated f
 The last column has a header "Go To" and generates actual clickable links using the ``A`` helper.
 This is the result:
 
-.. image:: images/grid_colums.png
+.. image:: images/grid_columns.png
 
 Notice that we've also used the ``deletable`` parameter in order to disable and hide it for
 Batman only, as explained before.
