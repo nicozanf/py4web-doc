@@ -6,6 +6,7 @@ py4web comes with a Grid object providing grid and CRUD (create, update and dele
 This allows you to quickly and safely provide an interface to your data. Since it's also
 highly customizable, it's the corner stone of most py4web's applications.
 
+
 Key features
 ------------
 
@@ -17,6 +18,13 @@ Key features
 -  Pre and Post Action (add your own buttons to each row)
 -  Grid dates in local format
 -  Default formatting by type plus user overrides
+
+.. Hint::
+
+   There is an excellent grid tutorial made by Jim Steil on https://github.com/jpsteil/grid_tutorial.
+   You're strongly advised to check it for any doubt and for finding many precious examples,
+   hints & tips.
+
 
 Basic grid example
 ------------------
@@ -55,7 +63,7 @@ Create a new minimal app called ``grid``. Change it with the following content.
 
    @action('index', method=['POST', 'GET'])
    @action('index/<path:path>', method=['POST', 'GET'])
-   @action.uses(db, 'grid.html')
+   @action.uses('grid.html', db)
    def index(path=None):
       grid = Grid(path,
                formstyle=FormStyleDefault, # FormStyleDefault or FormStyleBulma
@@ -158,6 +166,7 @@ This is much better, isn't it?
 
 In the :ref:`Advanced topics and examples` chapter you can find
 more examples, including a master/detail grid example written with **htmx**.
+And don't forget Jim Steil's detailed tutorial on https://github.com/jpsteil/grid_tutorial.
 
 
 The Grid object
@@ -319,6 +328,14 @@ This is the result:
 Notice that we've also used the ``deletable`` parameter in order to disable and hide it for
 Batman only, as explained before.
 
+.. Warning::
+
+   Do not define columns outside of the controller methods that use them, otherwise the
+   structure of the table will change every time the user press the refresh button of the browser!
+   
+   The reason is that each time the grid displays,
+   it modifies the 'columns' variable (in the grid) by adding the action buttons to it. So, if columns are
+   defined outside of the controller method, it just keeps adding the actions column.
 
 
 Using templates
@@ -545,7 +562,7 @@ Also you can specify a query such as:
 
 .. code:: python
 
-   queries.append((db.employee.last_name.contains(search_text)) | (db.employee.first_name.contains(search_text)) | db.company.name.contains(search_text)))
+   queries.append((db.employee.last_name.contains(search_text)) | (db.employee.first_name.contains(search_text)) | db.company.name.contains(search_text))
 
 This method allows you to sort and filter, but doesn’t allow you to
 combine fields to be displayed together as the filter_out method would
