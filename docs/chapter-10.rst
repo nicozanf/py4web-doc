@@ -851,7 +851,7 @@ and it's inside the libs/helpers.py module of your app, you could use this in **
    from .libs.helpers import sidebar_menu
 
    @action(...)
-   @action.uses(Inject(sidebar_menu=sidebar_menu), "index.html")
+   @action.uses("index.html", Inject(sidebar_menu=sidebar_menu))
    def index(): ....
 
 OR
@@ -871,4 +871,3 @@ Then you can import the needed code in the index.html template in a clean way:
 .. code:: html
 
    [[=sidebar_menu]]
-
