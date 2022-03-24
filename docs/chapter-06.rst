@@ -484,6 +484,75 @@ of files per folder by using subfolders, and implement file locking. Yet
 we do not recommend storing sessions on the filesystem: it is
 inefficient and does not scale well.
 
+The Condition fixture
+---------------------
+
+Some times you want to restrict access to an action based on a
+given condition. For example to enforce a worflow:
+
+.. code:: python
+
+   @action("step1")
+   @action.uses(session)
+   def step1():
+       session["step_completed"] = 1
+       button = A("next", _href=URL("step2"))
+       return locals()
+
+   @action("step2")
+   @action.uses(session, Condition(lambda: session.get("step_completed") == 1))
+   def step2():
+       session["step_completed"] = 2
+       button = A("next", _href=URL("step3"))
+       return locals()
+
+   @action("step3")
+   @action.uses(session, Condition(lambda: session.get("step_completed") == 2))
+   def step3():
+       session["step_completed"] = 3
+       button = A("next", _href=URL("index"))
+       return locals()
+
+Notice that the Condition fixtures takes a function as first argument
+which is called `on_request` and must evaluate to True or False.
+
+Also notice that in the above example the Condition dependes on the Session
+therefore it must be listed after `session` in `action.uses`.
+
+If False, by default, the Condition fixture raises 404.
+It is possible to specify a different exception:
+
+.. code:: python
+
+   Condition(cond, exception=HTTP(400))
+
+It is also possible to call a function before the exception is raised,
+for example, to redirect to another page:
+
+.. code:: python
+
+   Condition(cond, on_false=lambda: redirect(URL('step1')))
+
+You can use condition to check permissions. For example, assming you are using
+`Tags` as explained in chapter 13 and you are giving group memberships to users,
+then you can require that users action have specific group membership:
+
+.. code:: python
+
+   groups = Tags(db.auth_user)
+
+   def requires_membership(group_name):
+       return Condition(
+          lambda: group_name in groups.get(auth.user_id),
+          exception=HTTP(404)
+       )
+
+   @action("payroll")
+   @action.uses(auth, requires_membership("employees"))
+   def payroll():
+       return
+
+
 The URLsigner fixture
 ---------------------
 
@@ -664,7 +733,7 @@ A fixture is an object with the following minimal structure:
        def on_success(self, context): pass
        def on_error(self, context) pass
 
-For example in the DAL fixture case, `on_request` starts a trasaction,
+For example in the DAL fixture case, `on_request` starts a transaction,
 `on_success` commits it, and `on_error` rolls it back.
 
 In the case of a template, `on_request` and `on_error` do nothing but
@@ -674,7 +743,7 @@ In the case of `auth.user` fixtures, `on_request` does all the work of
 determining if the user is logged in (from the dependent session fixture)
 and eventually preventing the request from accessing the inner layers.
 
-Now imagine a request coming in calling an action with three fixures A, B, and C.
+Now imagine a request coming in calling an action with three fixtures A, B, and C.
 Under normal circumstances above methods are executed in this order:
 
 .. code::
@@ -694,8 +763,8 @@ and outer layers will call `on_error` instead of `on_success`.
 Context is a shared object which contains:
 
 - content['fixtures']: the list of all the fixtures for the action.
-- context['processed']: the list of fixtures that called `on_request` previouly within the request.
-- context['exception']: the exception raised by the action or any previous fuxture logic (usually None)
+- context['processed']: the list of fixtures that called `on_request` previously within the request.
+- context['exception']: the exception raised by the action or any previous fixture logic (usually None)
 - context['output']: the action output.
 
 `on_success` and `on_error` can see the current `context['exception']` and
@@ -718,7 +787,7 @@ For example here is a fixture that transforms the output text to upper case:
 Notice that this fixture assumes the `context['output']` is a string
 and therefore it must come before the template.
 
-Here is a fixture that logs exeptions tracebacks to a file:
+Here is a fixture that logs exceptions tracebacks to a file:
 
 .. code:: python
 
@@ -736,7 +805,7 @@ Here is a fixture that logs exeptions tracebacks to a file:
    def index(): return 1/0
 
 Fixtures also have a `__prerequisite__` attribute. If a fixture
-takes another fixture as an argument, its value must be appeneded
+takes another fixture as an argument, its value must be appended
 to the list of `__prerequisites__`. This guarantees that they are
 always executed in the proper order even if listed in the wrong order.
 It also makes it optional to declare prerequisite fixtures in `action.uses`.
@@ -766,7 +835,7 @@ They all need to know what the context is and whether they are
 processing a new request or a response and whether the response is a success
 or an error. We believe this logic keeps the fixtures easy.
 
-Fixtures should not in general comunicate with each other but nothing
+Fixtures should not in general communicate with each other but nothing
 prevents one fixture to put data in the context and another fixture to
 retrieve that data.
 
