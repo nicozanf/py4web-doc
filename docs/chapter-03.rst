@@ -372,6 +372,9 @@ This currently gives an error on binaries installations and from source installa
      --errorlog TEXT               Where to send error logs
                                    (:stdout|:stderr|tickets_only|{filename})
                                    [default: :stderr]
+     -L, --logging_level INTEGER   The log level (0 - 50) [default: 30
+                                   (=WARNING)]
+     -D, --debug                   Debug switch  [default: False]
      -help, -h, --help             Show this message and exit.
 
 
@@ -390,6 +393,14 @@ to avoid unneded checks (but you will need to restart py4web for activating any 
 The default web server used is currently rocketServer, but you can change this behaviour with the ``server`` option.
 `Rocket3 <https://github.com/web2py/rocket3>`__  is the multi-threaded web server used by web2py stripped of all the
 Python2 logic and dependencies.
+
+The logging_level values are defined in the **logging** standard python module. The default value is 30 (it corresponds
+to WARNING). Other common values are 0 (NOTSET), 10 (DEBUG), 20 (INFO), 40 (ERROR) and 50 (CRITICAL).
+Using them, you’re telling the library you want to handle all events from that level on up.
+
+The debug parameter automatically sets logging_level to 0 and logs all calls to fixture functions. It also logs when
+a session is found, invalid, saved.
+
 
 
 
@@ -512,8 +523,38 @@ For example, inside a shell you can
 With the ``-all`` option you’ll get the version of all the available python
 modules, too.
 
-Special deployments
--------------------
+HTTPS
+~~~~~
+
+To use https with the build-in web server (Rocket3) these are the steps:
+
+- Generate the localhost certificates. For example followed the instructions here:
+   
+   https://www.section.io/engineering-education/how-to-get-ssl-https-for-localhost/.
+
+- Restart your browser and browse securely to your web site.
+
+If you use VSCode to run py4web you may want to update the py4web launch.json file to contain:
+
+.. code:: json   
+
+    "configurations": [
+            {
+                "name": "py4web",
+                "type": "python",
+                "request": "launch",
+                "program": "${workspaceFolder}/py4web.py",
+                "args": [
+                    "run",
+                    "apps",
+                    "--ssl_cert", "/path_to/localhost.crt",
+                    "--ssl_key", "/path_to/localhost.key",
+                    "--server", "rocketServer",
+                ]
+            }
+        ]
+
+Notice that /path_to/ should be the absolute path to the location of your certificate.
 
 
 WSGI
