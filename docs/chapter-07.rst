@@ -851,7 +851,7 @@ the current application, always set ``migrate=False``.
 If the legacy table has an auto-increment integer field but it is not
 called “id”, py4web can still access it but the table definition must
 declare the auto-increment field with ‘id’ type (that is using
-``FIeld('...', 'id')``).
+``Field('...', 'id')``).
 
 Finally if the legacy table uses a primary key that is not an
 auto-increment id field it is possible to use a “keyed table”, for
@@ -1196,7 +1196,7 @@ not specify an image.
 Notice that this way multiple records may end to reference the same
 default image file and this could be a problem on a Field having
 ``autodelete`` enabled. When you do not want to allow duplicates for the
-image field (i.e. multiple records referencing the same file) but still
+image field (i.e. multiple records referencing the same file) but still
 want to set a default value for the “upload” then you need a way to copy
 the default file for each new record that does not specify an image.
 This can be obtained using a file-like object referencing the default
@@ -1598,11 +1598,11 @@ works very much like
 
 except that it calls the validators for the fields before performing the
 insert and bails out if the validation does not pass. If validation does
-not pass the errors can be found in ``ret.errors``. ``ret.errors`` holds
+not pass the errors can be found in ``ret["errors"]``. ``ret["errors"]`` holds
 a key-value mapping where each key is the field name whose validation
 failed, and the value of the key is the result from the validation error
-(much like ``form.errors``). If it passes, the id of the new record is
-in ``ret.id``. Mind that normally validation is done by the form
+(much like ``form["errors"]``). If it passes, the id of the new record is
+in ``ret["id"]``. Mind that normally validation is done by the form
 processing logic so this function is rarely needed.
 
 Similarly
@@ -1619,8 +1619,8 @@ works very much the same as
 
 except that it calls the validators for the fields before performing the
 update. Notice that it only works if query involves a single table. The
-number of updated records can be found in ``ret.updated`` and errors
-will be in ``ret.errors``.
+number of updated records can be found in ``ret["updated"]`` and errors
+will be in ``ret["errors"]``.
 
 ``drop``
 ~~~~~~~~
@@ -2173,7 +2173,7 @@ In this last expression ``person.thing`` is a shortcut for
 
    db(db.thing.owner_id == person.id)
 
-i.e. the Set of ``thing``\ s referenced by the current ``person``. This
+i.e. the Set of ``thing``\ s referenced by the current ``person``. This
 syntax breaks down if the referencing table has multiple references to
 the referenced table. In this case one needs to be more explicit and use
 a full Query.
@@ -2829,7 +2829,7 @@ One can define a ``total_price`` virtual field as
 
    db.item.total_price = Field.Virtual(lambda row: row.item.unit_price * row.item.quantity)
 
-i.e. by simply defining a new field ``total_price`` to be a
+i.e. by simply defining a new field ``total_price`` to be a
 ``Field.Virtual``. The only argument of the constructor is a function
 that takes a row and returns the computed values.
 
@@ -4455,7 +4455,7 @@ The DAL can be used from any Python program simply by doing this:
    from pydal import DAL, Field
    db = DAL('sqlite://storage.sqlite', folder='path/to/app/databases')
 
-i.e. import the DAL, connect and specify the folder which contains the
+i.e. import the DAL, connect and specify the folder which contains the
 .table files (the app/databases folder).
 
 To access the data and its attributes we still have to define all the
@@ -4779,7 +4779,7 @@ globally (not thread safe):
    from pydal.adapters.mysql import SQLAdapter
    SQLAdapter.driver = mysqldb
 
-i.e. ``mysqldb`` has to be *that module* with a .connect() method. You
+i.e. ``mysqldb`` has to be *that module* with a .connect() method. You
 can specify optional driver arguments and adapter arguments:
 
 .. code:: python

@@ -871,3 +871,4 @@ Then you can import the needed code in the index.html template in a clean way:
 .. code:: html
 
    [[=sidebar_menu]]
+

@@ -592,15 +592,14 @@ Built-in validators have constructors that take an ``error_message`` argument:
 Notice the error message is usually fist option of the constructors and you can normally
 avoid to name it. Hence the following syntax is equivalent:
 
-.. code:: python
-
-    IS_NOT_EMPTY('cannot be empty!')
-
 If you want to use internationalization like explained in a previous chapter you need to
 define your own messages and wrap the validator message in the T operator:
 
     IS_NOT_EMPTY(error_message=T('cannot be empty!'))
 
+.. code:: python
+
+    IS_NOT_EMPTY('cannot be empty!')
 
 Here is an example of a validator on a database table:
 
@@ -654,7 +653,7 @@ Text format validators
 ``IS_ALPHANUMERIC``
 ^^^^^^^^^^^^^^^^^^^
 
-This validator checks that a field value contains only characters in the ranges a-z, A-Z, or 0-9.
+This validator checks that a field value contains only characters in the ranges a-z, A-Z, 0-9, and underscores.
 
 .. code:: python
 
@@ -1101,7 +1100,7 @@ To force a filled-in form checkbox (such as an acceptance of terms and condition
 
 .. code:: python
     
-    requires=IS_IN_SET(['on'])
+    requires=IS_IN_SET(['ON'])
 
 
 Dictionaries and tuples with IS_IN_SET

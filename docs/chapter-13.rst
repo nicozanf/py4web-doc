@@ -153,7 +153,9 @@ a logged in user and should redirect to login if no user is logged in.
 Two Factor Authentication
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Two factor authentication (or Two-step verification) is a way of improving authentication security. When activated an extra step is added in the login process. In the first step, users are shown the standard username/password form. If they successfully pass this challenge by submitting the correct username and password, and two factor authentication is enabled for the user, the server will present a second form before logging them in.
+Two factor authentication (or Two-step verification) is a way of improving authentication security. When activated an extra step is added in the login 
+process. In the first step, users are shown the standard username/password form. If they successfully pass this challenge by submitting the correct 
+username and password, and two factor authentication is enabled for the user, the server will present a second form before logging them in.
 
 There are a few Auth settings available to control how two factor authentication works.
 
@@ -165,7 +167,9 @@ The follow can be specified on Auth instantiation:
 two_factor_required
 ^^^^^^^^^^^^^^^^^^^
 
-When you pass a method name to the two_factor_filter parameter you are telling py4web to call that method to determine whether or not this login should be use or bypass two factor authentication.  If your method returns True, then this login requires two factor.  If it returns False, two factor authentication is bypassed for this login.
+When you pass a method name to the two_factor_filter parameter you are telling py4web to call that method to determine whether or not this login should
+be use or bypass two factor authentication.  If your method returns True, then this login requires two factor.  If it returns False, 
+two factor authentication is bypassed for this login.
 
 Sample two_factor_filter method
 
@@ -191,7 +195,8 @@ This example shows how to allow users that are on a specific network.
 two_factor_send
 ^^^^^^^^^^^^^^^
 
-When two factor authentication is active, py4web generates a 6 digit code (using random.randint) and sends it to you. How this code is sent, is up to you. The two_factor_send argument to the Auth class allows you to specify the method that sends the two factor code to the user.
+When two factor authentication is active, py4web generates a 6 digit code (using random.randint) and sends it to you. How this code is sent, is up to you.
+The two_factor_send argument to the Auth class allows you to specify the method that sends the two factor code to the user.
 
 This example shows how to send an email with the two factor code:
 
@@ -210,7 +215,7 @@ This example shows how to send an email with the two factor code:
        return code
 
 Notice that this method takes to arguments: the current user, and the code to be sent.
-Also notice thid method can override the code and return a new one.
+Also notice this method can override the code and return a new one.
 
 .. code:: python
 
@@ -236,6 +241,7 @@ Once this is all setup, the flow for two factor authentication is:
    - display verification page where user can enter their code
    - upon successful verification, take user to _next_url that was passed to the login page
 
+Important! If you filtered ``ALLOWED_ACTIONS`` in your app, make sure to whitelist the "two_factor" action so not to block the two factor API.
 
 
 Auth Plugins
@@ -500,3 +506,29 @@ Notice here ``permissions.find(permission)`` generates a query for all
 groups with the permission and we further filter those groups for those
 the current user is member of. We count them and if we find any, then
 the user has the permission.
+
+User Impersonation
+~~~~~~~~~~~~~~~~~~
+
+Auth provides API that allow you to impersonate another user.
+Here is an example of an action to start impersonating and stop impersonating another user.
+
+.. code:: python
+
+   @action("impersonate/{user_id:int}", method="GET")
+   @action.uses(auth.user)
+   def start_impersonating(user_id):
+       if (not auth.is_impersonating() and
+           user_id and
+           user_id != auth.user_id and
+           db(db.auth_user.id==user_id).count()):
+           auth.start_impersonating(user_id, URL("index"))
+       raise HTTP(404)
+
+    @action("stop_impersonating", method="GET")
+    @action.uses(auth)
+    def stop_impersonating():
+       if auth and auth.is_impersonating():
+           auth.stop_impersonating(URL("index"))
+       redirect(URL("index"))
+
