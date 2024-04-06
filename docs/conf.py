@@ -22,7 +22,7 @@ copyright = '2020, BSD-3-Clause License'
 author = 'Massimo DiPierro'
 
 # The full version, including alpha/beta/rc tags
-release = '1.20210407.1'
+release = '1.2024-preview'
 
 
 # -- General configuration ---------------------------------------------------
@@ -134,11 +134,12 @@ for version in versions:
 # POPULATE LINKS TO OTHER FORMATS/DOWNLOADS
  
 # settings for creating PDF with rinoh
-rinoh_documents = [(
- master_doc,
- 'target',
- project+ ' Documentation',
- '© ' +copyright,
+rinoh_documents = [dict(
+    doc = master_doc,
+    target = 'target',
+    title = project + ' Documentation',
+    date = '© ' + copyright,
+    logo = 'images/logo.png'
 )]
 today_fmt = "%B %d, %Y"
  
