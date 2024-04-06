@@ -118,7 +118,7 @@ Many thanks to everyone who has contributed to the project, and especially:
 ..
   Comment: the list in CONTRIBUTORS.rst has been moved to the end of the README.rst file
 
-.. include:: ../README.rst
+.. include:: README.rst
   :start-after: inclusion-marker-do-not-remove
 
 Special thanks to Sam de Alfaro, who designed the official logo of py4web. We friendly call the logo "Axel the axolotl": it magically represents the sense of kindness and inclusion. We believe it's the cornerstone of our growing community.
