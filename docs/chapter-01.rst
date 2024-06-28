@@ -105,7 +105,7 @@ details if you come from web2py):
 
 The goal of PY4WEB is and remains the same as web2py’s: to make web
 development easy and accessible, while producing applications that are
-fast and secure.
+fast and secure. 
 
 
 

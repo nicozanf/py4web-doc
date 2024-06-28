@@ -210,13 +210,12 @@ Unzip it on a local folder and open a command line there. Finally run
 
 ::
 
-   py4web-start set_password
-   py4web-start run apps
+   ./py4web set_password
+   ./py4web run apps
 
-With this type of installation, remember to always use **py4web-start**
-instead of ‘py4web’ or ‘py4web.py’ in the following documentation.
+(omit './' if you're using Windows).
 
-Notice the binaries many not correspond to the latest master
+Notice: the binaries many not correspond to the latest master
 or the latest stable branch of py4web although we do our best to
 keep them up to date.      
 
@@ -237,7 +236,7 @@ If you installed py4web from pip you can simple upgrade it with
 
    ::
 
-      py4web setup apps
+      py4web setup <path to apps_folder>
 
    in order to re-install them. This is a safety precaution, in case you
    made changes to those apps.
@@ -275,7 +274,7 @@ two apps in this folder: **Dashboard** (``_dashboard``) and **Default**
    to avoid conflicts with apps created by you.
 
 Once py4web is running you can access a specific app at the following
-urls:
+urls from the local machine:
 
 ::
 
@@ -375,20 +374,23 @@ This currently gives an error on binaries installations and from source installa
    # py4web run -h
    Usage: py4web.py run [OPTIONS] APPS_FOLDER
 
-     Run all the applications on apps_folder
+     Run the applications on apps_folder
 
    Options:
      -Y, --yes                     No prompt, assume yes to questions
                                    [default: False]
 
-     -H, --host TEXT               Host name  [default: 127.0.0.1]
+     -H, --host TEXT               Host listening IP [default: 127.0.0.1]
      -P, --port INTEGER            Port number  [default: 8000]
+     -A, --app_names TEXT          List of apps to run, comma separated (all if omitted or
+                                   empty)
      -p, --password_file TEXT      File for the encrypted password  [default:
                                    password.txt]
-
-     -s, --server [default|wsgiref|tornado|gunicorn|gevent|waitress|
-                   geventWebSocketServer|wsgirefThreadingServer|rocketServer]
-                                   server to use  [default: default]
+     -Q, --quiet                   Suppress server output
+     -R, --routes                  Write apps routes to file
+     -s, --server                  [default|wsgiref|tornado|gunicorn|gevent|waitress|gunicorn|gunicornGevent|gevent|
+                                   geventWebSocketServer|geventWs|wsgirefThreadingServer|wsgiTh|rocketServer]
+                                   Web server to use
      -w, --number_workers INTEGER  Number of workers  [default: 0]
      -d, --dashboard_mode TEXT     Dashboard mode: demo, readonly, full, none
                                    [default: full]
@@ -405,8 +407,20 @@ This currently gives an error on binaries installations and from source installa
      -L, --logging_level INTEGER   The log level (0 - 50) [default: 30
                                    (=WARNING)]
      -D, --debug                   Debug switch  [default: False]
+     -U, --url_prefix TEXT         Prefix to add to all URLs in and out
      -help, -h, --help             Show this message and exit.
 
+
+The ``app_names`` option lets you filter which specific apps you want to serve (comma separated). If absent or empty
+all the apps in the APPS_FOLDER will be run.
+
+By default (for security reasons) the py4web framework will listen only on 127.0.0.1, i.e. localhost.
+If you need to reach it from other machines you must specify the host option,
+like ``py4web run --host 0.0.0.0 apps``.
+
+The ``url_prefix`` option is useful for routing at the py4web level. It allows mapping to multiple versions of py4web
+running on different ports as long as the url_prefix and port match the location. For example
+``py4web run --url_prefix=/abracadabra --port 8000 apps``.
 
 By default py4web will automatically reload an application upon any changes to the python files of that application.
 The reloading will occur on any first incoming request to the application that has
