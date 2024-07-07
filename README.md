@@ -21,4 +21,4 @@ Sphinx libraries are needed - see Michael's work.
 
 ** MarkMin converter
 
-The attached mm-converter.py program is a simple MarkMin to MarkDown (+ RST & HTML, using Pandoc) converter. Just place it in the same folder of the .mm files and it will try to conver them in the related subfolders. Tested with Ubuntu 20.04 an Python 3.8.4. It needs Pandoc modules installed.
+The attached mm-converter.py program is a simple MarkMin to MarkDown (+ RST & HTML, using Pandoc) converter. Just place it in the same folder of the .mm files and it will try to conver them in the related subfolders. Tested with Ubuntu 20.04 an Python 3.8.4. It needs Pandoc modules installed. 
