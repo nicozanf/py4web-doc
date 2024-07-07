@@ -581,7 +581,7 @@ Migrations_ for details). By default it's automatically set within py4web on the
 folder of the database itself, but you have to specify it when using DAL outside py4web.
 
 Note that for SQLite databases it's normally necessary,
-otherwise you'll implictly choose an in memory database (where folder and
+otherwise you'll implicitly choose an in memory database (where folder and
 migrations don't have any sense). So these constructors have the same meaning:
 
 .. code:: python
@@ -1236,7 +1236,7 @@ not specify an image.
 Notice that this way multiple records may end to reference the same
 default image file and this could be a problem on a Field having
 ``autodelete`` enabled. When you do not want to allow duplicates for the
-image field (i.e. multiple records referencing the same file) but still
+image field (i.e. multiple records referencing the same file) but still
 want to set a default value for the “upload” then you need a way to copy
 the default file for each new record that does not specify an image.
 This can be obtained using a file-like object referencing the default
@@ -2215,7 +2215,7 @@ In this last expression ``person.thing`` is a shortcut for
 
    db(db.thing.owner_id == person.id)
 
-i.e. the Set of ``thing``\ s referenced by the current ``person``. This
+i.e. the Set of ``thing``\ s referenced by the current ``person``. This
 syntax breaks down if the referencing table has multiple references to
 the referenced table. In this case one needs to be more explicit and use
 a full Query.
@@ -2765,7 +2765,7 @@ Caching selects
 The select method also takes a ``cache`` argument, which defaults to
 None. For caching purposes, it should be set to a tuple where the first
 element is the cache function with signature `(key, callback, expiration)`
-(ror example ``cache.get`` assuming ``cache``
+(for example ``cache.get`` assuming ``cache``
 is an instance of the py4web cache object), and
 the second element is the expiration time in seconds.
 
@@ -2873,7 +2873,7 @@ One can define a ``total_price`` virtual field as
 
    db.item.total_price = Field.Virtual(lambda row: row.item.unit_price * row.item.quantity)
 
-i.e. by simply defining a new field ``total_price`` to be a
+i.e. by simply defining a new field ``total_price`` to be a
 ``Field.Virtual``. The only argument of the constructor is a function
 that takes a row and returns the computed values.
 
@@ -4505,7 +4505,7 @@ The DAL can be used from any Python program simply by doing this:
    from pydal import DAL, Field
    db = DAL('sqlite://storage.sqlite', folder='path/to/app/databases')
 
-i.e. import the DAL, connect and specify the folder which contains the
+i.e. import the DAL, connect and specify the folder which contains the
 .table files (the app/databases folder).
 
 To access the data and its attributes we still have to define all the
@@ -4829,7 +4829,7 @@ globally (not thread safe):
    from pydal.adapters.mysql import SQLAdapter
    SQLAdapter.driver = mysqldb
 
-i.e. ``mysqldb`` has to be *that module* with a .connect() method. You
+i.e. ``mysqldb`` has to be *that module* with a .connect() method. You
 can specify optional driver arguments and adapter arguments:
 
 .. code:: python
