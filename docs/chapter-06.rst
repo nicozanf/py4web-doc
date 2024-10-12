@@ -345,13 +345,7 @@ and in the template:
 
 .. code:: html
 
-   ...
-   <div id="py4web-flash"></div>
-   ...
-   <script src="js/utils.js"></script>
-   [[if globals().get('flash'):]]
-   <script>utils.flash([[=XML(flash)]]);</script>
-   [[pass]]
+   <flash-alerts class="padded" data-alert="[[=globals().get('flash','')]]"></flash-alerts>
 
 By setting the value of the message in the flash helper, a flash
 variable is returned by the action and this triggers the JS in the
@@ -369,7 +363,7 @@ The client can also set/add flash messages by calling:
 
 ::
 
-   utils.flash({'message': 'hello world', 'class': 'info'});
+   Q.flash({'message': 'hello world', 'class': 'info'});
 
 py4web defaults to an alert class called ``info`` and most CSS
 frameworks define classes for alerts called ``success``, ``error``,
@@ -657,14 +651,9 @@ require that users action have specific group membership:
 
    groups = Tags(db.auth_user)
 
-   def requires_membership(group_name):
-       return Condition(
-          lambda: group_name in groups.get(auth.user_id),
-          exception=HTTP(404)
-       )
-
    @action("payroll")
-   @action.uses(auth, requires_membership("employees"))
+   @action.uses(auth, 
+                Condition(lambda: 'employees' in groups.get(auth.user_id), on_false=lambda: redirect('index')))
    def payroll():
        return
 
