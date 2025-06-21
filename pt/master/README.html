@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What is py4web? &mdash; Documentação py4web 1.2025-preview</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/toggle.css" />
+
+  
+    <link rel="shortcut icon" href="_static/logo-32x32.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/translations.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Pesquisar" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            py4web
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                master
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar docs" aria-label="Pesquisar docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <p class="caption" role="heading"><span class="caption-text">Conteúdo:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="chapter-01.html">O que é py4web?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-02.html">Ajuda, recursos e dicas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-03.html">Instalação e colocação em funcionamento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-04.html">O Dashboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-05.html">Creating an app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-06.html">Fixures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-07.html">The Database Abstraction Layer (DAL)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-08.html">The RestAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-09.html">Linguagem de template YATL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-10.html">Helpers YATL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-11.html">Internacionalização</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-12.html">Forumlários</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-13.html">Authentication and authorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-14.html">Rede</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-15.html">De web2py para py4web</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter-16.html">Advanced topics and examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">py4web</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">What is py4web?</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/nicozanf/py4web-doc/blob/master/docs/README.rst" class="fa fa-github"> Editar no GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="what-is-py4web">
+<h1>What is py4web?<a class="headerlink" href="#what-is-py4web" title="Permalink to this heading"></a></h1>
+<a class="reference external image-reference" href="https://travis-ci.com/web2py/py4web"><img alt="https://travis-ci.com/web2py/py4web.svg?branch=master" src="https://travis-ci.com/web2py/py4web.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/py4web/"><img alt="https://img.shields.io/pypi/v/py4web.svg" src="https://img.shields.io/pypi/v/py4web.svg" /></a>
+<p>PY4WEB is a web framework for rapid development of efficient database driven web applications. It is an evolution of the popular web2py framework but much faster and slicker.</p>
+<ul class="simple">
+<li><p>Main web site:  <a class="reference external" href="https://py4web.com">https://py4web.com</a></p></li>
+<li><p>GitHub repository: <a class="reference external" href="https://github.com/web2py/py4web">https://github.com/web2py/py4web</a></p></li>
+<li><p>Official documentation site: <a class="reference external" href="https://py4web.com/_documentation">https://py4web.com/_documentation</a></p></li>
+<li><p>License: <a class="reference external" href="https://github.com/web2py/py4web/blob/master/LICENSE.md">BSD-3-Clause License</a></p></li>
+</ul>
+<section id="screenshots">
+<h2>Screenshots<a class="headerlink" href="#screenshots" title="Permalink to this heading"></a></h2>
+<p>Running py4web</p>
+<img alt="docs/images/first_run.png" src="docs/images/first_run.png" />
+<p>The main Dashboard</p>
+<img alt="docs/images/dashboard_main.png" src="docs/images/dashboard_main.png" />
+<p>Editing a file in the Dashboard</p>
+<img alt="docs/images/dashboard_edit.png" src="docs/images/dashboard_edit.png" />
+<p>Editing a database in the Dashboard</p>
+<img alt="docs/images/dashboard_restapi.png" src="docs/images/dashboard_restapi.png" />
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
+<p>PY4WEB runs fine on Windows, MacOS and Linux. There are many installation procedures (see the official documentation for details) but only two of them are summarized here.</p>
+<p>The <strong>simplest way</strong> to install py4web is using binaries, but it’s only available for Windows and MacOS. It’s meant especially for newbies or students, because it does not require Python pre-installed on your system nor administrative rights. You just need to download the latest Windows or MacOS ZIP file from <a class="reference external" href="https://github.com/nicozanf/py4web-pyinstaller">this external repository</a>. Unzip it on a local folder and open a command line there. Finally run the commands (omit “./” if you’re using Windows)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./py4web-start<span class="w"> </span>set_password
+./py4web-start<span class="w"> </span>run<span class="w"> </span>apps
+</pre></div>
+</div>
+<p>The <strong>standard installation procedure</strong> for py4web on Windows, MacOS and Linux  is using pip. Its only prerequisite is Python 3.7+.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>py4web<span class="w"> </span>--no-cache-dir<span class="w"> </span>--user
+</pre></div>
+</div>
+<p>but do <strong>not</strong> type the “”–user”” option with virtualenv or a standard Windows installation which is already per-user.
+Also, if “”python3”” does not work, try with the simple “”python”” command instead.</p>
+<p>This will install the latest stable release of py4web and all its dependencies on the system’s path only. After the installation you’ll be able to start py4web on any given working folder with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>py4web<span class="w"> </span>setup<span class="w"> </span>apps
+py4web<span class="w"> </span>set_password
+py4web<span class="w"> </span>run<span class="w"> </span>apps
+</pre></div>
+</div>
+</section>
+<section id="launch-arguments">
+<h2>Launch Arguments<a class="headerlink" href="#launch-arguments" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># py4web run -h
+
+Usage: py4web.py run [OPTIONS] [APPS_FOLDER]
+
+   Run all the applications on apps_folder
+
+Options:
+-Y, --yes                     No prompt, assume yes to questions  [default:
+                              False]
+-H, --host TEXT               Host name  [default: 127.0.0.1]
+-P, --port INTEGER            Port number  [default: 8000]
+-p, --password_file TEXT      File for the encrypted password  [default:
+                             password.txt]
+-s, --server [default|wsgiref|tornado|gunicorn|gevent|waitress|
+                geventWebSocketServer|wsgirefThreadingServer|rocketServer]
+                              server to use  [default: default]
+-w, --number_workers INTEGER  Number of workers  [default: 0]
+-d, --dashboard_mode TEXT     Dashboard mode: demo, readonly, full,
+                              none  [default: full]
+--watch [off|sync|lazy]       Watch python changes and reload apps
+                              automatically, modes: off, sync, lazy
+                              [default: lazy]
+--ssl_cert PATH               SSL certificate file for HTTPS
+--ssl_key PATH                SSL key file for HTTPS
+--errorlog TEXT               Where to send error logs
+                              (:stdout|:stderr|tickets_only|{filename})
+                              [default: :stderr]
+-help, -h, --help             Show this message and exit.
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>py4web<span class="w"> </span>run<span class="w"> </span>-H<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>-P<span class="w"> </span><span class="m">8000</span><span class="w"> </span>-d<span class="w"> </span>demo<span class="w"> </span>apps
+</pre></div>
+</div>
+<p>Note that since the default (as specified above) for the host and port are 127.0.0.1 and 8000 respectively, the above command can be shortened to:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>py4web<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>demo<span class="w"> </span>apps
+</pre></div>
+</div>
+</section>
+<section id="tell-me-more">
+<h2>Tell me more<a class="headerlink" href="#tell-me-more" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>it is 10-20x faster than web2py</p></li>
+<li><p>python3.7+ only</p></li>
+<li><p>uses <a class="reference external" href="https://github.com/web2py/pydal">https://github.com/web2py/pydal</a> (same DAL as web2py) for database connection</p></li>
+<li><p>uses the same validators as web2py (they are in pyDAL)</p></li>
+<li><p>uses <a class="reference external" href="https://pypi.org/project/yatl/">yatl</a> (same as web2py but defaults to [[…]] instead of {{…}} delimiters) and <a class="reference external" href="https://pypi.org/project/renoir/">Renoir</a> for html templates</p></li>
+<li><p>uses the very similar html helpers to web2py (A, DIV, SPAN, etc.)</p></li>
+<li><p>uses <a class="reference external" href="https://github.com/web2py/pluralize">https://github.com/web2py/pluralize</a> for i18n and pluralization</p></li>
+<li><p>request, response, abort are from <a class="reference external" href="https://bottlepy.org">https://bottlepy.org</a>, using <a class="reference external" href="https://github.com/valq7711/ombott">ombott (One More BOTTle)</a>,
+which is a fast bottlepy spin-off</p></li>
+<li><p>HTTP and redirect are our own objects</p></li>
+<li><p>like web2py, it supports static asset management /{appname}/static/_0.0.0/{path}</p></li>
+<li><p>implements sessions in cookies (jwt encrypted), db, memcache, redis and custom</p></li>
+<li><p>implements a cache.memoize (Ram cache with O(1) access) <a class="reference external" href="https://dbader.org/blog/python-memoization">Memoize</a></p></li>
+<li><p>supports multiple apps under apps folder (same as web2py)</p></li>
+<li><p>unlike web2py does not use a custom importer or eval (this allow simple debugging with standard IDE)</p></li>
+<li><p>admin has been replaced by a _dashboard</p></li>
+<li><p>appadmin has been replaced by dbadmin (within _dashboard)</p></li>
+<li><p>auth logic is implemented via a «auth» vue.js custom component</p></li>
+<li><p>it comes with a Form object (like SQLFORM on web2py)</p></li>
+<li><p>it comes with a Grid object providing grid and CRUD capabilities</p></li>
+<li><p>it supports <a class="reference external" href="https://htmx.org/">htmx</a></p></li>
+<li><p>this is a work in progress and not stable yet but close to being stable</p></li>
+<li><p>there are not enough tests</p></li>
+</ul>
+</section>
+<section id="contributors">
+<h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this heading"></a></h2>
+<p>Special thanks to Sam de Alfaro, that designed the official logo of py4web. We friendly call the logo «Axel the axolotl»: it magically represents the sense of kindness
+and inclusion we believe it’s the cornerstone of our growing community.</p>
+<img alt="docs/images/logo.png" src="docs/images/logo.png" />
+<p>Many thanks to everyone who has contributed to the project, and especially:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/mdipierro">Massimo Di Pierro</a></p></li>
+<li><p><a class="reference external" href="https://github.com/lucadealfaro">Luca de Alfaro</a></p></li>
+<li><p><a class="reference external" href="https://github.com/cassiobotaro">Cassio Botaro</a></p></li>
+<li><p><a class="reference external" href="https://github.com/dan-carroll">Dan Carroll</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jpsteil">Jim Steil</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jmwolff3">John M. Wolf</a></p></li>
+<li><p><a class="reference external" href="https://github.com/MBfromOK">Micah Beasley</a></p></li>
+<li><p><a class="reference external" href="https://github.com/nicozanf">Nico Zanferrari</a></p></li>
+<li><p><a class="reference external" href="https://github.com/Pirsch">Pirsch</a></p></li>
+<li><p><a class="reference external" href="https://github.com/sugizo">sugizo</a></p></li>
+<li><p><a class="reference external" href="https://github.com/valq7711">valq7711</a></p></li>
+<li><p><a class="reference external" href="https://github.com/Kkeller83">Kevin Keller</a></p></li>
+<li><p><a class="reference external" href="mailto:sam&#37;&#52;&#48;dealfaro&#46;com">Sam de Alfaro</a> (logo design)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, BSDv3 License.</p>
+  </div>
+
+  Compilado com <a href="https://www.sphinx-doc.org/">Sphinx</a> usando um
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornecido por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Read the Docs</span>
+      
+      
+     <span class="fa fa-element">
+     <input class="container_toggle" type="checkbox" id="switch" name="mode">
+     <label for="switch"></label>
+     </span>
+      
+      v: master
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      
+      <dl>
+        <dt>Idiomas</dt>
+        
+          
+          <dd><a href="/py4web-doc/en/master/">en</a></dd>
+          
+        
+           <strong> 
+          <dd><a href="/py4web-doc/pt/master/">pt</a></dd>
+           </strong> 
+        
+      </dl>
+      
+      
+      <dl>
+        <dt>Versões</dt>
+        
+           <strong> 
+          <dd><a href="/py4web-doc/pt/master/">master</a></dd>
+           </strong> 
+        
+      </dl>
+      
+      
+      <dl>
+        <dt>Transferências</dt>
+        
+          <dd><a href="/py4web-doc/pt/master/py4web-doc_pt_master.pdf">pdf</a></dd>
+        
+          <dd><a href="/py4web-doc/pt/master/py4web-doc_pt_master.epub">epub</a></dd>
+        
+      </dl>
+      
+      
+      <hr/>
+      Free document hosting provided by <a href="https://pages.github.com/">GitHub Pages</a>.
+ 
+    </div>
+  </div>
+
+ <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+  <style>
+         .wy-nav-content { max-width: none; }
+  </style>
+
+
+
+</body>
+</html>
