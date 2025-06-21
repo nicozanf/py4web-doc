@@ -46,7 +46,7 @@ details if you come from web2py):
 
 -  PY4WEB, unlike web2py, requires Python 3.
 -  PY4WEB, unlike web2py, can be installed using pip, and its
-   dependencies are managed using requirements.txt.
+   dependencies are managed using pyproject.toml
 -  PY4WEB apps are regular Python modules. This is very different from
    web2py. In particular, we ditched the custom importer, and we rely
    now exclusively on the regular Python import mechanism.
@@ -105,7 +105,7 @@ details if you come from web2py):
 
 The goal of PY4WEB is and remains the same as web2py’s: to make web
 development easy and accessible, while producing applications that are
-fast and secure. 
+fast and secure.
 
 
 
@@ -118,7 +118,7 @@ Many thanks to everyone who has contributed to the project, and especially:
 ..
   Comment: the list in CONTRIBUTORS.rst has been moved to the end of the README.rst file
 
-.. include:: README.rst
+.. include:: ../README.rst
   :start-after: inclusion-marker-do-not-remove
 
 Special thanks to Sam de Alfaro, who designed the official logo of py4web. We friendly call the logo "Axel the axolotl": it magically represents the sense of kindness and inclusion. We believe it's the cornerstone of our growing community.
