@@ -30,19 +30,11 @@ A little taste of pyDAL features:
 - Inner & Outer Joins
 - Nested Selects
 
-py4web model
-~~~~~~~~~~~~
+.. note::
 
-Even if web2py and py4web use the same pyDAL, there are important differences (see 
-:ref:`From web2py to py4web` for details). The main caveat is that in py4web only
-the action is executed for every HTTP request, while the code defined outside of
-actions is only executed at startup. That makes py4web much faster, in particular
-when there are many tables. The downside of this approach is that the developer
-should be careful to never override pyDAL variables inside action or in any way
-that depends on the content of the request object, else the code is not thread safe.
-The only variables that can be changed at will are the following field attributes:
-readable, writable, requires, update, and default.
-All the others are for practical purposes to be considered global and non thread safe.
+   An important difference between py4web and web2py is that only some few Field attributes are
+   safe to modify in actions. See :ref:`Thread safety and Field attributes` for more info, and
+   :ref:`From web2py to py4web` for a general list of differences.
 
 Supported databases
 ~~~~~~~~~~~~~~~~~~~
@@ -1055,14 +1047,38 @@ only for fields of type “string”. ``uploadfield``, ``authorize``, and
 -  ``authorize`` can be used to require access control on the
    corresponding field, for “upload” fields only. It will be discussed
    more in detail in the context of Authentication and Authorization.
+-  ``widget`` Do NOT use the widget parameter in py4web for a Field definition.
+   (This was a feature of web2py and is not to be used in py4web)
+   See :ref:`Widgets` later.
 -  ``represent`` can be None or can point to a function that takes a
    field value and returns an alternate representation for the field
-   value. Examples:
+   value.
 
-Note not all the attributes are thread safe and most of them
-should only be set globally for an app. The following are guaranteed to be
-thread safe and be set/reset in any action:
-``default``, ``update``, ``readable``, ``writable``, ``requires``.
+Thread safety and Field attributes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Even though py4web and web2py use the same pyDAL, there is an important difference 
+which stems from the core architecture of py4web.
+In py4web only the following ``Field`` attributes can be changed inside an action:
+
+- ``readable``
+- ``writable``
+- ``default``
+- ``filter_in``
+- ``filter_out``
+- ``label``
+- ``update``
+- ``requires``
+- ``widget``
+- ``represent``
+
+These are reset to their original values before each action is called.
+All other ``Field``, ``DAL``, and ``Table`` attributes are global and non-thread-safe.
+
+This limitation exists because py4web executes table definitions only at startup,
+unlike web2py which re-defines tables on each request. This makes py4web a lot faster
+than web2py, but you need to be careful as modifying non-thread-safe
+attributes in actions can cause race conditions and bugs.
 
 
 Field types and validators
@@ -1670,6 +1686,97 @@ Finally, you can drop tables and all data will be lost:
 .. code:: python
 
    db.person.drop()
+
+QueryBuilder
+~~~~~~~~~~~~
+
+You can generate DAL queries using natural language. This can be done as follows:
+
+.. code:: python
+
+   from py4web import DAL, Field
+   from pydal import QueryBuilder, QueryParseError
+
+   db = DAL("sqlite:memory")
+   db.define_table("thing", Field("name"), Field("solid", "boolean"))
+   builder = QueryBuilder(db.thing)
+   query = builder.parse('name is equal to Chair')
+   rows = db(query).select()
+
+Example of valid expressions are:
+
+- name is null
+- name is not null
+- name == Chair
+- name is Chair
+- name is equal Chair
+- name is equal to Chair
+- name is equal to "Chair"
+- name lower is equal to Chair
+- not name lower is equal to Chair
+- not (name lower is equal to Chair)
+- name == Chair or name == Table
+- name starts with C and name contains air
+- name in Chair, Table, Glass
+- name belongs Chair, Table, "Glass Top"
+- solid is true 
+- solid is false 
+
+Notice that quotes are optional and only for values. You can use brakets to group.
+It throws a QueryParseError exception on failure.
+You can pass optional parameters to QueryBuilder for internationalization purposes (Italian in example):
+
+.. code:: python
+
+   builder = QueryBuilder(db.thing, 
+               field_aliases={"id": "id", "nome": "name"},
+               token_aliases={"non è nullo": "is not null", "è uguale a": "=="})
+   query = builder.parse('nome non è nullo')
+   query = builder.parse('nome è uguale a Tavolo')
+
+If field_aliases is not provided, only readable fields can be searched.
+If field_aliases is provided, only explicitedly included field names can be searched.              
+
+You can, of course, use the translation operator T:
+
+.. code:: python
+
+   builder = QueryBuilder(db.thing, 
+               field_aliases={str(T(field.name)): field name for field in db.thing},
+               token_aliases={str(T(key):key) for key in QueryBuilder.token_ops})
+
+You can alias the following tokens:
+
+.. code:: python
+
+   {
+      # boolean tokens
+      "not",
+      "and",
+      "or",
+      # field transformers
+      "upper",
+      "lower",
+      # unary search expressions
+      "is null",
+      "is not null",
+      "is true",
+      "is false",
+      # binary search expressions
+      "==",
+      "!=",
+      "<",
+      ">",
+      "<=",
+      ">=",
+      "contains",
+      "startswith", # notice "starts with" is an alias!
+      # search in list
+      "belongs",
+   }
+
+The query builder is used in the Grid. In the Grid the field aliases
+are the field.label in lower case with the spaces replaced by underscore.
 
 Tagging records
 ~~~~~~~~~~~~~~~
