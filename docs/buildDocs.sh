@@ -14,8 +14,8 @@ set -xeuo pipefail
 # Controls (set via env in CI):
 # BUILD_RINOH=true to enable PDF (rinoh) builds (defaults to false in CI)
 # BUILD_EPUB=true to enable EPUB builds (defaults to false in CI)
-BUILD_RINOH=${BUILD_RINOH:-false}
-BUILD_EPUB=${BUILD_EPUB:-false}
+BUILD_RINOH=${BUILD_RINOH:-true}
+BUILD_EPUB=${BUILD_EPUB:-true}
 
 ###################
 # INSTALL DEPENDS #
