@@ -833,13 +833,8 @@ after submit, additional code needs to be added, as we will see later
 on. This example is assuming that you created the application from the
 scaffolding app, so that a generic.html is already created for you.
 
-The ``readable``, ``writable``, ``default``, ``update``, and ``require``
-attributes of ``db.{table}.{field}`` are special objects of class
-``ThreadSafeVariable`` defined the ``threadsafevariable`` module. These
-objects are very much like Python thread local objects but they are
-re-initialized at every request using the value specified outside of the
-action. This means that actions can safely change the values of these
-attributes.
+The full list of database field attributes which can be changed safely 
+is found here: :ref:`Thread safety and Field attributes`
 
 Custom fixtures
 ---------------
@@ -1169,10 +1164,8 @@ controllers for each HTTP method:
 
 The both decorator and its HTTP method calls have the following arguments:
 
-- ``path`` overwrites the path built from the function name
-   with the given string. Does not automatically handle arguments.
-- ``template`` specifies the template name, instead of using
-   the function name.
+- ``path`` overwrites the path built from the function name with the given string. Does not automatically handle arguments.
+- ``template`` specifies the template name, instead of using the function name.
 - ``uses`` specify extra fixtures for this specific controllers.
 
 

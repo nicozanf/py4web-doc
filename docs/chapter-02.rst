@@ -45,6 +45,7 @@ There are many tutorials and videos available. Here are some of them:
 - the `South Breeze Enterprises demo app <https://github.com/jpsteil/southbreeze>`__ by `Jim Steil <https://github.com/jpsteil>`__.  It is built around
   the structure of the Microsoft Northwind database,
   but converted to SQLite. You can view the final result online `here <https://southbreeze.pythonbench.com>`__
+- the `py4web blog in spanish <https://py4web-tutoriales.blogspot.com>`__ by Alan Etkin, wich covers the basics to start with the framework plus examples. It is thought as a resource for sudents and aims to provide a full web development course
 
 The sources on GitHub
 ---------------------
@@ -59,7 +60,7 @@ Hints and tips
 This paragraph is dedicated to preliminary hints, suggestions and tips that could be helpful to know before starting to learn py4web.
 
 
-Prerequisites
+Prerequisite
 -------------
 
 In order to understand py4web you need at least a basic python knowledge. There are many books, courses and tutorials available on the web - choose
@@ -141,3 +142,4 @@ It's really simple! Just change the .RST files in the /doc folder and create a P
 the GitHub repository at https://github.com/web2py/py4web - you can even do it within your browser.
 Once the PR is accepted, your changes will be written on the master branch, and will be reflected on the web pages / pdf / epub at the next output
 generation on the branch. 
+
