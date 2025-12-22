@@ -24,7 +24,7 @@ jobs:
         python -m venv .venv
         . .venv/bin/activate
         python -m pip install --upgrade pip setuptools wheel
-        pip install sphinx rinohtype pygments sphinx-rtd-theme sphinx-tabs docutils gitpython
+        pip install sphinx rinohtype==0.5.4 pygments sphinx-rtd-theme sphinx-tabs docutils gitpython
       shell: bash
 
     - name: Execute script to build our documentation and update pages
