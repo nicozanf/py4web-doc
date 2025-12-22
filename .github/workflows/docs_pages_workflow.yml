@@ -1,17 +1,17 @@
 name: docs_pages_workflow
- 
-# execute this workflow automatically when a we push to master
+
 on:
   push:
- 
+    branches: [ master ]
+
 jobs:
- 
+
   build_docs_job:
     runs-on: ubuntu-latest
     container: debian:bookworm-slim
- 
+
     steps:
- 
+
     - name: Prereqs
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -20,9 +20,24 @@ jobs:
         apt-get install -y git
         git clone "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
       shell: bash
- 
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Create Python venv and install doc dependencies
+      run: |
+        python -m venv .venv
+        . .venv/bin/activate
+        python -m pip install --upgrade pip setuptools wheel
+        pip install sphinx rinohtype pygments sphinx-rtd-theme sphinx-tabs docutils
+      shell: bash
+
     - name: Execute script to build our documentation and update pages
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: "docs/buildDocs.sh"
+      run: |
+        . .venv/bin/activate
+        docs/buildDocs.sh
       shell: bash
