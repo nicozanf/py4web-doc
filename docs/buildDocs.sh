@@ -34,7 +34,7 @@ fi
 
 # Ensure required Python packages are available in the active environment
 python3 -m pip install --upgrade pip || true
-python3 -m pip install --upgrade rinohtype pygments sphinx-rtd-theme sphinx-tabs docutils GitPython || true
+python3 -m pip install --upgrade rinohtype==0.5.4 pygments sphinx-rtd-theme sphinx-tabs docutils GitPython || true
 python3 -m pip list || true
 
 #####################
