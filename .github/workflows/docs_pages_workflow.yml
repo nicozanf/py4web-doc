@@ -8,18 +8,11 @@ jobs:
 
   build_docs_job:
     runs-on: ubuntu-latest
-    container: debian:bookworm-slim
 
     steps:
 
-    - name: Prereqs
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        apt-get update
-        apt-get install -y git
-        git clone "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
-      shell: bash
+    - name: Checkout
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v4
