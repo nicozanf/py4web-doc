@@ -23,8 +23,8 @@ BUILD_EPUB=${BUILD_EPUB:-false}
 
 # Some CI runners may not need package installs; keep install attempts idempotent
 if command -v apt-get >/dev/null 2>&1; then
-  apt-get update
-  apt-get -y install git rsync python3-sphinx python3-sphinx-rtd-theme python3-stemmer python3-git python3-pip python3-virtualenv python3-setuptools || true
+  sudo apt-get update
+  sudo apt-get -y install git rsync python3-sphinx python3-sphinx-rtd-theme python3-stemmer python3-git python3-pip python3-virtualenv python3-setuptools || true
 fi
 
 # Use virtualenv/venv when available in the environment (workflow should have created .venv)
@@ -68,6 +68,25 @@ if [ -z "${versions}" ]; then
   versions="$(git rev-parse --abbrev-ref HEAD)"
 fi
 
+# Build controls:
+ALL_VERSIONS=${ALL_VERSIONS:-false}      # set true to process all remote branches
+MAX_VERSIONS=${MAX_VERSIONS:-5}          # hard-cap the number of branches to process
+SPHINX_TIMEOUT=${SPHINX_TIMEOUT:-1800}  # timeout for each sphinx build in seconds (default 30m)
+
+# If ALL_VERSIONS is false, prefer master/main only
+if [ "${ALL_VERSIONS}" != "true" ]; then
+  if git show-ref --verify --quiet refs/remotes/origin/master || git show-ref --verify --quiet refs/heads/master; then
+    versions="master"
+  elif git show-ref --verify --quiet refs/remotes/origin/main || git show-ref --verify --quiet refs/heads/main; then
+    versions="main"
+  fi
+fi
+
+# Limit number of versions to avoid runaway loops
+if [ -n "$versions" ]; then
+  versions="$(echo $versions | awk -v max="$MAX_VERSIONS" '{ for (i=1;i<=max && i<=NF;i++) printf "%s%s",$i,(i<max && i<NF?" ":"") }')"
+fi
+
 for current_version in ${versions}; do
 
    # make the current version available to conf.py
@@ -83,7 +102,12 @@ for current_version in ${versions}; do
       continue
    fi
 
-   languages="en $(find docs/locales/ -mindepth 1 -maxdepth 1 -type d -exec basename '{}' \; 2>/dev/null || true)"
+   if [ -d "docs/locales" ]; then
+     languages="en $(find docs/locales/ -mindepth 1 -maxdepth 1 -type d -exec basename '{}' \; 2>/dev/null || true)"
+   else
+     languages="en"
+   fi
+
    for current_language in ${languages}; do
 
       # make the current language available to conf.py
@@ -94,13 +118,17 @@ for current_version in ${versions}; do
       ##########
       echo "INFO: Building for ${current_language}"
 
-      # HTML (always build)
-      python -m sphinx -b html docs/ docs/_build/html/${current_language}/${current_version} -D language="${current_language}"
+      # HTML (always), with timeout
+      echo "INFO: Running HTML build with timeout ${SPHINX_TIMEOUT}s"
+      timeout ${SPHINX_TIMEOUT} python -m sphinx -b html docs/ docs/_build/html/${current_language}/${current_version} -D language="${current_language}" || {
+        echo "ERROR: HTML build failed or timed out for ${current_language}/${current_version}"
+        continue
+      }
 
       # PDF (rinoh) - optional to avoid extremely long runs; enabled by BUILD_RINOH env var
       if [ "${BUILD_RINOH}" = "true" ]; then
         echo "INFO: Building PDF (rinoh) for ${current_language}"
-        python -m sphinx -v -b rinoh docs/ docs/_build/rinoh -D language="${current_language}" || echo "WARN: rinoh build failed for ${current_language} on ${current_version}"
+        timeout ${SPHINX_TIMEOUT} python -m sphinx -v -b rinoh docs/ docs/_build/rinoh -D language="${current_language}" || echo "WARN: rinoh build failed for ${current_language} on ${current_version}"
         mkdir -p "${docroot}/${current_language}/${current_version}"
         if [ -f "docs/_build/rinoh/target.pdf" ]; then
           cp "docs/_build/rinoh/target.pdf" "${docroot}/${current_language}/${current_version}/${REPO_NAME}_${current_language}_${current_version}.pdf"
@@ -114,7 +142,7 @@ for current_version in ${versions}; do
       # EPUB - optional
       if [ "${BUILD_EPUB}" = "true" ]; then
         echo "INFO: Building EPUB for ${current_language}"
-        python -m sphinx -b epub docs/ docs/_build/epub -D language="${current_language}" || echo "WARN: epub build failed for ${current_language} on ${current_version}"
+        timeout ${SPHINX_TIMEOUT} python -m sphinx -b epub docs/ docs/_build/epub -D language="${current_language}" || echo "WARN: epub build failed for ${current_language} on ${current_version}"
         mkdir -p "${docroot}/${current_language}/${current_version}"
         if [ -f "docs/_build/epub/target.epub" ]; then
           cp "docs/_build/epub/target.epub" "${docroot}/${current_language}/${current_version}/${REPO_NAME}_${current_language}_${current_version}.epub"
@@ -126,7 +154,8 @@ for current_version in ${versions}; do
       fi
 
       # copy the static assets produced by the above build into our docroot
-      rsync -av "docs/_build/html/" "${docroot}/"
+      mkdir -p "${docroot}/${current_language}/${current_version}"
+      rsync -av "docs/_build/html/${current_language}/${current_version}/" "${docroot}/${current_language}/${current_version}/" || echo "WARN: rsync had problems for ${current_language}/${current_version}"
 
    done
 
